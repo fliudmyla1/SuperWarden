@@ -1,0 +1,121 @@
+const Announce = require("../model/announce.model");
+const Townhall = require("../model/townhall.model");
+const moment = require('moment')
+
+async function createBroadcast (req, res, next){
+    try {
+        // let 
+        let announce = new Announce({
+            slug: req.body.slug,
+            creator: req.body.creator,
+            cid: req.body.cid,
+            title: req.body.announce.title,
+            summary: req.body.announce.summary,
+            attachment: req.body.announce.attachment,
+            importance:req.body.announce.importance,
+            timezone: req.body.announce.timezone,
+            expire_at: req.body.announce.date,
+
+        })
+        announce.save().then((a) => {
+            res.json({announce: a})
+        })
+    } catch (error) {
+        console.log('api/controller/announce.controller/createBroadcast' + error)
+    }
+}
+async function getAnnouncementList (req, res, next){
+    try {
+        let query = {}
+        query.slug = req.body.slug;
+        // if (req.body.index == 'important'){
+        //     query.importance = true
+        // } else if (req.body.index == 'closed'){
+        //     query.expire_at = ''
+        //     let now = new Date();
+        //     query['expire_at']['$lte'] = now
+        // }
+        if (req.body.index != 'closed'){
+            if (req.body.index == 'important')
+                query.importance = true
+            Announce.find(query).populate('creator').sort('-expire_at').exec()
+            .then((list)=>{
+                res.json({list: list})
+            })
+        } else {
+            Announce.find(query).populate('creator').sort('-expire_at').exec()
+            .then((list)=>{
+                // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+                let new_list = []
+                list.map((i, index) => {
+                    var userTime = new Date(i.expire_at);
+                    let userTimeOffset = moment().utcOffset(i.timezone.offset).utcOffset() * 60 * 1000
+                    let userTimeValue = userTime.getTime() - userTimeOffset
+                    let now = new Date()
+                    let localTimeOffset = now.getTimezoneOffset() * 60 * 1000;
+                    let localTimeValue = now.getTime() - localTimeOffset
+                    if (userTimeValue > localTimeValue){
+                        i.passed = false;
+                    }
+                    else{
+                        new_list.push(i)
+                    }
+                })
+                res.json({list: new_list})
+            })
+        }
+    } catch (error) {
+        console.log('api/controller/announce.controller/getAnnouncementList' + error)
+    }
+}
+async function getAnnounceDate (req, res, next){
+    try {
+        // let user = new User({
+        //     address: 'sadwdwdw',
+        //     role: 1,
+        // })
+        
+        Announce.findById(req.body._id).populate('creator').exec()
+        .then((a)=>{
+            res.json({announce: a})
+
+        })
+        
+    } catch (error) {
+        console.log('api/controller/user.controller' + error)
+    }
+}
+async function deleteAnnouncement (req, res, next){
+    try {
+        Announce.deleteOne({_id: req.body._id}).exec()
+        .then(()=>{
+            res.json({})
+        })
+    } catch (error) {
+        console.log('api/controller/announce.controller/' + error)
+    }
+}
+
+async function sample (req, res, next){
+    try {
+        // let user = new User({
+        //     address: 'sadwdwdw',
+        //     role: 1,
+        // })
+        await user.save()
+        User.find({}).then((list) => {
+            console.log(list)
+        })
+
+        let a = 90
+        res.json({list: 'okay'})
+    } catch (error) {
+        console.log('api/controller/announce.controller/' + error)
+    }
+}
+module.exports = {
+    createBroadcast,
+    getAnnouncementList,
+    getAnnounceDate,
+    deleteAnnouncement
+}
