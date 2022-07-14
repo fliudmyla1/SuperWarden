@@ -629,7 +629,7 @@ export default {
                 this.validation.invalid.name = 'Please type the name of your townhall.';
                 err = true
             } else {
-				const response = await axios.get('http://localhost:5000/api/v1/search/slugName'+'?s='+this.tempName);
+				const response = await axios.get('http://137.184.95.3/api/v1/search/slugName'+'?s='+this.tempName);
 				if (response.data.count > 0){
 					this.validation.invalid.name = 'This name is already taken.';
 					err = true
@@ -679,7 +679,7 @@ export default {
             } else {
 				let string = this.tempSlug.replace(/\s+/g, '').trim().toLowerCase(); + ".tron";
 				let pass = false
-				const response = await axios.get('http://localhost:5000/api/v1/search/slugName'+'?s='+string);
+				const response = await axios.get('http://137.184.95.3/api/v1/search/slugName'+'?s='+string);
 				// console.log(response)
 				if (response.data.count == 0)
 					pass = true
@@ -800,21 +800,22 @@ export default {
 						this.validation.invalid.threshold = "The threshold can not be less than 0."
 					}
 					this.validation.valid.threshold = 'The threshold of your threshold is added.';
-
-			}
+				}
             }
-			if (!this.stepSix.tcr.tk_symbol){
-				this.validation.invalid.tcr_tk_symbol = 'Please type the symbol of your TRC721.';
-				return
-			} else {
-				this.validation.valid.tcr_tk_symbol = 'The symbol of your TRC721 is added.';
+			if (this.stepSix.tcr.status){
+				if (!this.stepSix.tcr.tk_symbol){
+					this.validation.invalid.tcr_tk_symbol = 'Please type the symbol of your TRC721.';
+					return
+				} else {
+					this.validation.valid.tcr_tk_symbol = 'The symbol of your TRC721 is added.';
+				}
+				if (!this.stepSix.tcr.tk_addr){
+					this.validation.invalid.tcr_tk_addr = 'Please type the address of your TRC721.';
+					return
+				} else {
+					this.validation.valid.tcr_tk_addr = 'The address of your TRC721 is added.';
+				}
 			}
-			if (!this.stepSix.tcr.tk_addr){
-                this.validation.invalid.tcr_tk_addr = 'Please type the address of your TRC721.';
-                return
-            } else {
-                this.validation.valid.tcr_tk_addr = 'The address of your TRC721 is added.';
-            }
 			this.steps = 7
 			this.resetValidation()
 		},

@@ -569,7 +569,7 @@ export default {
 					return
 				} else {
 					
-						const response = await axios.get('http://localhost:5000/api/v1/search/townhallName'+'?s='+this.tempName);
+						const response = await axios.get('http://137.184.95.3/api/v1/search/townhallName'+'?s='+this.tempName);
 						if (response.data.count > 0){
 							this.validation.invalid.name = 'This name is already taken.';
 							return
@@ -633,7 +633,7 @@ export default {
 					return
 				} else {
 					let string = this.tempSlug + ".tron";
-					const response = await axios.get('http://localhost:5000/api/v1/search/slugName'+'?s='+string);
+					const response = await axios.get('http://137.184.95.3/api/v1/search/slugName'+'?s='+string);
 					if (response.data.count > 0){
 						this.validation.invalid.slug = 'This slug is already taken.';
 						return

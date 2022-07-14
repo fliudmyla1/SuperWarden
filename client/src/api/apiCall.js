@@ -5,7 +5,7 @@ function apiCall(url, method, data, successCallback, errorCallback){
         url: url,
         data: data,
         headers: {},
-        baseURL: "http://127.0.0.1:5000"
+        baseURL: "http://137.184.95.3"
     })
     .then(successCallback)
     .catch(errorCallback)

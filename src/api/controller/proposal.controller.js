@@ -3,12 +3,6 @@ const Townhall = require("../model/townhall.model");
 
 const Proposal = require("../model/proposal.model");
 const moment = require('moment');
-const { Web3Storage } = require('web3.storage');
-const pinataSDK = require('@pinata/sdk');
-const fs = require('fs');
-const {Blob} = require('buffer');
-
-// import {Blob} from 'buffer';
 
 
 async function createProposal (req, res, next){

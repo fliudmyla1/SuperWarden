@@ -11,8 +11,7 @@
 					<img  :src="i.details.avatar" style = "height: 53px;">
 				</a>
 			</li>
-            <!-- <li class="nav-item" @click="createTownhallModalShow = true"> -->
-            <li v-if = "account.setup" class="nav-item" @click="createTownhallModalShow = true">
+            <li v-if = "account.setup" class="nav-item" @click="showCreateTownhallModal">
 				<a class="nav-link">
 					<img src="./assets/plus.png"  style = "height: 50px;">
 				</a>
@@ -89,6 +88,13 @@ export default {
     created() {this.checkTronStatus();},
     mounted() {},
     methods: {
+        showCreateTownhallModal(){
+            if(!this.account.title){
+                this.$toast.error("Please Connect Your Wallet First.")
+                return
+            }
+            this.createTownhallModalShow = true
+        },
         trimmedAccountName(name){
             if (name.length > 12)
                 return name.slice(0, 5) + "..." + name.slice(name.length - 5, name.length)
@@ -116,7 +122,7 @@ export default {
         },
         getAccountData(){
             let _addr = window.tronWeb.defaultAddress.base58
-            _addr = 'jj'
+            //_addr = 'jj'
             
             api.getAccountData({_addr: _addr}, (res => {
                 this.$store.dispatch('account/setAccount', res.data.account)
