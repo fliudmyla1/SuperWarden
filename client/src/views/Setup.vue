@@ -677,7 +677,7 @@ export default {
                 this.validation.invalid.slug = 'Please type the slug of your townhall.';
                 err = true
             } else {
-				let string = this.tempSlug.replace(/\s+/g, '').trim().toLowerCase(); + ".tron";
+				let string = this.tempSlug.replace(/\s+/g, '').trim().toLowerCase() + ".tron";
 				let pass = false
 				const response = await axios.get('http://137.184.95.3/api/v1/search/slugName'+'?s='+string);
 				// console.log(response)

@@ -18,10 +18,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //import CSS custom
 // import './index.css';
 import './assets/style.css';
+import setting from './setting';
+window.setting = setting
 
 import api from './api'
 window.api = api
-
 // router
 import router from './router'
 // store 
