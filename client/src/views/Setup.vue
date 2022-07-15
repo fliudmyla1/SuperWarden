@@ -629,7 +629,7 @@ export default {
                 this.validation.invalid.name = 'Please type the name of your townhall.';
                 err = true
             } else {
-				const response = await axios.get('http://137.184.95.3/api/v1/search/slugName'+'?s='+this.tempName);
+				const response = await axios.get('http://64.227.108.139/api/v1/search/slugName'+'?s='+this.tempName);
 				if (response.data.count > 0){
 					this.validation.invalid.name = 'This name is already taken.';
 					err = true
@@ -679,7 +679,7 @@ export default {
             } else {
 				let string = this.tempSlug.replace(/\s+/g, '').trim().toLowerCase() + ".tron";
 				let pass = false
-				const response = await axios.get('http://137.184.95.3/api/v1/search/slugName'+'?s='+string);
+				const response = await axios.get('http://64.227.108.139/api/v1/search/slugName'+'?s='+string);
 				// console.log(response)
 				if (response.data.count == 0)
 					pass = true

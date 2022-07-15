@@ -73,8 +73,8 @@
 						<p class="fw-bolder" style="color: #959595; font-size: 14px;">Paste the links to the discussion post or forum of this proposal</p>
                         <div v-for="(item, index) in stepOne.discussions">
                             <input v-model="stepOne.discussions[index]" type="text" class="form-control d-inline" style="width: 80%;">
-                            <button @click="pushOneDiscussion" class="btn ms-4 superwarden-border" style="font-size: 16px;">+</button>
-                            <button @click="sliceOneDiscussion(index)" v-if = "index > 0" class="btn ms-4 superwarden-border" style="font-size: 16px;">-</button>
+                            <button @click="pushOneDiscussion" class="btn ms-4 superwarden-border" type = "button" style="font-size: 16px;">+</button>
+                            <button @click="sliceOneDiscussion(index)" v-if = "index > 0" class="btn ms-4 superwarden-border" type = "button" style="font-size: 16px;">-</button>
                         </div>
 					</div>
                     <div class="mb-3 mt-3">
@@ -401,7 +401,7 @@
 							<div class="valid-feedback" v-if="validation.valid.whitelist" style="display: flex;">{{ validation.valid.whitelist }}</div>
 							<div class="invalid-feedback" v-if="validation.invalid.whitelist" style="display: flex;">{{ validation.invalid.whitelist }}</div>
 						</div>
-                        <button type="button"  class="btn btn-success fw-bolder py-2" style="width: 50%; font-size: 14px;"><a href="http://137.184.95.3/download" style="color: #fff;">Download boilerplate whitelist.xlsx</a></button>
+                        <button type="button"  class="btn btn-success fw-bolder py-2" style="width: 50%; font-size: 14px;"><a href="http://64.227.108.139/download" style="color: #fff; text-decoration: none;">Download boilerplate whitelist.xlsx</a></button>
 
 					</div>
                     <div class="form-check mt-4 mb-3">
@@ -696,6 +696,10 @@ import { Web3Storage } from "web3.storage";
 import pinataSDK from '@pinata/sdk';
 import axios from 'axios';
 import readXlsxFile from 'read-excel-file'
+// import crypto from 'crypto'
+// import cluster from 'cluster';
+
+
 // import api from './api'
 
 export default {

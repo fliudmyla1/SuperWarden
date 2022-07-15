@@ -1,7 +1,7 @@
 
 # It would be Faster if you change node version on digital ocean. STONE HEAD
 baseURL: "http://137.184.95.3"
-
+64.227.108.139
 * you can ask your client for what you can't to post but you can actually and Retrive money more.
 ## deploying node.js app
 sudo apt install nodejs
@@ -27,7 +27,7 @@ pm2 start server.js
 pm2 stop server.js
 pm2 startup
 
-curl https://localhost:5001
+
 curl http://localhost:5000
 
 ## setting for ngix
@@ -37,7 +37,13 @@ sudo apt install nginx
 systemctl status nginx
 nano /etc/nginx/sites-available/default
 
+
+
+
 server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
 ...
     location /app2 {
         proxy_pass http://localhost:3001;
@@ -69,11 +75,13 @@ database = admin
 
 
 
+location /download {
+        proxy_pass http://localhost:5000;
+    }
 
 
 
-
-
+curl -is localhost:80
 
 
 
@@ -85,6 +93,8 @@ server {
 	return 301 https://$host$request_uri;
 }
 
+// seting https
+
 sudo ufw enable
 sudo ufw allow 'Nginx Full'
 sudo ufw status
@@ -92,11 +102,13 @@ sudo ufw status
 sudo add-apt-repository ppa:certbot/certbot
 sudo apt-get update
 sudo apt install python3-certbot-nginx
-sudo certbot --nginx -d reallycrypto.com -d www.reallycrypto.com
+sudo certbot --nginx -d superwarden.org -d www.superwarden.org
 
 sudo certbot renew --dry-run
 
 
+	# listen 443 ssl default_server;
+	# listen [::]:443 ssl default_server;
 
 
 server {

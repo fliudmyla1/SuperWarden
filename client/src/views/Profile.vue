@@ -252,12 +252,9 @@ export default {
 
         async validateEditForm(){
             let update_flag = 0
-            // const response = await axios.get('http://137.184.95.3/api/v1/search/slugName'+'?s='+'HLEO');
-            // console.log(response)
-
             if (this.tempAccount.name != this.account.name){
                 if (!this.tempAccount.name){
-                    const response = await axios.get('http://137.184.95.3/api/v1/search/accountName'+'?s='+this.tempAccount.name);
+                    const response = await axios.get('http://64.227.108.139/api/v1/search/accountName'+'?s='+this.tempAccount.name);
                     if (response.data.count > 0){
                         this.validation.invalid.name = 'This name is already taken.';
                         return

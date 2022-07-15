@@ -21,6 +21,13 @@ import './assets/style.css';
 import setting from './setting';
 window.setting = setting
 
+// buffer module
+import { Buffer } from 'buffer';
+window.Buffer = Buffer;
+
+
+
+
 import api from './api'
 window.api = api
 // router
