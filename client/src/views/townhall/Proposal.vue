@@ -27,9 +27,9 @@
           <span class="fw-bolder">Broadcast by {{p.creator.name ? trimmedAccountNameAndLowercase(p.creator.name) +"." + p.slug: trimmedAccountAddress(p.creator.address) }}</span>
           <span class="text-dark" style="height: 100px;">{{trimmedAnnounceSummary(p.description)}}</span>
           <span class="valid-till"><img src="../../assets/clock-icon.png"/>Time left &nbsp;<img src="../../assets/line1.png"/> {{p.leftTime}}</span>
-          <span class="cheak" v-if = "p.status == 1"><img src="../../assets/uncheack.png" style="height: 25px;"/>Voting under process, result will be announced soon</span>
+          <span class="cheak" v-if = "p.status == 1"><img src="../../assets/cheack.png" style="height: 25px;"/>Voting under process, result will be announced soon</span>
           <span class="cheak" v-else-if = "p.status == 0"><img src="../../assets/uncheack.png" style="height: 25px;"/>Voting is expecting.8787 johnny.tron as the team leader</span>
-          <span class="cheak" v-else><img src="../../assets/cheack.png" style="height: 25px;"/>{{calculateWinner(p)}}</span>
+          <span class="cheak" v-else><img src="../../assets/uncheack.png" style="height: 25px;"/>{{calculateWinner(p)}}</span>
 
       </div>
   </div>

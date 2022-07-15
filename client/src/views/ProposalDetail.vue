@@ -134,7 +134,7 @@
                     <div v-if = "proposal.shield" class="text-center">
                         <img  src="../assets/security.png" style="width: 185px"/>
                     </div>
-                    <div v-else class = "py-2">
+                    <div v-else-if = "proposal.result" class = "py-2">
                         <div v-for ="(r, i) in proposal.result">
                             <p class="fw-bolder ps-3" style="font-size: 14px;">Candidate - {{i+1}} {{trimmedVotingOption(r.option)}}
                             <span class="float-end me-4">{{r.amount / 1000}}K {{r.symbol}} {{getProgressWidth(r)}}</span>

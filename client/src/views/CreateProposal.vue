@@ -401,7 +401,7 @@
 							<div class="valid-feedback" v-if="validation.valid.whitelist" style="display: flex;">{{ validation.valid.whitelist }}</div>
 							<div class="invalid-feedback" v-if="validation.invalid.whitelist" style="display: flex;">{{ validation.invalid.whitelist }}</div>
 						</div>
-                        <button type="button"  class="btn btn-success fw-bolder py-2" style="width: 50%; font-size: 14px;"><a href="http://64.227.108.139/download" style="color: #fff; text-decoration: none;">Download boilerplate whitelist.xlsx</a></button>
+                        <button type="button"  class="btn btn-success fw-bolder py-2" style="width: 50%; font-size: 14px;"><a href="http://164.92.118.10/download" style="color: #fff; text-decoration: none;">Download boilerplate whitelist.xlsx</a></button>
 
 					</div>
                     <div class="form-check mt-4 mb-3">

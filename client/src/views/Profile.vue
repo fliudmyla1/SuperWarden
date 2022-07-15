@@ -254,7 +254,7 @@ export default {
             let update_flag = 0
             if (this.tempAccount.name != this.account.name){
                 if (!this.tempAccount.name){
-                    const response = await axios.get('http://64.227.108.139/api/v1/search/accountName'+'?s='+this.tempAccount.name);
+                    const response = await axios.get('http://164.92.118.10/api/v1/search/accountName'+'?s='+this.tempAccount.name);
                     if (response.data.count > 0){
                         this.validation.invalid.name = 'This name is already taken.';
                         return
