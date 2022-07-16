@@ -5,7 +5,7 @@
                 <div class="left-block p-4 mb-4">
                     <div class="head">
                         <span v-if = "account.name" class="title">{{trimmedAccountName(account.name)}}</span>
-                        <span v-else class="title"></span>
+                        <span v-else class="title">{{trimmedAccountAddress(account.address)}}</span>
 
                         <div class="coppy">
                             <span>
@@ -20,7 +20,7 @@
 
                         </div>
                     </div>
-                    <span v-if = "account.bio" class="description my-4">{{trimmedAccountBio(account.bio)}}</span>
+                    <span v-if = "account.bio" class="description my-4">{{account.bio}}</span>
                     <span v-else = "account.bio" class="description my-4"></span>
                     <button @click = "editProfile" type="button" class="action-button mt-3"><span>Edit Profile</span></button>
                 </div>
@@ -186,7 +186,7 @@ export default {
     watch: {
 		bio(newQuestion, oldQuestion) {	
 			if(this.bio){
-				if(String(this.bio).match(/(\w+)/g).length > 120)
+				if(this.bio.length > 120)
 					this.bio = oldQuestion;
 				else
 					this.bio = newQuestion;
@@ -208,7 +208,7 @@ export default {
     methods: {
         trimmedAccountName(name){
             if (name.length > 12)
-                return name.slice(0, 9) + "..." + name.slice(name.length - 4, name.length)
+                return name.slice(0, 5) + "..." + name.slice(name.length - 5, name.length)
             else
                 return name
         },
@@ -314,7 +314,8 @@ export default {
             // console.log(this)
             api.getProfile({_addr : this.$store.getters._addr}, (res => {
                 this.account = res.data.account
-                // this.tempAccount = res.data.account
+                console.log('profile')
+                console.log(this.account)
                 this.townhalls = []
                 this.superwardens = []
                 this.wardens = []
@@ -365,7 +366,7 @@ export default {
 
 .left-block .head .coppy {
   border: 1px solid #959595;
-  border-radius: 5px;
+  border-radius: 25px;
   padding: 8px 10px;
   display: flex;
   justify-content: space-between;

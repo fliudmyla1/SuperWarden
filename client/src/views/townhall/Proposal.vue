@@ -1,12 +1,12 @@
 <template>
 
- <div class="head p-2" style="width: 100%;">
+ <div class="head p-2" style="width: 100%; ">
       <span class="px-3  py-1 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Proposals </span>
       <div class="options">
-          <button @click = "getProposalList(-1)" :class="index === -1?  'selected': ''">All</button>
-          <button @click = "getProposalList(1)" :class="index === 1?  'selected': ''">Active</button>
-          <button @click = "getProposalList(0)" :class="index === 0?  'selected': ''">Expecting</button>
-          <button @click = "getProposalList(2)" :class="index === 2?  'selected': ''">Closed</button>
+          <button @click = "getProposalList(-1)" :class="index === -1?  'selected': ''" style="background-color: #fff">All</button>
+          <button @click = "getProposalList(1)" :class="index === 1?  'selected': ''" style="background-color: #fff">Active</button>
+          <button @click = "getProposalList(0)" :class="index === 0?  'selected': ''" style="background-color: #fff">Important</button>
+          <button @click = "getProposalList(2)" :class="index === 2?  'selected': ''" style="background-color: #fff">Complete</button>
       </div>
       <div @click="goCreateProposal" v-if ="role  < 4" class="right-button-holder"><button class="right-button">+ Create Proposals</button>
       </div>
@@ -15,21 +15,23 @@
 
 
 
-  <div v-if = "proposals.length > 0" class="right-section-content">
+  <div v-if = "proposals.length > 0" class="right-section-content" style="height: 73.8vh; overflow-y: scroll;">
       <div @click="goProposalDetail(p._id)" class="block-container-proposal" v-for="(p) in proposals">
           <div class="header">
               <span class="fw-bolder text-dark" style="font-size: 22px;">{{trimmedProposalTitle(p.title)}}
+                                <img v-if = "p.importance"   style="height: 35px;"   class="mb-1"    src="../../assets/staricon.png" />
+
                 </span>
               <span v-if = "p.passed == 1" class="status active">Active</span>
-              <span v-else-if = "p.passed == 0" class="status complete">Expecting</span>
+              <span v-else-if = "p.passed == 0" class="status complete">Active</span>
               <span v-else class="status complete">Complete</span>
           </div>
           <span class="fw-bolder">Broadcast by {{p.creator.name ? trimmedAccountNameAndLowercase(p.creator.name) +"." + p.slug: trimmedAccountAddress(p.creator.address) }}</span>
           <span class="text-dark" style="height: 100px;">{{trimmedAnnounceSummary(p.description)}}</span>
           <span class="valid-till"><img src="../../assets/clock-icon.png"/>Time left &nbsp;<img src="../../assets/line1.png"/> {{p.leftTime}}</span>
-          <span class="cheak" v-if = "p.status == 1"><img src="../../assets/cheack.png" style="height: 25px;"/>Voting under process, result will be announced soon</span>
-          <span class="cheak" v-else-if = "p.status == 0"><img src="../../assets/uncheack.png" style="height: 25px;"/>Voting is expecting.8787 johnny.tron as the team leader</span>
-          <span class="cheak" v-else><img src="../../assets/uncheack.png" style="height: 25px;"/>{{calculateWinner(p)}}</span>
+          <span class="cheak" v-if = "p.passed == 1"><img src="../../assets/uncheack.png" style="height: 25px;"/>Voting under process, result will be announced soon</span>
+          <span class="cheak" v-else-if = "p.passed == 0"><img src="../../assets/uncheack.png" style="height: 25px;"/>Comming soon</span>
+          <span class="cheak" v-else><img src="../../assets/cheack.png" style="height: 25px;"/>{{calculateWinner(p)}}</span>
 
       </div>
   </div>
@@ -105,7 +107,7 @@ export default {
           else if (p.result && (p.result[0].option > threshold))
             return p.result[0].option + ' is a winner'
           else 
-            return 'No winner.'
+            return 'N/A. Proposal do not meet the quorum threshold'
         } else {
           if (p.s_result)
             return p.s_result[0].option + ' is a winner'
@@ -147,13 +149,15 @@ export default {
               
               if (toStart > 0){
                 p.passed = 0
-                let day = parseInt(toStart/(1000 * 3600 * 24))
-                let hour = parseInt((toStart - day * 1000 * 3600 * 24)/(1000 * 3600))
-                let minute = parseInt((toStart - day * 1000 * 3600 * 24 - hour * 1000 * 3600)/(1000 * 60)) 
-                p.leftTime = `${day} days ${hour} hours ${minute} minutes`
-              } else if (p.status == 2){
+                // let day = parseInt(toStart/(1000 * 3600 * 24))
+                // let hour = parseInt((toStart - day * 1000 * 3600 * 24)/(1000 * 3600))
+                // let minute = parseInt((toStart - day * 1000 * 3600 * 24 - hour * 1000 * 3600)/(1000 * 60)) 
+                p.leftTime = `Comming soon`
+              } else if (localTimeValue > endTimeValue){
+                p.passed = 2
+
                 p.leftTime = `Finished`
-                console.log(p)
+                // console.log(p)
               } else {
                 p.passed = 1
                 let day = parseInt(toEnd/(1000 * 3600 * 24))
@@ -395,24 +399,6 @@ span.cheak img {
   margin-right: 5px;
 }
 
-
-.links {
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 15px;
-  margin-top: 50px;
-  /* border-right: 2px solid #D5D5D5; */
-}
-
-.links .icons {
-  display: flex;
-  column-gap: 10px;
-}
-
-.links .icons>img {
-  height: 30px;
-}
 .right-section-no-content {
   display: flex;
   flex-grow: 1;

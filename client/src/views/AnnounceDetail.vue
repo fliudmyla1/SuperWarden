@@ -3,7 +3,7 @@
         <div class="row" style= "width: 100%;">
             <div class="col-md-10">
                 <button @click="backToAnnounceList" class="btn btn-default  p-0" ><b>&#8592; Back</b></button>
-                <button @click="deleteModal = true"  class="btn btn-default p-0 float-end" ><img src="../assets/delete-icon.png" style="height: 22px;"/></button>
+                <button v-if = "$store.getters.role < 2" @click="deleteModal = true"   class="btn btn-default p-0 float-end" ><img src="../assets/delete-icon.png" style="height: 22px;"/></button>
 
                 <div class="px-5 mt-5">
                     <div class="block-container-announcement-detail">
@@ -103,9 +103,10 @@ export default {
     },
 
     created() {
-        // console.log(this.idx)
-        this.getAnnounceDate()
-
+        if (this.$store.getters.role == 10)
+            this.$router.push(`/`)
+        else
+            this.getAnnounceDate()
     },
     mounted() {
         

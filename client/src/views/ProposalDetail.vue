@@ -7,9 +7,11 @@
                 <div class="px-4 mt-5">
                     <div class="block-container-announcement-detail">
                         <div class="header mt-3">
-                            <span class="fw-bolder text-dark fs-2">{{proposal.title}}</span>
+                            <span class="fw-bolder text-dark fs-2">{{proposal.title}}
+                                <img v-if = "proposal.importance"   style="height: 35px;"   class="mb-1"    src="../assets/staricon.png" />
+                            </span>
                         </div>
-                        <span class="fw-bolder mt-2">Broadcast by {{proposal.creator.name ? proposal.creator.name +"." + proposal.slug: proposal.creator.address }}
+                        <span class="fw-bolder mt-2">Broadcast by {{proposal.creator.name ? trimmedAccountName(proposal.creator.name) +"." + proposal.slug: trimmedAccountAddress(proposal.creator.address) }}
                             <span   v-if="proposal.status == 1" class="status-active ms-2">Active</span>
                             <span v-else-if = "proposal.status == 0" class="status-complete ms-2">Expecting</span>
                             <span v-else class="status-complete ms-2">Complete</span>
@@ -28,7 +30,7 @@
                     <div class="my-2">
                         <p class="fs-5 fw-bolder text-dark">Discussions</p>
                         <div class="file-details mb-2" v-for="(i) in proposal.discussions">
-                            <span class="fw-bolder">{{trimmedDiscussionTitle(i)}}</span>
+                            <span class="fw-bolder">{{trimmedProposalDiscussion(i)}}</span>
                         </div>
                     </div>
                     <div class="mt-4">
@@ -134,7 +136,7 @@
                     <div v-if = "proposal.shield" class="text-center">
                         <img  src="../assets/security.png" style="width: 185px"/>
                     </div>
-                    <div v-else-if = "proposal.result" class = "py-2">
+                    <div v-else-if = "proposal.result.length > 1" class = "py-2">
                         <div v-for ="(r, i) in proposal.result">
                             <p class="fw-bolder ps-3" style="font-size: 14px;">Candidate - {{i+1}} {{trimmedVotingOption(r.option)}}
                             <span class="float-end me-4">{{r.amount / 1000}}K {{r.symbol}} {{getProgressWidth(r)}}</span>
@@ -157,7 +159,7 @@
                         <div v-if = "proposal.shield" class="text-center">
                             <img  src="../assets/security.png" style="width: 185px"/>
                         </div>
-                        <div v-else class = "py-2">
+                        <div v-else-if = "proposal.result" class = "py-2">
                             <div v-for ="(r, i) in proposal.result">
                                 <p class="fw-bolder ps-3 mt-4" style="font-size: 14px;">Candidate - {{i+1}} {{trimmedVotingOption(r.option)}}
                                 <span class="float-end me-4">{{r.amount / 1000}}K {{r.symbol}} {{getProgressWidth(r)}}</span>
@@ -318,7 +320,8 @@ export default {
                 f_start_at: '',
                 f_end_at: '',
                 timezone: {},
-                discussions: ['']
+                discussions: [''],
+                result: []
             },
             voteNowModal: false,
             votable: false,
@@ -346,7 +349,10 @@ computed: {
     },
 
     created() {
-        this.getProposalData()
+        if (this.$store.getters.role == 10)
+            this.$router.push(`/`)
+        else
+            this.getProposalData()
 
 
     },
@@ -354,6 +360,20 @@ computed: {
         
     },
     methods: {
+                trimmedAccountName(name){
+            if (name.length > 12)
+                return name.slice(0, 9) + "..." + name.slice(name.length - 4, name.length)
+            else
+                return name
+        },
+        trimmedAccountAddress(addr){
+            if (!addr)
+                return
+            if (addr.length > 10)
+                return addr.slice(0, 5) + "..." + addr.slice(addr.length - 5, addr.length)
+            else
+                return addr
+        },
         trimmedVotingOption(option){
             if (option.length > 5)
                 return option.slice(0, 5) + "..."
@@ -393,11 +413,13 @@ computed: {
             else
               return summary
         },
-        trimmedDiscussionTitle(title){
-          if (title.length > 75)
-              return title.slice(0, 75) + "..." 
+        trimmedProposalDiscussion(discussion){
+                        if (!discussion)
+                return
+          if (discussion.length > 55)
+              return discussion.slice(0, 55) + "..." 
             else
-              return title
+              return discussion
         },
         getProgressWidth(r){
             let total = 0
@@ -487,16 +509,13 @@ computed: {
 
         
         async viewVoteNowModal(){
-            const CONTRACT = "TKWsxjh97sCPipTAfghW7vDFdx2HhjecCe";
-
-            // const contract = await tronWeb.contract().at(this.proposal.ctr_addr)
-            const contract = await tronWeb.contract().at(CONTRACT)
+            const contract = await tronWeb.contract().at(this.proposal.ctr_addr)
             const my_balance = await contract.methods.balanceOf(window.tronWeb.defaultAddress.base58).call();
             let balance = parseInt(my_balance.toString())
-            balance = 1200
-            console.log('Client wallet balance: ' + balance)
-            console.log('DB: the threshold of proposal')
-            console.log(this.proposal.threshold)
+            // balance = 1200
+            // console.log('Client wallet balance: ' + balance)
+            // console.log('DB: the threshold of proposal')
+            // console.log(this.proposal.threshold)
             this.balance = balance
             if (balance > this.proposal.threshold)
                 this.votable = true
@@ -550,6 +569,7 @@ computed: {
         getProposalData(){
             api.getProposalData({_id: this.idx}, (res => {
                 this.proposal = res.data.proposal
+                console.log(this.proposal)
                 if (this.proposal.s_start_at)
                     this.round = 2
                 else

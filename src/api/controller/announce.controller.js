@@ -28,25 +28,12 @@ async function getAnnouncementList (req, res, next){
     try {
         let query = {}
         query.slug = req.body.slug;
-        // if (req.body.index == 'important'){
-        //     query.importance = true
-        // } else if (req.body.index == 'closed'){
-        //     query.expire_at = ''
-        //     let now = new Date();
-        //     query['expire_at']['$lte'] = now
-        // }
-        if (req.body.index != 'closed'){
-            if (req.body.index == 'important')
-                query.importance = true
-            Announce.find(query).populate('creator').sort('-expire_at').exec()
-            .then((list)=>{
-                res.json({list: list})
-            })
-        } else {
+        if (req.body.index == 'closed' || req.body.index == 'open'){
             Announce.find(query).populate('creator').sort('-expire_at').exec()
             .then((list)=>{
                 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
-                let new_list = []
+                let closedList = []
+                let openList = []
                 list.map((i, index) => {
                     var userTime = new Date(i.expire_at);
                     let userTimeOffset = moment().utcOffset(i.timezone.offset).utcOffset() * 60 * 1000
@@ -54,14 +41,22 @@ async function getAnnouncementList (req, res, next){
                     let now = new Date()
                     let localTimeOffset = now.getTimezoneOffset() * 60 * 1000;
                     let localTimeValue = now.getTime() - localTimeOffset
-                    if (userTimeValue > localTimeValue){
-                        i.passed = false;
-                    }
-                    else{
-                        new_list.push(i)
-                    }
+                    if (userTimeValue >= localTimeValue)
+                        openList.push(i)
+                    else
+                        closedList.push(i)
                 })
-                res.json({list: new_list})
+                if (req.body.index == 'closed')
+                    res.json({list: closedList})
+                else
+                    res.json({list: openList})
+            })
+        } else {
+            if (req.body.index == 'important')
+                query.importance = true
+            Announce.find(query).populate('creator').sort('-expire_at').exec()
+            .then((list)=>{
+                res.json({list: list})
             })
         }
     } catch (error) {

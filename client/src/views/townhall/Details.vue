@@ -6,7 +6,7 @@
       </div>
   </div>
 
-  <div class="right-section-content">
+  <div class="right-section-content" style="height: 73.8vh; overflow-y: scroll;">
     <img :src="details.bannerPhoto" style="height: 220px;"/>
     <div v-html="markdownToHtml" class="custom-markdown"></div>
   </div>
@@ -38,6 +38,8 @@ export default {
         }
     },
     created() {
+      this.$parent.$parent.tag = 'd'
+
         this.getTownhallData()
     },
     // mounted() {},

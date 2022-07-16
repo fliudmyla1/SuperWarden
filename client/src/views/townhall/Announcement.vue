@@ -2,15 +2,15 @@
   <div class="head p-2" style="width: 100%;">
       <span class="px-3  py-1 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Announcement</span>
       <div class="options">
-          <button @click = "getAnnouncementList('all')" :class="index === 'all'?  'selected': ''">All</button>
-          <button  class="none "></button>
-          <button @click = "getAnnouncementList('important')" :class="index === 'important'?  'selected': ''">Important</button>
-          <button @click = "getAnnouncementList('closed')" :class="index === 'closed'?  'selected': ''">Closed</button>
+          <button @click = "getAnnouncementList('all')" :class="index === 'all'?  'selected': ''" style="background-color: #fff">All</button>
+          <button @click = "getAnnouncementList('open')" :class="index === 'open'?  'selected': ''" style="background-color: #fff">Open</button>
+          <button @click = "getAnnouncementList('important')" :class="index === 'important'?  'selected': ''" style="background-color: #fff">Important</button>
+          <button @click = "getAnnouncementList('closed')" :class="index === 'closed'?  'selected': ''" style="background-color: #fff">Closed</button>
       </div>
       <div v-if = "role < 2" class="right-button-holder"><button @click="goCreateAnnouncement" class="right-button">+ Broadcast Announcement</button>
       </div>
   </div>
-  <div v-if = "announcements.length > 0" class="right-section-content">
+  <div v-if = "announcements.length > 0" class="right-section-content" style="height: 73.8vh; overflow-y: scroll;">
 
 
 
@@ -20,8 +20,12 @@
           <span class="fw-bolder text-dark" style="font-size: 22px;">{{trimmedAnnounceTitle(i.title)}}
             <img v-if = "i.importance"      class="mb-1"    src="../../assets/staricon.png" />
           </span>
-          <span   v-if="i.passed" class="status complete">closed</span>
-          <span v-else class="status active">open</span>
+          <span   v-if="i.passed" class="status complete" style="justify-content: center;
+    vertical-align: middle;
+    display: inline-table;">closed</span>
+          <span v-else class="status active" style="justify-content: center;
+    vertical-align: middle;
+    display: inline-table;">open</span>
 
       </div>
           <span class="fw-bolder">Broadcast by {{i.creator.name ? trimmedAccountNameAndLowercase(i.creator.name) +"." + i.slug: trimmedAccountAddress(i.creator.address) }}</span>
@@ -59,6 +63,7 @@ export default {
     },
 
     created() {
+      this.$parent.$parent.tag = 'a'
       this.getAnnouncementList('all')
 
     },

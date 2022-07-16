@@ -2,9 +2,9 @@
   <div class="row m-0" style="width: 100%">
     <div class="col-md-3  p-0" style="    border-right: 1px solid #d5d5d5">
       <img v-if = "townhall.details.coverPhoto == ''" src="../assets/card-cover-photo.png" style="width: 100%; height: 185px" />
-      <img v-else :src="townhall.details.coverPhoto" style="width: 100%; height: 185px" />
+      <img v-else :src="townhall.details.coverPhoto" style="width: 100%; height: 150px" />
       <div class="text-center" >
-        <img :src="townhall.details.avatar" style="margin-top: -40px; background-color: #ffffff; width: 85px; border-radius: 50%; border: 2px solid #ffffff;"/>
+        <img :src="townhall.details.avatar" style="margin-top: -40px; background-color: #ffffff; width: 75px; border-radius: 50%; border: 2px solid #ffffff;"/>
       </div>
       <p class="text-center fw-bolder fs-5 text-dark my-2">{{townhall.details.name}}</p>
       <p class="text-center fw-bolder">{{townhall.villagers.length}} Villagers</p>
@@ -12,16 +12,15 @@
         <button v-if = "role < 10" class="join-button"><span>Joined</span></button>
         <button v-else class="join-button"><span>Join</span></button>
       </div>
-      <div class="mt-5 ms-5">
-        <p @click="clickProposal" class="mt-4 fw-bolder fs-5" style="cursor: pointer;">Proposals</p>
-        <p @click="clickAnnouncement" class="mt-4 fw-bolder fs-5" style="cursor: pointer;">Announcements</p>
-        <p @click="clickDetails" class="mt-4 fw-bolder fs-5" style="cursor: pointer;">Details</p>
-        <p v-if = "role > 1" class="mt-4 fw-bolder fs-5" style="color: #959595;">Settings <img src="../assets/lock.png" style="height: 25px;"/></p>
-        <p v-else @click="clickSetting" class="mt-4 fw-bolder fs-5" style="cursor: pointer;">Settings</p>
+      <!-- <div class="mt-3 ms-5" style="height: 22vh; overflow-y: scroll;"> -->
+      <div class="mt-3" style="margin-left:20px">
 
-      </div>
-
-      <div class="links">
+        <p @click="clickProposal" :class="tag == 'p'? 'navbar-active' : ''" class=" ps-3 py-2 mb-0 fw-bolder" style="margin-top: 35px; cursor: pointer;">Proposals</p>
+        <p @click="clickAnnouncement" :class="tag == 'a'? 'navbar-active' : ''" class=" py-2 ps-3 mb-0 fw-bolder" style="cursor: pointer;">Announcements</p>
+        <p @click="clickDetails" :class="tag == 'd'? 'navbar-active' : ''" class="  ps-3 py-2 mb-0 fw-bolder" style="cursor: pointer;">Details</p>
+        <p v-if = "role > 1"  class="fw-bolder ps-3 py-2 mb-0" style="color: #959595;">Settings <img src="../assets/lock.png" style="height: 20px;"/></p>
+        <p v-else @click="clickSetting" :class="tag == 's'? 'navbar-active' : ''" class="ps-3 py-2 mb-0 fw-bolder" style="cursor: pointer;">Settings</p>
+        <div class="links">
           <div class="icons">
             <a :href="townhall.details.twitter"><img src="../assets/twiter-icon.png"></a>
             <a><img src="../assets/game-icon.png"></a>  
@@ -29,8 +28,12 @@
             <a :href="townhall.details.discord"><img src="../assets/browser-icon.png"></a>  
           </div>
       </div>
+
+      </div>
+
+      
     </div>
-    <div class="col-md-9 m-0 p-0 right-section">
+    <div class="col-md-9 m-0 p-0 right-section" >
       <router-view />
     </div>
   </div>
@@ -45,7 +48,8 @@ export default {
           townhall: {
             villagers: [],
             details: {}
-          }
+          },
+          tag: 'p'
         }
     },
     // computed: {},
@@ -55,13 +59,15 @@ export default {
       getTownhallData(){
         api.getTownhallData({slug: this.slug}, (async (res) => {
           if (res.data.townhall){
+            console.log('hello townhall')
             this.townhall = res.data.townhall
             if (this.townhall.superwarden == this.$store.getters._addr){
-              this.role = 0
+
+              this.role = 0// superwarden
             } else if (this.townhall.details.warden.includes(this.$store.getters.name) || this.townhall.details.warden.includes(this.$store.getters._addr)){
-              this.role = 1
+              this.role = 1// warden
             } else if (this.townhall.details.master.includes(this.$store.getters.name) || this.townhall.details.master.includes(this.$store.getters._addr)){
-              this.role = 2
+              this.role = 2// master
             } else {
               if (this.townhall.details.threshold.status || this.townhall.details.tcr.status){
                 let proposability = false
@@ -82,13 +88,20 @@ export default {
                   }
                 }
                 if (proposability)
-                  this.role = 3
+                  this.role = 3 // villager but create proposal
                 else
-                  this.role = 4
+                  this.role = 4 // just villager
               } else {
                 this.role = 4
               }
             }
+            if (this.role == 10) // over lookers
+              this.role = 5
+
+            this.$store.dispatch('account/setRole', this.role)
+                // this.$store.dispatch('account/setAccount')
+            // console.log(this.$store)
+
           } else {
             this.$toast.error("DB or Server Error")
 
@@ -97,10 +110,10 @@ export default {
             console.log(err)
         })
       },
-      clickProposal(){ this.$router.push(`/${this.slug}/proposal`)},
-      clickAnnouncement(){ this.$router.push(`/${this.slug}/announcement`)},
-      clickDetails(){ this.$router.push(`/${this.slug}/details`)},
-      clickSetting(){this.$router.push(`/setting/${this.slug}`)},
+      clickProposal(){ this.tag = 'p'; this.$router.push(`/${this.slug}/proposal`)},
+      clickAnnouncement(){  this.tag = 'a';this.$router.push(`/${this.slug}/announcement`)},
+      clickDetails(){this.tag = 'd'; this.$router.push(`/${this.slug}/details`)},
+      clickSetting(){this.tag = 's'; this.$router.push(`/setting/${this.slug}`)},
     }
 }
 </script>
@@ -367,7 +380,9 @@ span.cheak img {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  padding: 15px;
+  padding-right: 15px;
+  margin-top: 1vh;
+  /* padding: 15px; */
   /* border-right: 2px solid #D5D5D5; */
 }
 
@@ -377,7 +392,9 @@ span.cheak img {
 }
 
 .links .icons>a>img {
-  height: 30px;
+  height: 20px;
 }
-
+.navbar-active {
+    background-color:#EEEEEE;
+}
 </style>

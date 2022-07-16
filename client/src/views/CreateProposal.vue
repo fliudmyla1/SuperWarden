@@ -41,7 +41,7 @@
         </form>
     </div> -->
     <div style="padding-left: 35px; margin-left: 100px;">
-        <button type=" " class="btn btn-default mt-3 p-0" @click="backToProposal"><b>&#8592; Back</b></button>
+        <button v-if="steps == 1" type = "button" class="btn btn-default mt-3 p-0" @click="backToProposal"><b>&#8592; Back</b></button>
         <p class="mt-5  fw-bolder fs-1 text-dark">Create a proposal</p>
 
         <div class="mt-4 mb-5" >
@@ -71,19 +71,19 @@
                     <div class="mb-3 mt-3">
 						<label for="name" class="form-label fw-bolder fs-6">Discussions</label>
 						<p class="fw-bolder" style="color: #959595; font-size: 14px;">Paste the links to the discussion post or forum of this proposal</p>
-                        <div v-for="(item, index) in stepOne.discussions">
+                        <div v-for="(item, index) in stepOne.discussions" class="my-1">
                             <input v-model="stepOne.discussions[index]" type="text" class="form-control d-inline" style="width: 80%;">
-                            <button @click="pushOneDiscussion" class="btn ms-4 superwarden-border" type = "button" style="font-size: 16px;">+</button>
-                            <button @click="sliceOneDiscussion(index)" v-if = "index > 0" class="btn ms-4 superwarden-border" type = "button" style="font-size: 16px;">-</button>
+                            <button @click="pushOneDiscussion" type = "button" class="btn ms-4 superwarden-border"  style="font-size: 16px;">+</button>
+                            <button @click="sliceOneDiscussion(index)" v-if = "index > 0" type = "button" class="btn ms-4 superwarden-border"  style="font-size: 16px;">-</button>
                         </div>
 					</div>
                     <div class="mb-3 mt-3">
 						<label for="name" class="form-label fw-bolder fs-6">Attachments</label>
 						<p class="fw-bolder" style="color: #959595; font-size: 14px;">Paste the links of the attachments of this proposal</p>
-                        <div v-for="(item, index) in stepOne.attachments">
+                        <div v-for="(item, index) in stepOne.attachments" class="my-1">
                             <input v-model="stepOne.attachments[index]" type="text" placeholder="https://www.superwardenforum.com/post2" class="form-control d-inline" style="width: 80%;">
-                            <button @click="pushOneAttachment" class="btn ms-4 superwarden-border" style="font-size: 16px;">+</button>
-                            <button @click="sliceOneAttachment(index)" v-if = "index > 0" class="btn ms-4 superwarden-border" style="font-size: 16px;">-</button>
+                            <button @click="pushOneAttachment" type = "button" class="btn ms-4 superwarden-border" style="font-size: 16px;">+</button>
+                            <button @click="sliceOneAttachment(index)" v-if = "index > 0" type = "button" class="btn ms-4 superwarden-border" style="font-size: 16px;">-</button>
                         </div>
 					</div>
                     <button class="btn btn-danger float-end px-4" type="submit" style="margin-right: 20%;">Next</button>
@@ -127,7 +127,7 @@
                             rows="21"  class="form-control border-top-0" style="border: 1px solid #959595; border-radius: 0px 0px 5px 5px;"></textarea>
                         <div class="valid-feedback" v-if="validation.valid.summary">{{ validation.valid.summary }}</div>
                         <div class="invalid-feedback" v-if="validation.invalid.summary">{{ validation.invalid.summary }}</div>
-                        <button type=" " class="btn btn-default mt-4 p-0 float-start" @click="goBack"><b>&#8592; Back</b></button>
+                        <button type = "button" class="btn btn-default mt-4 p-0 float-start" @click="goBack"><b>&#8592; Back</b></button>
                         <button class="btn btn-danger float-end mt-4 px-4" type="submit">Next</button>
                 </div>
                 <div class="col-md-5" style="display: flex; justify-content: center; align-items: center;">
@@ -183,19 +183,19 @@
                         <p class="fw-bolder fs-5 mt-3">Voting options</p>
                         <p  v-if="stepThree.type == 2" class="fw-bolder superwarden-text-small">Minimum three voting options is required for single choice voting.</p>
                         <p v-else class="fw-bolder superwarden-text-small">Minimum two voting options is required for single choice voting.</p>
-                        <div v-for="(item, index) in stepThree.options">
+                        <div v-for="(item, index) in stepThree.options" class="my-1">
                             <input v-model="stepThree.options[index]" 
                             v-bind:class="{ 'is-valid': validation.valid.options, 'is-invalid': validation.invalid.options }" 
                             v-on:focus="clearValidation('options')"
                             type="text" class="form-control d-inline" style="width: 80%;">
-                            <button v-if = "index > 1 && stepThree.type == 2" @click="pushOneOption" class="btn ms-4 superwarden-border" style="font-size: 16px;">+</button>
-                            <button v-if = "index > 0 && (stepThree.type == 0 || stepThree.type == 1 )" @click="pushOneOption" class="btn ms-4 superwarden-border" style="font-size: 16px;">+</button>
-                            <button v-if = "index > 2 && stepThree.type == 2" @click="sliceOneOption(index)"  class="btn ms-4 superwarden-border" style="font-size: 16px;">-</button>
-                            <button v-if = "index > 1 && (stepThree.type == 0 || stepThree.type == 1 )" @click="sliceOneOption(index)"  class="btn ms-4 superwarden-border" style="font-size: 16px;">-</button>
+                            <button v-if = "index > 1 && stepThree.type == 2" @click="pushOneOption" type = "button" class="btn ms-4 superwarden-border" style="font-size: 16px;">+</button>
+                            <button v-if = "index > 0 && (stepThree.type == 0 || stepThree.type == 1 )" type = "button" @click="pushOneOption" class="btn ms-4 superwarden-border" style="font-size: 16px;">+</button>
+                            <button v-if = "index > 2 && stepThree.type == 2" @click="sliceOneOption(index)" type = "button" class="btn ms-4 superwarden-border" style="font-size: 16px;">-</button>
+                            <button v-if = "index > 1 && (stepThree.type == 0 || stepThree.type == 1 )" type = "button" @click="sliceOneOption(index)"  class="btn ms-4 superwarden-border" style="font-size: 16px;">-</button>
                         </div>
                     </div>
                     <div class="invalid-feedback" v-if="validation.invalid.options" style="display: flex">{{ validation.invalid.options }}</div>
-                                            <button type=" " class="btn btn-default mt-5 p-0 float-start" @click="goBack"><b>&#8592; Back</b></button>
+                                            <button type = "button" class="btn btn-default mt-5 p-0 float-start" @click="goBack"><b>&#8592; Back</b></button>
 
                     <button class="btn btn-danger float-end mt-5 px-4" type="submit">Next</button>
                 </div>
@@ -501,15 +501,16 @@
                         <div class="valid-feedback" v-if="validation.valid.timezone">{{ validation.valid.timezone }}</div>
                         <div class="invalid-feedback" v-if="validation.invalid.timezone">{{ validation.invalid.timezone }}</div>
                     </div>
-                    <div class = "row mb-4 mt-2">
+                    <div
+                        :class="{ 'is-valid': validation.valid.s_date, 'superwarden-invalid': validation.invalid.s_date }" 
+                        class = "row mt-2 p-1">
                         <div class = "col-md-6" >
                             <div class="input-group ">
                                 <label for="time-zone" class="form-label fw-bolder fs-6">Start date</label>
-
                                 <div  style="width: 75%;">
-
                                     <Datepicker
-                                        v-model="stepSix.f_start_date_at" 
+                                        v-model="stepSix.f_start_date_at"
+                                        v-on:focus="clearValidation('s_date')"
                                         class="form-control border-end-0 superwarden-right-border" placeholder="Choose a date" />
                                 </div>
                                     <span  class="input-group-text "><img src="../assets/calendar.png" style="height: 20px" /></span>
@@ -522,14 +523,22 @@
 
                                     <VueTimepicker 
                                         v-model="stepSix.f_start_time_at"
+                                        v-on:change="clearValidation('s_date')"
+
                                         class="form-control border-end-0 p-0 superwarden-right-border" placeholder = "Choose time"/>
                                 </div>
                                     <span  class="input-group-text "><img src="../assets/clock.png" style="height: 20px" /></span>
                             </div>
                         </div>
+                       
                     
                     </div>
-                    <div class = "row mb-4 mt-2">
+                    <div class="invalid-feedback" v-if="validation.invalid.s_date" style="display: flex;">{{ validation.invalid.s_date }}</div>
+
+                    <div 
+                        :class="{ 'is-valid': validation.valid.e_date, 'superwarden-invalid': validation.invalid.e_date }" 
+                    
+                    class = "row mt-4 py-1">
                         <div class = "col-md-6" >
                             <div class="input-group ">
                                 <label for="time-zone" class="form-label fw-bolder fs-6">End date</label>
@@ -538,6 +547,7 @@
 
                                     <Datepicker
                                         v-model="stepSix.f_end_date_at" 
+                                        v-on:focus="clearValidation('e_date')"
                                         class="form-control border-end-0 superwarden-right-border" placeholder="Choose a date" />
                                 </div>
                                     <span  class="input-group-text "><img src="../assets/calendar.png" style="height: 20px" /></span>
@@ -550,15 +560,19 @@
 
                                     <VueTimepicker 
                                         v-model="stepSix.f_end_time_at"
+                                        v-on:change="clearValidation('e_date')"
                                         class="form-control border-end-0 p-0 superwarden-right-border" placeholder = "Choose time"/>
                                 </div>
                                     <span  class="input-group-text "><img src="../assets/clock.png" style="height: 20px" /></span>
                             </div>
                         </div>
-                    
                     </div>
+                    <div class="invalid-feedback" style="display: flex;">{{ validation.invalid.e_date }}</div>
+
                     <div v-if ="stepThree.type == 2">
-                        <div class = "row mb-4 mt-2">
+                        <div 
+                        :class="{ 'is-valid': validation.valid.ss_date, 'superwarden-invalid': validation.invalid.ss_date }" 
+                        class = "row mt-4 py-1">
                             <div class = "col-md-6" >
                                 <div class="input-group ">
                                     <label for="time-zone" class="form-label fw-bolder fs-6">Start date</label>
@@ -567,6 +581,7 @@
 
                                         <Datepicker
                                             v-model="stepSix.s_start_date_at" 
+                                            v-on:focus="clearValidation('ss_date')"
                                             class="form-control border-end-0 superwarden-right-border" placeholder="Choose a date" />
                                     </div>
                                         <span  class="input-group-text "><img src="../assets/calendar.png" style="height: 20px" /></span>
@@ -579,14 +594,19 @@
 
                                         <VueTimepicker 
                                             v-model="stepSix.s_start_time_at"
+                                            v-on:change="clearValidation('ss_date')"
                                             class="form-control border-end-0 p-0 superwarden-right-border" placeholder = "Choose time"/>
                                     </div>
                                         <span  class="input-group-text "><img src="../assets/clock.png" style="height: 20px" /></span>
                                 </div>
                             </div>
-                        
                         </div>
-                        <div class = "row mb-4 mt-2">
+                        <div class="invalid-feedback" v-if="validation.invalid.ss_date" style="display: flex;">{{ validation.invalid.ss_date }}</div>
+
+                        <div 
+                        :class="{ 'is-valid': validation.valid.se_date, 'superwarden-invalid': validation.invalid.se_date }" 
+                        
+                        class = "row mt-4 py-1" >
                             <div class = "col-md-6" >
                                 <div class="input-group ">
                                     <label for="time-zone" class="form-label fw-bolder fs-6">End date</label>
@@ -595,6 +615,8 @@
 
                                         <Datepicker
                                             v-model="stepSix.s_end_date_at" 
+                                            v-on:focus="clearValidation('se_date')"
+
                                             class="form-control border-end-0 superwarden-right-border" placeholder="Choose a date" />
                                     </div>
                                         <span  class="input-group-text "><img src="../assets/calendar.png" style="height: 20px" /></span>
@@ -607,6 +629,8 @@
 
                                         <VueTimepicker 
                                             v-model="stepSix.s_end_time_at" 
+                                            v-on:change="clearValidation('se_date')"
+
                                             class="form-control border-end-0 p-0 superwarden-right-border" placeholder = "Choose time"/>
                                     </div>
                                         <span  class="input-group-text "><img src="../assets/clock.png" style="height: 20px" /></span>
@@ -614,6 +638,8 @@
                             </div>
                         
                         </div>
+                        <div class="invalid-feedback" v-if="validation.invalid.se_date" style="display: flex;">{{ validation.invalid.se_date }}</div>
+
                     </div>
                     <div class="form-check  mb-4 mt-5">
                         <input  v-model = "stepSix.shield" class="form-check-input" type="checkbox">
@@ -885,6 +911,7 @@ export default {
             }
             if (error)
                 return
+            console.log(this.stepOne)
             this.steps = 2
             this.validate.valid = {}
             this.validate.invalid = {}
@@ -912,6 +939,9 @@ export default {
                 if (i == '')
                     flag = true
             })
+    
+
+
             if (flag){
                 this.validation.invalid.options = 'Please fill out all the forms.';
                 return
@@ -933,12 +963,6 @@ export default {
         validateFifthStep(){
             let error = false
             if (this.stepFour.strategy ===  'whitelist'){
-                // if (!this.stepFive.tck_symbol) {
-                //     this.validation.invalid.tck_symbol = 'Please type your ticket symbol.';
-                //     error = true
-                // } else {
-                //     this.validation.valid.tk_symbol = 'The ticket symbol is added.';
-                // }
                 if (!this.stepFive.whitelist) {
                     this.validation.invalid.whitelist = 'Please insert your whitelist.';
                     error = true
@@ -996,10 +1020,6 @@ export default {
                             this.validation.invalid.totalToken = 'The quorum percent can not be less than 0.';
                         error = true
                     }
-                    // if (this.stepFive.totalToken > 100){
-                    //         this.validation.invalid.totalToken = 'The quorum percent can not be greater than 100.';
-                    //     error = true
-                    // }
                 }
 
             }
@@ -1020,8 +1040,69 @@ export default {
             }else {
                     this.validation.valid.timezone = 'The timezone is added.';
             }
+            //time validation still not date
+            if (!this.stepSix.f_start_time_at || !this.stepSix.f_start_date_at){
+                error = true
+                this.validation.invalid.s_date = 'Please insert your date and time correctly.';
+            } else {
+                if (!this.stepSix.f_start_time_at.HH || !this.stepSix.f_start_time_at.mm){
+                    error = true
+                this.validation.invalid.s_date = 'Please insert your date and time correctly.';
+                }
+            }
+            if (!this.stepSix.f_end_time_at || !this.stepSix.f_end_date_at){
+                error = true
+                this.validation.invalid.e_date = 'Please insert your date and time correctly.';
+            } else {
+                if (!this.stepSix.f_end_time_at.HH || !this.stepSix.f_end_time_at.mm){
+                    error = true
+                this.validation.invalid.e_date = 'Please insert your date and time correctly.';
+                }
+            }
+            if (this.stepThree.type == 2){
+                
+                if (!this.stepSix.s_start_time_at || !this.stepSix.s_start_date_at){
+                    error = true
+                    this.validation.invalid.ss_date = 'Please insert your date and time correctly.';
+                            } else {
+                    if (!this.stepSix.s_start_time_at.HH || !this.stepSix.s_start_time_at.mm){
+                        error = true
+                    this.validation.invalid.ss_date = 'Please insert your date and time correctly.';
+                    }
+                }
+                if (!this.stepSix.s_end_time_at || !this.stepSix.s_end_date_at){
+                    error = true
+                    this.validation.invalid.se_date = 'Please insert your date and time correctly.';
+                                        } else {
+                    if (!this.stepSix.s_end_time_at.HH || !this.stepSix.s_end_time_at.mm){
+                        error = true
+                    this.validation.invalid.se_date = 'Please insert your date and time correctly.';
+                    }
+                }
+            }
+
+            
+            // console.log(this.stepSix)
+            // if (this.stepThree.type == 2){
+            //     if ((!this.stepSix.s_start_time_at.HH) || (!this.stepSix.s_start_time_at.mm) || (!this.stepSix.s_end_time_at.HH) || (!this.stepSix.s_end_time_at.mm)){
+            //         error = true
+            //         this.validation.invalid.s_date = 'Please insert your date and time correctly.';
+
+            //     }
+            //     if ((!this.stepSix.f_start_time_at.HH) || (!this.stepSix.f_start_time_at.mm) || (!this.stepSix.f_end_time_at.HH) || (!this.stepSix.f_end_time_at.mm)){
+            //         error = true
+            //         this.validation.invalid.f_date = 'Please insert your date and time correctly.';
+            //     }
+            // } else {
+            //     if ((!this.stepSix.f_start_time_at.HH) || (!this.stepSix.f_start_time_at.mm) || (!this.stepSix.f_end_time_at.HH) || (!this.stepSix.f_end_time_at.mm)){
+            //         error = true
+            //         this.validation.invalid.f_date = 'Please insert your date and time correctly.';
+            //     }
+            // }
+            console.log(error)
             if (error)
                 return
+            // let currentTimeValue = Date.now()
             this.steps = 7
             this.validate.valid = {}
             this.validate.invalid = {}

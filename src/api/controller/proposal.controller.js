@@ -11,13 +11,14 @@ async function createProposal (req, res, next){
         obj.slug = req.body.slug
         obj.creator = req.body._id
         obj.cid = req.body.cid
-        obj.result = {};
+        // obj.result = [];
         if (req.body.data.f_start_date_at && req.body.data.f_start_time_at && req.body.data.f_end_date_at && req.body.data.f_end_time_at){
             obj.f_start_at = await makeDate(req.body.data.f_start_date_at, req.body.data.f_start_time_at)
             obj.f_end_at = await makeDate(req.body.data.f_end_date_at, req.body.data.f_end_time_at)
         }
         let proposal = new Proposal(Object.assign(obj, req.body.data, {created_at: new Date()}))
-        proposal.save().then((p) => {
+        proposal.save().then(async (p) => {
+            await refreshProposalStatus();
             res.json({proposal: p})
         })
 

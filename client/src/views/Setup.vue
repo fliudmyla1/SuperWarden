@@ -39,7 +39,7 @@
 										@select = "checkCategoryNumber"
 										v-on:focus="clearValidation('categories')"
 										v-bind:class="{ 'is-valid': validation.valid.categories, 'is-invalid': validation.invalid.categories }" 
-										placeholder = "Choose 2 categories that best describe your townhall" mode="tags"
+										placeholder = "2 categories that best describe your townhall" mode="tags"
 										track-by="name" label="name"
 						>
 							<template v-slot:tag="{ option, handleTagRemove, disabled }">
@@ -657,9 +657,11 @@ export default {
 				if (!url){
 					this.validation.invalid.avatar = 'An invalid avatar url';
 					err = true
+				} else {
+
+					this.stepOne.avatar = url
+					this.validation.valid.avatar = 'The url of avatar is valid';
 				}
-				this.stepOne.avatar = url
-                this.validation.valid.avatar = 'The url of avatar is valid';
             }
 			if (!this.tempCoverPhoto) {
                 this.validation.invalid.coverPhoto = 'Please type the url of your cover photo.';
@@ -667,11 +669,13 @@ export default {
             } else {
 				let url = await this.checkImageURL(this.tempCoverPhoto)
 				if (!url){
-					this.validation.invalid.coverPhoto = 'An invalid avatar url';
+					this.validation.invalid.coverPhoto = 'An invalid photo url';
 					err = true
+				} else {
+
+					this.stepOne.coverPhoto = url
+					this.validation.valid.coverPhoto = 'The url of cover photo is valid';
 				}
-				this.stepOne.coverPhoto = url
-                this.validation.valid.coverPhoto = 'The url of cover photo is valid';
             }
 			if (!this.tempSlug) {
                 this.validation.invalid.slug = 'Please type the slug of your townhall.';

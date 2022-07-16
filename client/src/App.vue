@@ -24,9 +24,19 @@
             <button v-if ="account.title == ''" class="btn btn-outline-default float-end" style="margin-right: 15px;" @click="connectWallet">Connect Wallet</button>
             <button v-else class="dropdown btn btn-outline-default float-end" style="margin-right: 25px; width: 130px;" @click="toggleShow = !toggleShow">{{trimmedAccountName(account.title)}}</button>
         </header>
-        <div v-if="toggleShow" class="top-right-nav" style="right: 15px;">
-            <div @click = "goProfile"><img src="./assets/avator-person-icon.png" style="width: 25px;"/>&nbsp; View Profile</div>
-            <div @click="disconnectWallet" style="border-top: 1px solid #959595;"><img src="./assets/desconnect-icon.png" style="width: 25px;"/>&nbsp; Disconnect Wallet</div>
+        <div v-if="toggleShow" class="top-right-nav" style="right: 25px;">
+            <div @click = "goProfile" class="my-2">
+                <div class="my-1">
+                    <img class="mx-3" src="./assets/avator-person-icon.png" style="width: 20px;"/>
+                    <span class="fw-bolder" style="font-size: 15px;">View Profile</span>
+                </div>
+            </div>
+            <div @click="disconnectWallet" class="" style="border-top: 1px solid #d5d5d5;">
+                <div class="my-2">
+                    <img class="mx-3 my-1" src="./assets/desconnect-icon.png" style="width: 20px;"/>
+                    <span class="fw-bolder my-1" style="font-size: 15px;">Disconnect Wallet</span>
+                </div>
+            </div>
         </div>
         <div @click="toggleShow = false">
             <router-view :key="$route.path"></router-view>
@@ -193,14 +203,14 @@ header {
     border: 1px solid #959595;
 }
 .top-right-nav {
-  border: 2px solid #959595;
+  border: 1px solid #d5d5d5;
   background-color: #ffffff;
   flex-direction: column;
   border-radius: 5px;
   display: flex;
   cursor: pointer;
   position: absolute;
-  padding: 5px;
   z-index: 2;
+  width: 200px;
 }
 </style>

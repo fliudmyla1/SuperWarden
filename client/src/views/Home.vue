@@ -6,7 +6,7 @@
       <img src="../assets/discord.png" style="width: 100%; border-radius: 10px;"/>
         <div  style="margin-top: -32%; width:42%; display: inline-block; vertical-align: middle;">
           <label class="mb-3" style=" font-size: 2vw; color: #FFFFFF; font-weight: 700;">Explore the Superwarden World</label>
-          <div class="input-group mb-3"  >
+          <div class="input-group mb-3" style="background-color: #FFFFFF;">
               <input  v-model = "searchPattern.name" style="width: 45%;" type="text" class="form-control border-end-0" placeholder="Search your townhall...">
               <span @click="search" class="input-group-text border-0"><img src="../assets/search-icon.png" style="height: 22px" /></span>
               <span style="display: flex; justify-content: center; align-items: center;"><img src="../assets/line.png" style="height: 30px" /></span>
@@ -20,25 +20,24 @@
         </div>
     </div>
     <div class="row" v-if = "townhalls.length > 0">
-      <p style="font-size: 2vw; font-weight: 900;">Townhalls</p>
-      <div class="col-md-3 mt-3" v-for="(t, i) in townhalls">
+      <p style="font-size: 2vw; font-weight: 900;" class="my-3">Townhalls</p>
+      <div class="col-md-3 mb-4" v-for="(t, i) in townhalls">
         <div  class="superwarden-card" >
           <img v-if = "t.details.coverPhoto == ''" class="top-radius" src="../assets/card-cover-photo.png" style="width: 100%; height: 150px" />
           <img v-else :src="t.details.coverPhoto" class="top-radius" style="width: 100%; height: 150px" />
   
           <div style="border-right: 1px solid #dadada; border-left: 1px solid #dadada; border-radius: 3px; ">
             <img class="" :src="t.details.avatar" style="background-color: #ffffff; width: 70px; margin-top: -35px; margin-left: 20px; border-radius: 50%; border: 2px solid #ffffff;"  />
-            <!-- <div class="ps-3" style="" @click = "viewTownhall(t.details.slug)"> -->
-            <div class="ps-3" style="">
+            <div class="px-3" style="">
               <div  style="height: 95px;">
-                <label class="mb-2" style="color: #000000; font-weight: bolder; font-size: 16px;">{{trimmedTownhallName(t.details.name)}}</label>
+                <label class="my-2" style="color: #000000; font-weight: bolder; font-size: 16px;">{{trimmedTownhallName(t.details.name)}}</label>
                 <p style="font-size: 13px;">{{trimmedTownhallBio(t.details.bio)}}</p>
               </div>
-              <label class="mt-1 mb-1" style="font-size: 15px; font-weight: bolder;">{{t.villagers.length}} villagers</label>
+              <label class="mt-3 mb-1" style="font-size: 15px; font-weight: bolder;">{{t.villagers.length}} villagers</label>
             </div>
-            <div class="mt-1 mb-1 text-center" >
-              <button v-if = "t.mine" class="join-button" @click = "viewTownhall(t.details.slug)" style="width: 95%;">Joined</button>
-              <button v-else class="join-button" @click = "viewJoiningTownhall(t)" style="width: 95%;">Join</button>
+            <div class="mt-1 mb-1 text-center px-3" >
+              <button v-if = "t.mine" class="join-button" @click = "viewTownhall(t.details.slug)" style="width: 100%;">Joined</button>
+              <button v-else class="join-button" @click = "viewJoiningTownhall(t)" style="width: 100%;">Join</button>
             </div>
           </div>
         </div>

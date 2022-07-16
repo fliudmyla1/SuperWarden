@@ -2,7 +2,8 @@ const getDefaultState = () => {
     return {
         _addr :'',
         name: '',
-        _id : ''
+        _id : '',
+        role: 10,
     }
   }
 const state = getDefaultState()
@@ -16,6 +17,9 @@ const mutations = {
     state.name = account.name
     state._id = account._id
   },
+  SET_ROLE: (state, role) => {
+    state.role = role
+  },
 }
 
 const actions = {
@@ -26,7 +30,10 @@ const actions = {
   },
   setAccount({ commit }, account) {
     commit('SET_ACCOUNT', account)
-  }
+  },
+  setRole({commit}, role){
+    commit('SET_ROLE', role)
+  },
 
 }
 
