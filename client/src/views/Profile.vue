@@ -20,7 +20,9 @@
 
                         </div>
                     </div>
-                    <span v-if = "account.bio" class="description my-4">{{account.bio}}</span>
+                    <!-- <div v-if = "account.bio" class="description my-4" >afeeeeeeeeeeeeeed ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</div> -->
+
+                    <p v-if = "account.bio" class="description my-4">{{account.bio}}</p>
                     <span v-else = "account.bio" class="description my-4"></span>
                     <button @click = "editProfile" type="button" class="action-button mt-3"><span>Edit Profile</span></button>
                 </div>
@@ -254,7 +256,7 @@ export default {
             let update_flag = 0
             if (this.tempAccount.name != this.account.name){
                 if (!this.tempAccount.name){
-                    const response = await axios.get('http://164.92.118.10/api/v1/search/accountName'+'?s='+this.tempAccount.name);
+                    const response = await axios.get('https://practical-brahmagupta.103-233-0-73.plesk.page/api/v1/search/accountName'+'?s='+this.tempAccount.name);
                     if (response.data.count > 0){
                         this.validation.invalid.name = 'This name is already taken.';
                         return
@@ -384,7 +386,7 @@ export default {
 }
 
 .description {
-  height: 55px;
+  height: 65px;
 }
 
 .action-button {

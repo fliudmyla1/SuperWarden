@@ -569,7 +569,7 @@ export default {
 					return
 				} else {
 					
-						const response = await axios.get('http://164.92.118.10/api/v1/search/townhallName'+'?s='+this.tempName);
+						const response = await axios.get('https://practical-brahmagupta.103-233-0-73.plesk.page/api/v1/search/townhallName'+'?s='+this.tempName);
 						if (response.data.count > 0){
 							this.validation.invalid.name = 'This name is already taken.';
 							return
@@ -633,7 +633,7 @@ export default {
 					return
 				} else {
 					let string = this.tempSlug + ".tron";
-					const response = await axios.get('http://164.92.118.10/api/v1/search/slugName'+'?s='+string);
+					const response = await axios.get('https://practical-brahmagupta.103-233-0-73.plesk.page/api/v1/search/slugName'+'?s='+string);
 					if (response.data.count > 0){
 						this.validation.invalid.slug = 'This slug is already taken.';
 						return

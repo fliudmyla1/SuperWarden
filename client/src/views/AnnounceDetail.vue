@@ -8,9 +8,9 @@
                 <div class="px-5 mt-5">
                     <div class="block-container-announcement-detail">
                         <div class="header mt-3">
-                            <span class="fw-bolder text-dark fs-2">{{announce.title}}
+                            <h2 class="fw-bolder text-dark">{{announce.title}}
+                            </h2>
                                 <img v-if = "announce.importance"   style="height: 35px;"   class="mb-1"    src="../assets/staricon.png" />
-                            </span>
                         </div>
                         <span class="fw-bolder mt-2">Broadcast by {{announce.creator.name ? trimmedAccountNameAndLowercase(announce.creator.name) +"." + announce.slug: trimmedAccountAddress(announce.creator.address) }}
                             <span   v-if="announce.passed" class="status-complete ms-2">closed</span>

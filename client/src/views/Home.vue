@@ -3,31 +3,31 @@
     padding-left: 75px;
     padding-right: 73px; ">
     <div class="text-center">
-      <img src="../assets/discord.png" style="width: 100%; border-radius: 10px;"/>
-        <div  style="margin-top: -32%; width:42%; display: inline-block; vertical-align: middle;">
-          <label class="mb-3" style=" font-size: 2vw; color: #FFFFFF; font-weight: 700;">Explore the Superwarden World</label>
-          <div class="input-group mb-3" style="background-color: #FFFFFF;">
-              <input  v-model = "searchPattern.name" style="width: 45%;" type="text" class="form-control border-end-0" placeholder="Search your townhall...">
-              <span @click="search" class="input-group-text border-0"><img src="../assets/search-icon.png" style="height: 22px" /></span>
-              <span style="display: flex; justify-content: center; align-items: center;"><img src="../assets/line.png" style="height: 30px" /></span>
-              <span class="input-group-text border-0"><img src="../assets/boxicon.png" style="height: 22px" /></span>
-              
-              <select class="form-select border-start-0" v-model="searchPattern.type" @change="search">
-                <option selected value = "all">All...</option>
-                <option :value= "i" v-for = "(i) in categories">{{i}}</option>
-              </select>
-            </div>
-        </div>
+      <img src="../assets/discord.png" style="width: 100%; height: 350px; border-radius: 8px;" />
+      <div  style="margin-top: -32%; width:42%; display: inline-block; vertical-align: middle;">
+        <label class="mb-3" style=" font-size: 2vw; color: #FFFFFF; font-weight: 700;">Explore the Superwarden World</label>
+        <div class="input-group mb-3" style="background-color: #FFFFFF; border-radius: 8px;">
+            <input  v-model = "searchPattern.name" style="width: 45%;" type="text" class="form-control border-0" placeholder="Search your townhall...">
+            <span @click="search" class="input-group-text border-0"><img src="../assets/search-icon.png" style="height: 22px" /></span>
+            <span style="display: flex; justify-content: center; align-items: center;"><img src="../assets/line.png" style="height: 30px" /></span>
+            <span class="input-group-text border-0"><img src="../assets/boxicon.png" style="height: 22px" /></span>
+            
+            <select class="form-select border-0  overflow-hidden" v-model="searchPattern.type" @change="search">
+              <option selected value = "all">All...</option>
+              <option :value= "i" v-for = "(i) in categories">{{i}}</option>
+            </select>
+          </div>
+      </div>
     </div>
-    <div class="row" v-if = "townhalls.length > 0">
+    <div class="row mb-5" v-if = "townhalls.length > 0">
       <p style="font-size: 2vw; font-weight: 900;" class="my-3">Townhalls</p>
-      <div class="col-md-3 mb-4" v-for="(t, i) in townhalls">
+      <div class="col-md-3 " v-for="(t, i) in townhalls">
         <div  class="superwarden-card" >
           <img v-if = "t.details.coverPhoto == ''" class="top-radius" src="../assets/card-cover-photo.png" style="width: 100%; height: 150px" />
           <img v-else :src="t.details.coverPhoto" class="top-radius" style="width: 100%; height: 150px" />
   
           <div style="border-right: 1px solid #dadada; border-left: 1px solid #dadada; border-radius: 3px; ">
-            <img class="" :src="t.details.avatar" style="background-color: #ffffff; width: 70px; margin-top: -35px; margin-left: 20px; border-radius: 50%; border: 2px solid #ffffff;"  />
+            <img class="" :src="t.details.avatar" style="display: inline-table; background-color: #ffffff; width: 70px; margin-top: -35px; margin-left: 20px; border-radius: 50%; border: 2px solid #ffffff;"  />
             <div class="px-3" style="">
               <div  style="height: 95px;">
                 <label class="my-2" style="color: #000000; font-weight: bolder; font-size: 16px;">{{trimmedTownhallName(t.details.name)}}</label>

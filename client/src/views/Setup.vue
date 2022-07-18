@@ -6,20 +6,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 			<form v-if ="steps == 1"               v-on:submit.prevent="validateFirstStep" autocomplete="off"               class="row mb-5" style="width: 95%;">
 				<div class="col-lg-6">
 					<p class="fw-bolder fs-4">1. Basic Info</p>
@@ -629,7 +615,7 @@ export default {
                 this.validation.invalid.name = 'Please type the name of your townhall.';
                 err = true
             } else {
-				const response = await axios.get('http://164.92.118.10/api/v1/search/slugName'+'?s='+this.tempName);
+				const response = await axios.get('https://practical-brahmagupta.103-233-0-73.plesk.page/api/v1/search/slugName'+'?s='+this.tempName);
 				if (response.data.count > 0){
 					this.validation.invalid.name = 'This name is already taken.';
 					err = true
@@ -683,7 +669,7 @@ export default {
             } else {
 				let string = this.tempSlug.replace(/\s+/g, '').trim().toLowerCase() + ".tron";
 				let pass = false
-				const response = await axios.get('http://164.92.118.10/api/v1/search/slugName'+'?s='+string);
+				const response = await axios.get('https://practical-brahmagupta.103-233-0-73.plesk.page/api/v1/search/slugName'+'?s='+string);
 				// console.log(response)
 				if (response.data.count == 0)
 					pass = true

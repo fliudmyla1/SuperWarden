@@ -1,6 +1,6 @@
 <template>
   <div class="head p-2" style="width: 100%;">
-      <span class="px-3  py-1 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Announcement</span>
+      <span class="px-5 py-1 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Announcement</span>
       <div class="options">
           <button @click = "getAnnouncementList('all')" :class="index === 'all'?  'selected': ''" style="background-color: #fff">All</button>
           <button @click = "getAnnouncementList('open')" :class="index === 'open'?  'selected': ''" style="background-color: #fff">Open</button>
@@ -10,7 +10,9 @@
       <div v-if = "role < 2" class="right-button-holder"><button @click="goCreateAnnouncement" class="right-button">+ Broadcast Announcement</button>
       </div>
   </div>
-  <div v-if = "announcements.length > 0" class="right-section-content" style="height: 73.8vh; overflow-y: scroll;">
+  <!-- <div v-if = "announcements.length > 0" class="right-section-content" style="height: 73.8vh; overflow-y: scroll;"> -->
+  <div v-if = "announcements.length > 0" class="right-section-content">
+
 
 
 
@@ -18,8 +20,9 @@
     <div @click="goAnnounceDetail(i._id)"  class="block-container-announcement" v-for = "(i) in announcements">
       <div class="header">
           <span class="fw-bolder text-dark" style="font-size: 22px;">{{trimmedAnnounceTitle(i.title)}}
-            <img v-if = "i.importance"      class="mb-1"    src="../../assets/staricon.png" />
+           
           </span>
+          <span> <img v-if = "i.importance"      class="mb-1"    src="../../assets/staricon.png" /></span>
           <span   v-if="i.passed" class="status complete" style="justify-content: center;
     vertical-align: middle;
     display: inline-table;">closed</span>

@@ -269,7 +269,7 @@ h3 {
 
 
 
-
+/* 
   .sidebar {
     width:320px;
     }
@@ -286,9 +286,9 @@ h3 {
         -webkit-box-flex:1;
         flex:1;
         }
-  
+   */
   /* Mobile rules */
-  @media only screen and (max-width:640px) {
+  /* @media only screen and (max-width:640px) {
   .sidebar {
     position:absolute;
     width:100%;
@@ -307,4 +307,4 @@ h3 {
       }
     .sidebar .round-top,
     .sidebar .round-bottom { border-radius:0; }
-  }
+  } */

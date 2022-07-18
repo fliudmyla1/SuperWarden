@@ -3,21 +3,14 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 
-//import CSS Bootstrap
-// import 'jquery/src/jquery.js';
-// import $ from "jquery";
-// window.$ = $;
-import 'bootstrap/dist/css/bootstrap.min.css';
-// import { library } from "@fortawesome/fontawesome-svg-core";
-// import { fas } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-// library.add(fas);
 
 
+import './style.scss';
+import '../snapshot-spaces/skins';
 
-//import CSS custom
-// import './index.css';
-import './assets/style.css';
+//import CSS custom and bootstrap
+import './style/bootstrap.css'
+import './style/style.css';
 import setting from './setting';
 window.setting = setting
 

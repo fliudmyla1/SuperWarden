@@ -1,7 +1,7 @@
 <template>
-
- <div class="head p-2" style="width: 100%; ">
-      <span class="px-3  py-1 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Proposals </span>
+<!-- <div> -->
+  <div class="head  p-2" style="width: 100%; ">
+      <span class="px-5  py-1 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Proposals </span>
       <div class="options">
           <button @click = "getProposalList(-1)" :class="index === -1?  'selected': ''" style="background-color: #fff">All</button>
           <button @click = "getProposalList(1)" :class="index === 1?  'selected': ''" style="background-color: #fff">Active</button>
@@ -11,17 +11,16 @@
       <div @click="goCreateProposal" v-if ="role  < 4" class="right-button-holder"><button class="right-button">+ Create Proposals</button>
       </div>
   </div>
+  
+  <div v-if = "proposals.length > 0" class="right-section-content">
 
-
-
-
-  <div v-if = "proposals.length > 0" class="right-section-content" style="height: 73.8vh; overflow-y: scroll;">
       <div @click="goProposalDetail(p._id)" class="block-container-proposal" v-for="(p) in proposals">
           <div class="header">
               <span class="fw-bolder text-dark" style="font-size: 22px;">{{trimmedProposalTitle(p.title)}}
-                                <img v-if = "p.importance"   style="height: 35px;"   class="mb-1"    src="../../assets/staricon.png" />
+                  
 
                 </span>
+                <span><img v-if = "p.importance"   style="height: 35px;"   class="mb-1"    src="../../assets/staricon.png" /></span>
               <span v-if = "p.passed == 1" class="status active">Active</span>
               <span v-else-if = "p.passed == 0" class="status complete">Active</span>
               <span v-else class="status complete">Complete</span>

@@ -1,49 +1,66 @@
 <template>
-    <nav class= "fixed-left" style = "border-right: 1px solid #d5d5d5; width: 85px; height: 100%">
-		<ul class="nav flex-column ">
-			<li class="nav-item my-2">
-				<a class="nav-link" href="#">
-					<img src="./assets/logo/logo.png" alt="logo" style="height: 40px;">
-				</a>
-			</li>
-			<li v-for = "(i) in account.townhalls" class="nav-item mt-2">
-				<a @click="goTownhall(i.details.slug)" class="nav-link">
-					<img  :src="i.details.avatar" style = "height: 53px;">
-				</a>
-			</li>
-            <li v-if = "account.setup" class="nav-item" @click="showCreateTownhallModal">
-				<a class="nav-link">
-					<img src="./assets/plus.png"  style = "height: 50px;">
-				</a>
-			</li>
-		</ul>
-	</nav>
-    <div style="margin-left: 85px;">
-        <header class="header">
-            <span style="font-size: 20px; font-weight: bold; padding-left: 18px;">Superwarden</span>
-            <button v-if ="account.title == ''" class="btn btn-outline-default float-end" style="margin-right: 15px;" @click="connectWallet">Connect Wallet</button>
-            <button v-else class="dropdown btn btn-outline-default float-end" style="margin-right: 25px; width: 130px;" @click="toggleShow = !toggleShow">{{trimmedAccountName(account.title)}}</button>
-        </header>
-        <div v-if="toggleShow" class="top-right-nav" style="right: 25px;">
+  <div class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen">
+    <div id="sidebar" class="flex flex-col">
+      <div class="h-screen sticky top-0 bg-skin-bg z-40 overflow-hidden max-w-[85px] min-w-[85px] sm:w-auto transition-all" style="border-right: 1px solid #d5d5d5;">
+        <div class="flex flex-col h-full overflow-auto no-scrollbar overscroll-contain py-2 items-end px-3">
+            <a href="/">
+
+                <img class="p-2 items-center" src="./assets/logo/logo.png" alt="logo" />
+            </a>
+
+            <div class="mt-4 " v-for = "(i) in account.townhalls" >
+                <img  @click="goTownhall(i.details.slug)" :src="i.details.avatar" style = "border-radius: 8px; cursor: pointer;"/>
+            </div>
+            <div v-if = "account.setup" class="mt-4" @click="showCreateTownhallModal">
+					<img src="./assets/plus.png"  style = "height: 50px; cursor: pointer;">
+			</div>
+        </div>
+      </div>
+    </div>
+    <div class="flex flex-col min-w-0 w-screen shrink-0 sm:w-auto sm:shrink sm:grow" >
+      <div id="navbar" class="top-0 sticky border-b border-skin-border bg-skin-bg py-3 z-40" style="border-bottom: 1px solid #d5d5d5; background-color: #fff;">
+        <nav id="topnav" >
+            <BaseContainer class="pl-0 pr-3 sm:!px-4">
+                <div class="flex items-center py-[5px]">
+                    <div class="flex-auto flex items-center ml-3">
+                        <div
+                            class="flex items-center sm:-ml-3"
+                            style="font-size: 20px; font-weight: 900;"
+                            >
+                            Superwarden
+                        </div>
+                    </div>
+                    <span class="float-end">
+                        <button v-if ="account.title == ''"  class="btn" style="margin-right: 15px; border: 1px solid #959595" @click="connectWallet">Connect Wallet</button>
+                        <button v-else class="dropdown btn  " style="margin-right: 15px; width: 130px; border: 1px solid #959595" @click="toggleShow = !toggleShow">{{trimmedAccountName(account.title)}}</button>
+                    </span>
+                </div>
+            </BaseContainer>
+        </nav>
+        <div v-if="toggleShow" class="top-right-nav" style="right: 25px; margin-top: 16px;">
             <div @click = "goProfile" class="my-2">
-                <div class="my-1">
+                <div class="my-1" style="display: flex;">
                     <img class="mx-3" src="./assets/avator-person-icon.png" style="width: 20px;"/>
                     <span class="fw-bolder" style="font-size: 15px;">View Profile</span>
                 </div>
             </div>
             <div @click="disconnectWallet" class="" style="border-top: 1px solid #d5d5d5;">
-                <div class="my-2">
+                <div class="my-2" style="display: flex;">
                     <img class="mx-3 my-1" src="./assets/desconnect-icon.png" style="width: 20px;"/>
                     <span class="fw-bolder my-1" style="font-size: 15px;">Disconnect Wallet</span>
                 </div>
             </div>
         </div>
-        <div @click="toggleShow = false">
-            <router-view :key="$route.path"></router-view>
-        </div>
+      </div>
+      <div id="content" class="pb-6 " @click="toggleShow = false">
+        <router-view :key="$route.path"></router-view>
+      </div>
     </div>
+</div>
+
 <!-- Modal Region -->
   <Modal v-model="createTownhallModalShow" :close="closeModal" style="z-index: 9999;">
+
     <div class="modal-dialog" style="min-width: 600px;">
         <div class="modal-content">
             <div @click="createTownhallModalShow = false">
@@ -63,8 +80,12 @@
                 <div class="mb-1 mt-3 text-center ">
                     <label class="form-label text-center popup-content-text">Note: Each wallet address can only create one townhall</label>
                 </div>
-                <div class="text-center " style="display: flex; justify-content: center; align-items: center;" >
-                    <p class="pt-2 pb-2 text-center popup-content-bold-text popup-content-text-border" style="width: 90%; "><img src="./assets/check.png" style="width: 25px; "/> Every townhall has only one superwarden</p>
+                <div class="px-4" >
+
+                <div class="text-center popup-content-bold-text py-2" style="display: flex; justify-content: center; align-items: center; border:1px solid #959595" >
+                <img src="./assets/check.png" style="width: 25px; "/>
+                    <span > Every townhall has only one superwarden</span>
+                </div>
                 </div>
                 <button @click="goSetup()" type="button" class="btn btn-danger text-center mt-3 mb-1" style="width: 100%;">Proceed</button>
             </div>
@@ -75,10 +96,11 @@
 
 </template>
 <script>
-import Home from './views/Home.vue'
+import BaseContainer from './components/BaseContainer.vue'
+import BaseButton from './components/BaseButton.vue'
 export default {
     name: "index",
-    components: {Home},
+    components: {BaseContainer},
     data() {
         return {
             createTownhallModalShow: false,
@@ -124,6 +146,7 @@ export default {
         },
         disconnectWallet(){
             this.$store.dispatch('account/resetState')
+            this.$router.push('/')
             this.account.title = ''
             this.account.townhalls = []
             this.account.setup = true
@@ -132,7 +155,7 @@ export default {
         },
         getAccountData(){
             let _addr = window.tronWeb.defaultAddress.base58
-            //_addr = 'jj'
+            // _addr = 'TGwBRQxCuj26zNsBYirfLHNSUR5swjqEH2'
             
             api.getAccountData({_addr: _addr}, (res => {
                 this.$store.dispatch('account/setAccount', res.data.account)

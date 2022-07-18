@@ -6,6 +6,11 @@ https://github.com/Zhixuan0318/superwarden-dev-docs
 --- contract address
 TKWsxjh97sCPipTAfghW7vDFdx2HhjecCe  for main
 
+https://kind-shaw.103-233-0-73.plesk.page:8443/
+Username: nur
+PW: !123adminADMIN
+
+THIES diago thies diago
 ## create townhall
 --web3.storage
 eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDFDQjM0M0I2M2IzMmY4OTYyOWY0MjA2NkRCYkM5NWFFMkI3NUY4ZDIiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NTY4NzAzNTU1NTQsIm5hbWUiOiJmaXJzdFdlYjMuc3RvcmFnZUtleSJ9.O1Q1-oFoJimEa5vb9nfUbS0sPZ5NmOowdkDqKw34PS0

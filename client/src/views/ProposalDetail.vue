@@ -6,10 +6,10 @@
                 <button type=" " class="btn btn-default p-0 float-end" @click="deleteModal = true"><img src="../assets/delete-icon.png" style="height: 22px;"/></button>
                 <div class="px-4 mt-5">
                     <div class="block-container-announcement-detail">
-                        <div class="header mt-3">
-                            <span class="fw-bolder text-dark fs-2">{{proposal.title}}
+                        <div class="header mt-3" style="display: flex;">
+                            <h2 class="fw-bolder text-dark">{{proposal.title}}
+                            </h2>
                                 <img v-if = "proposal.importance"   style="height: 35px;"   class="mb-1"    src="../assets/staricon.png" />
-                            </span>
                         </div>
                         <span class="fw-bolder mt-2">Broadcast by {{proposal.creator.name ? trimmedAccountName(proposal.creator.name) +"." + proposal.slug: trimmedAccountAddress(proposal.creator.address) }}
                             <span   v-if="proposal.status == 1" class="status-active ms-2">Active</span>

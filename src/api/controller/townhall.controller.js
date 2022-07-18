@@ -101,7 +101,7 @@ async function updateTownHall (req, res, next){
                 villagers_id.push(account._id)
         }
         console.log(req.body.slug)
-        Townhall.findOneAndUpdate({"details.slug": req.body.slug}, { villagers: villagers_id, details: data, updated_at: new Date()}).then((t) =>{
+        Townhall.findOneAndUpdate({"details.slug": req.body.slug}, { $pull: {villagers: villagers_id}, details: data, updated_at: new Date()}).then((t) =>{
           res.json({data: t})  
         })
         

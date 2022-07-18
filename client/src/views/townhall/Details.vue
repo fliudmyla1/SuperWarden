@@ -1,12 +1,14 @@
 <template>
  <div class="head p-2" style="width: 100%;">
-      <span class="px-3  py-1 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Details </span>
+      <span class="px-5  py-1 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Details </span>
       <div class="options">
           <span>{{details.name}}</span>
       </div>
   </div>
 
-  <div class="right-section-content" style="height: 73.8vh; overflow-y: scroll;">
+  <!-- <div class="right-section-content" style="height: 73.8vh; overflow-y: scroll;"> -->
+  <div class="right-section-content">
+
     <img :src="details.bannerPhoto" style="height: 220px;"/>
     <div v-html="markdownToHtml" class="custom-markdown"></div>
   </div>
