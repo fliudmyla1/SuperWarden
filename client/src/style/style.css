@@ -40,6 +40,9 @@ h3 {
 
 
 
+
+
+
 .progress {
     display: flex;
     /* height: 1rem; */
@@ -114,11 +117,13 @@ h3 {
 }
 .vue__time-picker {
     width: 100% !important;
+    border-radius: 8px !important;
 
 }
 .vue__time-picker input.vue__time-picker-input {
     border: 0px solid #fff !important;
     width: 100% !important;
+    border-radius: 8px !important;
 
 }
 /* Custom classes */
@@ -170,8 +175,11 @@ h3 {
 } */
 .superwarden-card{
     /* border: 1px solid #959595; */
+    /* border-right: 1px solid #d5d5d5; 
+    border-left: 1px solid #d5d5d5;  */
+    border: 1px solid #d5d5d5; 
     border-radius: 8px;
-    border:  1px solid #fff;
+    /* border:  1px solid #fff; */
    
 
 }
@@ -222,7 +230,18 @@ h3 {
     visibility: visible;
     opacity: 1;
   }
-
+.superwarden-nav{
+    font-size: 15px;
+    padding-top: 2px;
+    padding-bottom:2px;
+    width: 85px;
+    text-align: center;
+    color: #595959;
+    font-weight: 900;
+    border: 1px solid #fff;
+    border-radius: 5px;
+    text-decoration: none;
+}
 
 
 
@@ -308,3 +327,23 @@ h3 {
     .sidebar .round-top,
     .sidebar .round-bottom { border-radius:0; }
   } */
+
+.superwarden-sm-f{
+    font-size: 15px;
+}
+
+/*markdown styling*/
+  .markdown-body ol {
+    list-style-type: inherit;
+  }
+  .markdown-body ul {
+    list-style-type: inherit;
+  }
+  .markdown-body h1,
+.markdown-body h2 {
+/* border: 2px solid red; */
+    border-bottom: 1px solid #959595;
+    padding-bottom: 5px;
+    /* line-height: 80%; */
+    /* line-height: 2px; */
+}

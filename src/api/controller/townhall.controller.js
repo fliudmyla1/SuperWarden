@@ -4,7 +4,7 @@ const Account = require("../model/account.model");
 
 async function getTownhallData (req, res, next){
     try {
-        Townhall.findOne({slug : req.body.slug}).exec()
+        Townhall.findOne({"details.slug" : req.body.slug}).exec()
         .then((one) => {
             res.json({townhall : one})
         })
@@ -100,7 +100,6 @@ async function updateTownHall (req, res, next){
             if (account)
                 villagers_id.push(account._id)
         }
-        console.log(req.body.slug)
         Townhall.findOneAndUpdate({"details.slug": req.body.slug}, { $pull: {villagers: villagers_id}, details: data, updated_at: new Date()}).then((t) =>{
           res.json({data: t})  
         })
@@ -139,10 +138,8 @@ async function getTownhallList (req, res, next){
 }
 async function checkSlugName (req, res, next){
     try {
-        console.log('pppppppppppppppp')
         Townhall.count({"details.slug": req.body.slug}).exec()
         .then((count) =>{
-            console.log(count)
             res.json({count:count})
         })
     } catch (error) {

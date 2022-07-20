@@ -3,7 +3,7 @@ const getDefaultState = () => {
         _addr :'',
         name: '',
         _id : '',
-        role: 10,
+        role: 10, // 0: superwarden, 1: warden, 2: master, 3: villager but create proposal, 4: villager 10: not joined
     }
   }
 const state = getDefaultState()

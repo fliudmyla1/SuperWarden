@@ -18,7 +18,7 @@ async function createProposal (req, res, next){
         }
         let proposal = new Proposal(Object.assign(obj, req.body.data, {created_at: new Date()}))
         proposal.save().then(async (p) => {
-            await refreshProposalStatus();
+            await refreshProposalStatus(req.body.slug);
             res.json({proposal: p})
         })
 
@@ -49,9 +49,11 @@ function groupByVoteOption(indexArray, voteData){
     });
     return array
 }
-async function refreshProposalStatus(){
+async function refreshProposalStatus(slug){
     try {
-        let proposals =  await Proposal.find({ $or: [{ status: 0 }, { status: 1 }] }).exec()
+        console.log(slug)
+        let proposals =  await Proposal.find({slug: slug, $or: [{ status: 0 }, { status: 1 }] }).exec()
+        console.log(proposals)
         proposals.map(async (proposal)=>{
             let now = new Date()
             let localTimeOffset = now.getTimezoneOffset() * 60 * 1000;
@@ -120,11 +122,13 @@ async function refreshProposalStatus(){
 
 async function getProposalList (req, res, next){
     try {
-        await refreshProposalStatus();
+        await refreshProposalStatus(req.body.slug);
         let query = {}
         query.slug = req.body.slug;
-        if (req.body.index > -1){
+        if (req.body.index > 0){
             query.status = req.body.index
+        } else if (req.body.index == 0){
+            query.importance = true
         }
         Proposal.find(query).populate('creator').exec()
         .then((list)=>{
@@ -148,7 +152,7 @@ async function getProposalData (req, res, next){
 async function sendVote (req, res, next){
     try {
         await Proposal.findByIdAndUpdate(req.body._id, { $push: {voters : {$each: req.body.data}}}).exec()
-        await refreshProposalStatus();
+        // await refreshProposalStatus();
         res.json({updated: true})
         // Proposal.findById(req.body._id).exec()
         // .then((p) =>{

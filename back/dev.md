@@ -1,14 +1,30 @@
---- design
-https://www.figma.com/file/olQR8IyITku8Q2gEHTGMra/Superwarden-UI-Design?node-id=0%3A1
+
+
+
+
+## design
+https://www.figma.com/file/olQR8IyITku8Q2gEHTGMra/Superwarden-UI-Design
 https://www.figma.com/proto/olQR8IyITku8Q2gEHTGMra/Superwarden-UI-Design?node-id=0%3A1&scaling=min-zoom&page-id=0%3A1
+
+
+
+
+## freelancer dispute
+
+https://www.freelancer.com/dispute/disputestage.php?id=609008&uniqid=61621188-33102-62d6207f-c0fd9516&linkid=1
+https://www.freelancer.com/page.php?p=info%2Fdispute_policy&uniqid=61621188-32934-62d31aa7-f2c4d1cd&linkid=1
+
+## web hosting
+https://kind-shaw.103-233-0-73.plesk.page:8443/
+Username: nur
+PW: !123adminADMIN
+
 --- docs
 https://github.com/Zhixuan0318/superwarden-dev-docs
 --- contract address
 TKWsxjh97sCPipTAfghW7vDFdx2HhjecCe  for main
 
-https://kind-shaw.103-233-0-73.plesk.page:8443/
-Username: nur
-PW: !123adminADMIN
+
 
 THIES diago thies diago
 ## create townhall

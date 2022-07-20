@@ -1,16 +1,32 @@
 <template>
- <div class="head p-2" style="width: 100%;">
+<nav class="navbar navbar-expand-sm h-[65px]" style="border-bottom: 1px solid #d5d5d5">
+  <div class="container-fluid">
+    <label class="navbar-brand ps-5 pe-4 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Details</label>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <label class="nav-link"  style="background-color: #fff; width: 100%;!important" >{{details.name}}</label>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+ <!-- <div class="head p-2 h-[65px]" style="width: 100%;">
       <span class="px-5  py-1 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Details </span>
       <div class="options">
           <span>{{details.name}}</span>
       </div>
-  </div>
+  </div> -->
 
   <!-- <div class="right-section-content" style="height: 73.8vh; overflow-y: scroll;"> -->
   <div class="right-section-content">
 
-    <img :src="details.bannerPhoto" style="height: 220px;"/>
-    <div v-html="markdownToHtml" class="custom-markdown"></div>
+    <img :src="details.bannerPhoto" style="height: 220px; border-radius: 7px;"/>
+    <div v-html="markdownToHtml" class="markdown-body"></div>
   </div>
   
            
@@ -85,7 +101,7 @@ export default {
 
 .right-section .head {
   width: 100%;
-  height: 85px;
+  /* height: 85px; */
   border-bottom: 2px solid #D5D5D5;
   display: flex;
   justify-content: flex-start;

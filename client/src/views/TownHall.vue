@@ -25,9 +25,17 @@
                 <button v-if = "role < 10" class="join-button"><span>Joined</span></button>
                 <button v-else class="join-button"><span>Join</span></button>
               </div>
-              <div class="mt-3" style="margin-left:20px">
+                <div class="links my-4" :style="`left: ${width / 4}px`">
+                  <div class="icons">
+                    <a :href="townhall.details.twitter"><img src="../assets/twiter-icon.png"></a>
+                    <a :href="townhall.details.discord"><img src="../assets/game-icon.png"></a>  
+                    <a :href="townhall.details.github"><img src="../assets//github-icon.png"></a>  
+                    <a :href="townhall.details.forum"><img src="../assets/browser-icon.png"></a>  
+                  </div>
+                </div>
+              <div class="" style="margin-left:20px">
     
-                <p @click="clickProposal" :class="tag == 'p'? 'navbar-active' : ''" class=" ps-3 py-2 mb-0 fw-bolder" style="margin-top: 35px; cursor: pointer;">Proposals</p>
+                <p @click="clickProposal" :class="tag == 'p'? 'navbar-active' : ''" class=" ps-3 py-2 mb-0 fw-bolder" style="cursor: pointer;">Proposals</p>
                 <p @click="clickAnnouncement" :class="tag == 'a'? 'navbar-active' : ''" class=" py-2 ps-3 mb-0 fw-bolder" style="cursor: pointer;">Announcements</p>
                 <p @click="clickDetails" :class="tag == 'd'? 'navbar-active' : ''" class="  ps-3 py-2 mb-0 fw-bolder" style="cursor: pointer;">Details</p>
                 <div v-if = "role > 1" style="display: flex;" class="py-2">
@@ -37,14 +45,7 @@
 
                 </div>
                 <p v-else @click="clickSetting" :class="tag == 's'? 'navbar-active' : ''" class="ps-3 py-2 mb-0 fw-bolder" style="cursor: pointer;">Settings</p>
-                <div class="links pe-2">
-                  <div class="icons">
-                    <a :href="townhall.details.twitter"><img src="../assets/twiter-icon.png"></a>
-                    <a><img src="../assets/game-icon.png"></a>  
-                    <a :href="townhall.details.github"><img src="../assets//github-icon.png"></a>  
-                    <a :href="townhall.details.discord"><img src="../assets/browser-icon.png"></a>  
-                  </div>
-                </div>
+
     
               </div>
     </div>
@@ -66,13 +67,14 @@ export default {
     data() {
         return {
           slug : this.$route.params['slug'],
-          role: 10, // 0: superwarden, 1: warden, 2: master, 3: villager but create proposal, 4: villager 10: not joined
+          role: 10, 
           townhall: {
             villagers: [],
             details: {}
           },
           tag: 'p',
-          height: 300
+          height: 300,
+          // width: innerWidth - 200
         }
     },
     computed: {
@@ -90,6 +92,7 @@ export default {
     // mounted() {},
     methods: {
       getTownhallData(){
+        console.log(this.slug)
         api.getTownhallData({slug: this.slug}, (async (res) => {
           this.height = window.innerHeight - 80
           if (res.data.townhall){
@@ -411,9 +414,11 @@ span.cheak img {
 
 
 .links {
+  /* position: fixed;
+  bottom: 10px; */
   display: flex;
   align-items: flex-end;
-  justify-content: flex-end;
+  justify-content: center;
   /* padding-right: 15px;
   margin-top: 1vh; */
   /* padding: 15px; */

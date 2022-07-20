@@ -26,16 +26,16 @@
           <img v-if = "t.details.coverPhoto == ''" class="top-radius" src="../assets/card-cover-photo.png" style="width: 100%; height: 150px" />
           <img v-else :src="t.details.coverPhoto" class="top-radius" style="width: 100%; height: 150px" />
   
-          <div style="border-right: 1px solid #dadada; border-left: 1px solid #dadada; border-radius: 3px; ">
+          <div style="border-radius: 3px; ">
             <img class="" :src="t.details.avatar" style="display: inline-table; background-color: #ffffff; width: 70px; margin-top: -35px; margin-left: 20px; border-radius: 50%; border: 2px solid #ffffff;"  />
             <div class="px-3" style="">
-              <div  style="height: 95px;">
+              <div class="mb-3"  style="height: 95px;">
                 <label class="my-2" style="color: #000000; font-weight: bolder; font-size: 16px;">{{trimmedTownhallName(t.details.name)}}</label>
                 <p style="font-size: 13px;">{{trimmedTownhallBio(t.details.bio)}}</p>
               </div>
-              <label class="mt-3 mb-1" style="font-size: 15px; font-weight: bolder;">{{t.villagers.length}} villagers</label>
+              <label class="mt-4 mb-1" style="font-size: 15px; font-weight: bolder;">{{t.villagers.length}} villagers</label>
             </div>
-            <div class="mt-1 mb-1 text-center px-3" >
+            <div class="my-3 text-center px-3" >
               <button v-if = "t.mine" class="join-button" @click = "viewTownhall(t.details.slug)" style="width: 100%;">Joined</button>
               <button v-else class="join-button" @click = "viewJoiningTownhall(t)" style="width: 100%;">Join</button>
             </div>
@@ -90,19 +90,19 @@
                 <label class="form-label popup-content-text fw-bolder">What you can do here?</label>
               </div>
               <div style="display: flex; justify-content: center; align-items: center;" >
-                  <p class="ps-2 pt-2 pb-2 popup-content-bold-text popup-content-text-border" style="width: 100%; ">
+                  <p class="ps-2 pt-2 pb-2 popup-content-bold-text popup-content-text-border" style="width: 100%; display: flex;">
                    <img src="../assets/check.png" style="width: 25px; "/>
                    You can vote proposals with community token
                   </p>
               </div>
               <div style="display: flex; justify-content: center; align-items: center;" >
-                  <p class="ps-2 pt-2 pb-2 popup-content-bold-text popup-content-text-border" style="width: 100%; ">
+                  <p class="ps-2 pt-2 pb-2 popup-content-bold-text popup-content-text-border" style="width: 100%; display: flex; ">
                    <img src="../assets/check.png" style="width: 25px; "/>
                    Have the chance to become a warden or master
                   </p>
               </div>
               <div style="display: flex; justify-content: center; align-items: center;" >
-                  <p class="ps-2 pt-2 pb-2 popup-content-bold-text popup-content-text-border" style="width: 100%; ">
+                  <p class="ps-2 pt-2 pb-2 popup-content-bold-text popup-content-text-border" style="width: 100%; display: flex;">
                    <img src="../assets/check.png" style="width: 25px; "/>
                    Stay alert to townhall activities
                   </p>

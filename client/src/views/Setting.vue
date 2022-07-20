@@ -1,36 +1,39 @@
 <template>
+<div
+      style="position: fixed; border-right: 1px solid #d5d5d5; height: 100%; z-index: 50;"
+      class="lg:w-1/4 float-left hidden lg:block p-0 m-0 overflow-hidden"
+      id="sidebar-left">
+	<ul class="nav flex-column">
+		<li class="nav-item ">
+			<!-- <a class="nav-link fontsize30">Settings</a> -->
+			<p class="nav-link text-dark fw-bolder my-4 fs-3">Settings</p>
+		</li>
+		<li v-if = "role == 0" @click="setStep(1)" :class="steps == 1? 'navbar-active' : ''" class="nav-item" style="width: 100% !important;">
+			<a class="nav-link disabled"  style="font-size: 16px;">Basic Info</a>
+		</li>
+		<li v-if = "role == 0" @click="setStep(2)" :class="steps == 2? 'navbar-active' : ''" class="nav-item">
+			<a class="nav-link disabled"  style="font-size: 16px;">Social Media and Details</a>
+		</li>
+		<li v-if = "role == 0" @click="setStep(3)" :class="steps == 3? 'navbar-active' : ''" class="nav-item">
+			<a class="nav-link disabled" style="font-size: 16px;">IPFS Settings and Visibility</a>
+		</li>
+		<li v-if = "role < 2" @click="setStep(4)" :class="steps == 4? 'navbar-active' : ''" class="nav-item">
+			<a class="nav-link disabled" style="font-size: 16px;">Master Role Assignment</a>
+		</li>
+		<li v-if = "role == 0" @click="setStep(5)" :class="steps == 5? 'navbar-active' : ''" class="nav-item">
+			<a class="nav-link disabled" style="font-size: 16px;">Warden Role Assignment</a>
+		</li>
+		<li v-if = "role == 0" @click="setStep(6)" :class="steps == 6? 'navbar-active' : ''" class="nav-item">
+			<a class="nav-link disabled" style="font-size: 16px;">Proposal Publishing Permission</a>
+		</li>
+	</ul>
+</div>
     <div class="navBar" >
         <div class = "row" style="width: 100%;">
-            <div class="col-lg-3 col-md-12 border-end">
-                <ul class="nav flex-column">
-					<li class="nav-item ">
-						<!-- <a class="nav-link fontsize30">Settings</a> -->
-						<p class="nav-link text-dark fw-bolder my-4 fs-3">Settings</p>
-					</li>
-					<li v-if = "role == 0" @click="setStep(1)" :class="steps == 1? 'navbar-active' : ''" class="nav-item" >
-						<a class="nav-link disabled" >Basic Info</a>
-					</li>
-					<li v-if = "role == 0" @click="setStep(2)" :class="steps == 2? 'navbar-active' : ''" class="nav-item">
-						<a class="nav-link disabled">Social Media and Details</a>
-					</li>
-					<li v-if = "role == 0" @click="setStep(3)" :class="steps == 3? 'navbar-active' : ''" class="nav-item">
-						<a class="nav-link disabled">IPFS Settings and Visibility</a>
-					</li>
-					<li v-if = "role < 2" @click="setStep(4)" :class="steps == 4? 'navbar-active' : ''" class="nav-item">
-						<a class="nav-link disabled">Master Role Assignment</a>
-					</li>
-					<li v-if = "role == 0" @click="setStep(5)" :class="steps == 5? 'navbar-active' : ''" class="nav-item">
-						<a class="nav-link disabled">Warden Role Assignment</a>
-					</li>
-					<li v-if = "role == 0" @click="setStep(6)" :class="steps == 6? 'navbar-active' : ''" class="nav-item">
-						<a class="nav-link disabled">Proposal Publishing Permission</a>
-					</li>
-				</ul>
+            <div class="col-lg-3 col-md-12 ">
             </div>
             <div class="col-lg-7 px-5 mx-5">
                 <button type=" " class="btn btn-default  p-0 my-5" @click="backToProposalList"><b>&#8592; Back</b></button>
-
-
 
 
 
@@ -119,7 +122,7 @@
 							<div class="invalid-feedback" v-if="validation.invalid.slug" style="display: flex;">{{ validation.invalid.slug }}</div>
 						</div>
 					</div>
-					<button class="btn btn-danger float-end mt-3 px-4 " type="submit">Update</button>
+					<button class="btn btn-danger float-end my-5 px-4 " type="submit">Update</button>
 				</form>
 
 
@@ -199,7 +202,7 @@
 						<div class="valid-feedback" v-if="validation.valid.bannerPhoto">{{ validation.valid.bannerPhoto }}</div>
                         <div class="invalid-feedback" v-if="validation.invalid.bannerPhoto">{{ validation.invalid.bannerPhoto }}</div>
 					</div>
-					<button class="btn btn-danger float-end mt-3 px-4 " type="submit">Update</button>
+					<button class="btn btn-danger float-end  my-5 px-4 " type="submit">Update</button>
 
 				</form>
 
@@ -251,7 +254,7 @@
 							<input v-model = "stepThree.private" class="form-check-input fs-5" style="margin-left: -40px;" type="checkbox">
 						</div>
 					</div>
-					<button class="btn btn-danger float-end mt-3 px-4 " type="submit">Update</button>
+					<button class="btn btn-danger float-end  my-5 px-4 " type="submit">Update</button>
 
 				</form>
 
@@ -270,20 +273,20 @@
 
 
 				<form v-if = "steps == 4"  v-on:submit.prevent="validateFourthStep">
-					<p class="fw-bolder fs-4">Assign Masters</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Master can only create and publish proposal</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Can only be assigned by superwarden and warden </p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Can only be removed by superwarden and warden  </p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> You can edit the role assignment anytime</p>
+					<p class="fw-bolder fs-4 mb-4">Assign Masters</p>
+					<p class="fw-bolder" style="color: #959595; display: flex; font-size: 15px;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Master can only create and publish proposal</p>
+					<p class="fw-bolder" style="color: #959595; display: flex; font-size: 15px;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Can only be assigned by superwarden and warden </p>
+					<p class="fw-bolder" style="color: #959595; display: flex; font-size: 15px;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Can only be removed by superwarden and warden  </p>
+					<p class="fw-bolder" style="color: #959595; display: flex; font-size: 15px;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> You can edit the role assignment anytime</p>
 					
 					
 					<p class="fs-5 fw-bolder mt-5">Masters</p>
-					<p class="fw-bolder" style="color: #959595;">Format of assigning:</p>
-					<p class="fw-bolder" style="color: #959595;">{{"Tronlink wallet address 1 < SPACE > nickname < new line >"}}</p>
-					<p class="fw-bolder" style="color: #959595;">{{"Tronlink wallet address 2 < SPACE > nickname < new line >"}}</p>
-					<p class="fw-bolder" style="color: #959595;">...</p>
+					<p class="fw-bolder" style="color: #959595; font-size: 15px;">Format of assigning:</p>
+					<p class="fw-bolder" style="color: #959595; font-size: 15px;">{{"Tronlink wallet address 1 < SPACE > nickname < new line >"}}</p>
+					<p class="fw-bolder" style="color: #959595; font-size: 15px;">{{"Tronlink wallet address 2 < SPACE > nickname < new line >"}}</p>
+					<p class="fw-bolder" style="color: #959595; font-size: 15px;">...</p>
 			
-					<p class="fw-bolder" style="color: #959595;">*Nickname should be all lowercase and no space allowed</p>
+					<p class="fw-bolder" style="color: #959595; font-size: 15px;">*Nickname should be all lowercase and no space allowed</p>
 					<div class="mb-3 mt-2">
 						<textarea 	v-model = "stepFour.master"  
 									v-bind:class="{ 'is-valid': validation.valid.master, 'is-invalid': validation.invalid.master }" 
@@ -296,7 +299,7 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"></textarea>
 						<div class="valid-feedback" v-if="validation.valid.master">{{ validation.valid.master }}</div>
                         <div class="invalid-feedback" v-if="validation.invalid.master">{{ validation.invalid.master }}</div>
 					</div>
-					<button  type="submit" class="btn btn-danger float-end mt-3 px-4">Update</button>
+					<button  type="submit" class="btn btn-danger float-end my-5 px-4">Update</button>
 
 				</form>
 
@@ -314,19 +317,19 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"></textarea>
 
 
 				<form v-if = "steps == 5"     v-on:submit.prevent="validateFifthStep">
-					<p class="fw-bolder fs-4">Assign Wardens</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Warden can create and publish proposal</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Warden can broadcast announcement </p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Can only be assigned and removed by superwarden   </p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Warden can assign master</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> You can edit the role assignment anytime</p>
+					<p class="fw-bolder fs-4 mb-4">Assign Wardens</p>
+					<p class="fw-bolder" style="color: #959595; display: flex; font-size: 15px;"><img class="me-2" src="../assets/check.png" style="width: 25px; height: 25px;"/> Warden can create and publish proposal</p>
+					<p class="fw-bolder" style="color: #959595; display: flex; font-size: 15px;"><img class="me-2" src="../assets/check.png" style="width: 25px; height: 25px;"/> Warden can broadcast announcement </p>
+					<p class="fw-bolder" style="color: #959595; display: flex; font-size: 15px;"><img class="me-2" src="../assets/check.png" style="width: 25px; height: 25px;"/> Can only be assigned and removed by superwarden   </p>
+					<p class="fw-bolder" style="color: #959595; display: flex; font-size: 15px;"><img class="me-2" src="../assets/check.png" style="width: 25px; height: 25px;"/> Warden can assign master</p>
+					<p class="fw-bolder" style="color: #959595; display: flex; font-size: 15px;"><img class="me-2" src="../assets/check.png" style="width: 25px; height: 25px;"/> You can edit the role assignment anytime</p>
 					<p class="fs-5 fw-bolder mt-5">Wardens</p>
-					<p class="fw-bolder" style="color: #959595;">Format of assigning:</p>
-					<p class="fw-bolder" style="color: #959595;">{{"Tronlink wallet address 1 < SPACE > nickname < new line >"}}</p>
-					<p class="fw-bolder" style="color: #959595;">{{"Tronlink wallet address 2 < SPACE > nickname < new line >"}}</p>
-					<p class="fw-bolder" style="color: #959595;">...</p>
+					<p class="fw-bolder" style="color: #959595; font-size: 15px;">Format of assigning:</p>
+					<p class="fw-bolder" style="color: #959595; font-size: 15px;">{{"Tronlink wallet address 1 < SPACE > nickname < new line >"}}</p>
+					<p class="fw-bolder" style="color: #959595; font-size: 15px;">{{"Tronlink wallet address 2 < SPACE > nickname < new line >"}}</p>
+					<p class="fw-bolder" style="color: #959595; font-size: 15px;">...</p>
 			
-					<p class="fw-bolder" style="color: #959595;">*Nickname should be all lowercase and no space allowed</p>
+					<p class="fw-bolder" style="color: #959595; font-size: 15px;">*Nickname should be all lowercase and no space allowed</p>
 					<div class="mb-3 mt-2">
 						<textarea 	v-model = "stepFive.warden" 
 									v-bind:class="{ 'is-valid': validation.valid.warden, 'is-invalid': validation.invalid.warden }" 
@@ -340,7 +343,7 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"
 						<div class="valid-feedback" v-if="validation.valid.warden">{{ validation.valid.warden }}</div>
                         <div class="invalid-feedback" v-if="validation.invalid.warden">{{ validation.invalid.warden }}</div>
 					</div>
-					<button type="submit" class="btn btn-danger float-end mt-3 px-4">Update</button>
+					<button type="submit" class="btn btn-danger float-end my-5 px-4">Update</button>
 				</form>
 
 
@@ -427,7 +430,7 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"
 							<div class="invalid-feedback" v-if="validation.invalid.tcr_tk_addr">{{ validation.invalid.tcr_tk_addr }}</div>
 						</div>
 					</div>
-					<button type="submit" class="btn btn-danger float-end mt-3 px-4">Update</button>
+					<button type="submit" class="btn btn-danger float-end my-5 px-4">Update</button>
 
 				</form>
 
@@ -526,7 +529,10 @@ export default {
     },
 
     created() {
-		this.getTownhallData()
+		if (this.$store.getters.role > 1)
+            this.$router.push(`/`)
+        else
+			this.getTownhallData()
 
     },
     mounted() {
@@ -569,11 +575,12 @@ export default {
 					return
 				} else {
 					
-						const response = await axios.get('https://practical-brahmagupta.103-233-0-73.plesk.page/api/v1/search/townhallName'+'?s='+this.tempName);
+						const response = await axios.get('https://superwarden.org/api/v1/search/townhallName'+'?s='+this.tempName);
 						if (response.data.count > 0){
 							this.validation.invalid.name = 'This name is already taken.';
 							return
 						}
+					this.stepOne.name = this.tempName
 					this.validation.valid.name = 'The name of townhall is valid';
 				}
 			} else
@@ -633,17 +640,18 @@ export default {
 					return
 				} else {
 					let string = this.tempSlug + ".tron";
-					const response = await axios.get('https://practical-brahmagupta.103-233-0-73.plesk.page/api/v1/search/slugName'+'?s='+string);
+					const response = await axios.get('https://superwarden.org/api/v1/search/slugName'+'?s='+string);
 					if (response.data.count > 0){
 						this.validation.invalid.slug = 'This slug is already taken.';
 						return
 					}
+					this.stepOne.slug = string
 					this.validation.valid.slug = 'The slug of your townhall is valid';
 				}
 			} else
 				update_flag +=1
 			if (update_flag == 6){
-				this.$toast.error(`Nothing to update.`);
+				this.$toast.error(`No changes are made.`);
 				return
 			}
 			Object.assign(this.details, this.stepOne)
@@ -732,7 +740,7 @@ export default {
 
 
 			if (update_flag == 6){
-				this.$toast.error(`Nothing to update.`);
+				this.$toast.error(`No changes are made.`);
 				return
 			}
 
@@ -769,7 +777,7 @@ export default {
 			if(this.stepThree.private == this.details.private)
 				update_flag += 1
 			if (update_flag == 4){
-				this.$toast.error(`Nothing to update.`);
+				this.$toast.error(`No changes are made.`);
 				return
 			}
 			Object.assign(this.details, this.stepThree)
@@ -779,7 +787,7 @@ export default {
 
 		validateFourthStep(){
 			if (this.stepFour.master == this.details.master){
-				this.$toast.error(`Nothing to update.`);
+				this.$toast.error(`No changes are made.`);
 				return
 			}
 			Object.assign(this.details, this.stepFour)
@@ -789,7 +797,7 @@ export default {
 
 		validateFifthStep(){
 			if (this.stepFive.warden == this.details.warden){
-				this.$toast.error(`Nothing to update.`);
+				this.$toast.error(`No changes are made.`);
 				return
 			}
 			Object.assign(this.details, this.stepFive)
@@ -861,7 +869,7 @@ export default {
 				update_flag +=1
 
 			if (update_flag == 7){
-				this.$toast.error(`Nothing to update.`);
+				this.$toast.error(`No changes are made.`);
 				return
 			}
 
@@ -1003,7 +1011,7 @@ export default {
 		updateTownHall(data){
 			api.updateTownHall({slug: this.slug, data: data, superwarden: this.superwarden}, (res => {
 				this.details = res.data.data.details
-                this.$toast.success(`succeeded to update your townhall.`);
+                this.$toast.success(`Townhall update saved.`);
 
 			}), err =>{
 				console.log(err)
@@ -1060,10 +1068,7 @@ export default {
 .navBar {
     margin-left: 35px;
 }
-.nav-item{
-	cursor:pointer;
 
-}
 .navBar li a {
     /* color: #595959; */
     font-weight: 900;

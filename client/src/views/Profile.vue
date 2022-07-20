@@ -7,20 +7,17 @@
                         <span v-if = "account.name" class="title">{{trimmedAccountName(account.name)}}</span>
                         <span v-else class="title">{{trimmedAccountAddress(account.address)}}</span>
 
-                        <div class="coppy">
-                            <span>
+                        <div class="coppy" >
+                            <span class="ms-2" style="font-size: 15px;">
                                 {{trimmedAccountAddress(account.address)}}
                             </span>
-                            <div class="superwarden-tooltip">
-                                <img src="../assets/coppy-icon.png" style = "cursor: pointer;" @click="myFunction"/>
+                            <div class="superwarden-tooltip me-2">
+                                <img src="../assets/coppy-icon.png" style = "cursor: pointer; height: 22px;" @click="myFunction"/>
                                 <span class="tooltiptext" id="myTooltip" >Copy to</span>
-                                <!-- <span class="tooltiptext" id="myTooltip" style="visibility: hidden;">Copy to</span> -->
-
                             </div>
 
                         </div>
                     </div>
-                    <!-- <div v-if = "account.bio" class="description my-4" >afeeeeeeeeeeeeeed ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd</div> -->
 
                     <p v-if = "account.bio" class="description my-4">{{account.bio}}</p>
                     <span v-else = "account.bio" class="description my-4"></span>
@@ -29,19 +26,19 @@
             </div>
             <div class="col-12 col-lg-7">
                 <div class="block-container-profile mb-4">
-                    <div class="block-head"><span class="block-title">Joined Townhall</span></div>
+                    <div class="block-head"><span class="block-title" style="color: #595959;">Joined Townhall</span></div>
                     <div class="block-contect">
-                        <div v-for = "(item, k) in townhalls" class="items">
+                        <div v-for = "(item, k) in townhalls" class="items m-1">
                             <img :src="item.details.avatar">
                         </div>
                     </div>
                 </div>
                 <div class="block-container-profile mb-4">
-                    <div class="block-head"><span class="block-title">
+                    <div class="block-head"><span class="fw-bolder fw-1" style="color: #595959;">
                             Superwarden of</span>
                     </div>
                     <div v-if = "superwardens.length < 1">
-                        <div class="block-contect"><span class="block-title" style="color: #959595;;">Not a warden of any
+                        <div class="block-contect"><span class="block-title" >not a warden of any
                                 townhall.</span>
                         </div>
                     </div>
@@ -60,35 +57,38 @@
                 </div>
 
                 <div class="block-container-profile mb-4">
-                    <div class="block-head"><span class="block-title">
+                    <div class="block-head"><span class="block-title" style="color: #595959;">
                             Warden of</span></div>
                     <div v-if = "wardens.length < 1">
-                        <div class="block-contect"><span class="block-title" style="color: #959595;;">Not a warden of any
+                        <div class="block-contect"><span class="block-title" >not a warden of any
                                 townhall.</span>
                         </div>
                     </div>
                     <div v-else>
                         <div class="block-contect">
-                            <div class="items">
-                                <img src="../assets/logo-icon.png">
+                                                        <div v-for = "(item, k) in wardens" class="items m-1">
+                                <img :src="item.details.avatar">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="block-container-profile mb-4">
-                    <div class="block-head"><span class="block-title">
+                    <div class="block-head"><span class="block-title" style="color: #595959;">
                             Master of</span>
                     </div>
                     <div v-if = "masters.length < 1">
-                        <div class="block-contect"><span class="block-title" style="color: #959595;;">Not a master of any
+                        <div class="block-contect"><span class="block-title">not a master of any
                             townhall.</span>
                         </div>
                     </div>
                     <div v-else>
                         <div class="block-contect">
-                            <div class="items">
-                                <img src="../assets/logo-icon.png">
+                            <div v-for = "(item, k) in masters" class="items m-1">
+                                <img :src="item.details.avatar">
                             </div>
+                            <!-- <div class="items">
+                                <img src="../assets/logo-icon.png">
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -128,7 +128,7 @@
                     <div class="invalid-feedback" v-if="validation.invalid.bio">{{ validation.invalid.bio }}</div>
                 </div>
                 <!-- <button @click="updateProfile" type="button" class="btn btn-danger text-center" style="width: 100%;">Save</button> -->
-                <button type="submit" class="btn btn-danger text-center" style="width: 100%;">Save</button>
+                <button type="submit" class="btn btn-danger text-center my-4" style="width: 100%;">Save</button>
 
             </form>
             
@@ -256,7 +256,7 @@ export default {
             let update_flag = 0
             if (this.tempAccount.name != this.account.name){
                 if (!this.tempAccount.name){
-                    const response = await axios.get('https://practical-brahmagupta.103-233-0-73.plesk.page/api/v1/search/accountName'+'?s='+this.tempAccount.name);
+                    const response = await axios.get('https://superwarden.org/api/v1/search/accountName'+'?s='+this.tempAccount.name);
                     if (response.data.count > 0){
                         this.validation.invalid.name = 'This name is already taken.';
                         return
@@ -362,7 +362,7 @@ export default {
 
 .left-block .head .title {
   font-weight: 700;
-  font-size: 28px;
+  font-size: 21px;
   color: #000000;
 }
 
@@ -423,8 +423,8 @@ export default {
 
 span.block-title {
   font-weight: 700;
-  font-size: 22px;
-  color: #595959;
+  font-size: 18px;
+  color: #959595;
 }
 
 .block-contect {
@@ -447,13 +447,13 @@ span.block-title {
 .avator {
   height: 150px;
   width: 150px;
-  border-radius: 45%;
+  border-radius: 50%;
 }
 
 .villagers {
   font-weight: 700;
   font-size: 18px;
-  color: #595959;
+  color: #959595;
 }
 
 </style>

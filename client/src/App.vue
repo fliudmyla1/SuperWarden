@@ -30,9 +30,11 @@
                             Superwarden
                         </div>
                     </div>
-                    <span class="float-end">
+                    <span class="">
                         <button v-if ="account.title == ''"  class="btn" style="margin-right: 15px; border: 1px solid #959595" @click="connectWallet">Connect Wallet</button>
-                        <button v-else class="dropdown btn  " style="margin-right: 15px; width: 130px; border: 1px solid #959595" @click="toggleShow = !toggleShow">{{trimmedAccountName(account.title)}}</button>
+                        <button v-else class="dropdown btn px-2" style=" width: 130px; border: 1px solid #959595;" @click="toggleShow = !toggleShow">
+                            {{trimmedAccountName(account.title)}}
+                        </button>
                     </span>
                 </div>
             </BaseContainer>
@@ -156,6 +158,8 @@ export default {
         getAccountData(){
             let _addr = window.tronWeb.defaultAddress.base58
             // _addr = 'TGwBRQxCuj26zNsBYirfLHNSUR5swjqEH2'
+            // _addr = 'jj'
+
             
             api.getAccountData({_addr: _addr}, (res => {
                 this.$store.dispatch('account/setAccount', res.data.account)

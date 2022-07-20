@@ -24,7 +24,7 @@
                     </div>
                     <div class="mt-4">
                         <p class="fs-5 fw-bolder text-dark">Attachment link</p>
-                        <p ><img src="../assets/file-icon.png" style="height: 24px;"/><a :href="`https://${announce.attachment}`" class="text-dark" style="color: #595959; text-decoration: none;">{{announce.attachment}}</a></p>
+                        <p style="display: flex;"><img  src="../assets/file-icon.png" style="height: 24px; display: flex;"/><a :href="`https://${announce.attachment}`" class="ms-2 text-dark" style="color: #595959; text-decoration: none;">{{announce.attachment}}</a></p>
                         <div class="file-details mb-5">
                             <span>web3.storage CID</span>
                             <span>{{announce.cid}}</span>
@@ -58,7 +58,7 @@
                         <div class="valid-feedback" v-if="validation.valid.deleteConfirm">{{ validation.valid.deleteConfirm }}</div>
                         <div class="invalid-feedback" v-if="validation.invalid.deleteConfirm">{{ validation.invalid.deleteConfirm }}</div>
                     </div>
-                    <button class="btn btn-danger mt-5"  type="submit">I understand the consequences. Delete this announcement.</button>
+                    <button class="btn btn-danger my-4"  type="submit" style="width: 100%;">I understand the consequences.<br/>Delete this announcement.</button>
                 </form>
             </div>
         </div>

@@ -35,7 +35,7 @@
                     </div>
                     <div class="mt-4">
                         <p class="fs-5 fw-bolder text-dark">Attachments</p>
-                        <p v-for = "(p) in proposal.attachments" ><img src="../assets/file-icon.png" style="height: 24px;"/><a :href="`https://${p}`" class="ms-2 text-dark" style = "text-decoration: none;">{{p}}</a></p>
+                        <p v-for = "(p) in proposal.attachments" style="display: flex;"><img src="../assets/file-icon.png" style="height: 24px;"/><a :href="`https://${p}`" class="ms-2 text-dark" style = "text-decoration: none;">{{p}}</a></p>
                     </div>
                     <div class="mt-4">
                         <p class="fs-5 fw-bolder text-dark">Voting Option</p>
@@ -94,9 +94,13 @@
                         <span v-if="proposal.multiplier == 1" style= "color: #959595">N/A</span>
                         <span v-else style= "color: #959595">{{proposal.multiplier}}</span>
                     </p>
-                    <p class="fw-bolder ps-3 mt-2">Proposal CID: 
-                        <span style= "color: #959595">{{trimmedProposalCid(proposal.cid)}}</span>
-                        <span><img src = "../assets/coppy-icon.png" style="height:22px"></span>
+                    <p class="fw-bolder ps-3 mt-2" style="display: flex;">Proposal CID: 
+                        <span class="ms-1" style= "color: #959595; display: flex;">{{trimmedProposalCid(proposal.cid)}}</span>
+                            <div class="superwarden-tooltip">
+                                <img src="../assets/coppy-icon.png" style = "cursor: pointer; height: 22px;" @click="myFunction"/>
+                                <span class="tooltiptext" id="myTooltip" >Copy to</span>
+                            </div>
+                        <!-- <span><img src = "../assets/coppy-icon.png" style="height:22px; cursor: pointer;"></span> -->
                     </p>
                     <p class="fw-bolder ps-3 mt-2">Voting Result CID: 
                         <span v-if="proposal.votedCid">
@@ -273,7 +277,8 @@
                     <div class="valid-feedback" v-if="validation.valid.deleteConfirm">{{ validation.valid.deleteConfirm }}</div>
                     <div class="invalid-feedback" v-if="validation.invalid.deleteConfirm">{{ validation.invalid.deleteConfirm }}</div>
                 </div>
-                            <button class="btn btn-danger mt-5"  type="submit">I understand the consequences. Delete this proposal.</button>
+                    <button class="btn btn-danger my-4"  type="submit" style="width: 100%;">I understand the consequences.<br/>Delete this proposal.</button>
+
                 </form>
             </div>
         </div>
@@ -566,6 +571,14 @@ computed: {
                 console.log(err)
             })
         },
+            myFunction(){
+      var copyText = this.proposal.cid;
+    //   copyText.select();
+    //   copyText.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(copyText);
+      var tooltip = document.getElementById("myTooltip");
+      tooltip.innerHTML = "Copied";
+    },
         getProposalData(){
             api.getProposalData({_id: this.idx}, (res => {
                 this.proposal = res.data.proposal

@@ -1,40 +1,56 @@
 <template>
-<!-- <div> -->
-  <div class="head  p-2" style="width: 100%; ">
-      <span class="px-5  py-1 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Proposals </span>
-      <div class="options">
-          <button @click = "getProposalList(-1)" :class="index === -1?  'selected': ''" style="background-color: #fff">All</button>
-          <button @click = "getProposalList(1)" :class="index === 1?  'selected': ''" style="background-color: #fff">Active</button>
-          <button @click = "getProposalList(0)" :class="index === 0?  'selected': ''" style="background-color: #fff">Important</button>
-          <button @click = "getProposalList(2)" :class="index === 2?  'selected': ''" style="background-color: #fff">Complete</button>
-      </div>
-      <div @click="goCreateProposal" v-if ="role  < 4" class="right-button-holder"><button class="right-button">+ Create Proposals</button>
-      </div>
+<nav class="navbar navbar-expand-sm h-[65px]" style="border-bottom: 1px solid #d5d5d5">
+  <div class="container-fluid">
+    <label class="navbar-brand ps-5 pe-4 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Proposal</label>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <label  @click = "getProposalList(-1)" :class="index === -1?  'selected': ''" class="nav-link superwarden-nav" style="background-color: #fff">All</label>
+        </li>
+        <li class="nav-item">
+          <label @click = "getProposalList(1)" :class="index === 1?  'selected': ''" class="nav-link superwarden-nav"  style="background-color: #fff">Active</label>
+        </li>
+        <li class="nav-item">
+          <label  @click = "getProposalList(0)" :class="index === 0?  'selected': ''" class="nav-link superwarden-nav me-3" style="background-color: #fff">Important</label>
+        </li>
+        <li class="nav-item">
+          <label @click = "getProposalList(2)" :class="index === 2?  'selected': ''" class="nav-link superwarden-nav " style="background-color: #fff">Complete</label>
+        </li>
+      </ul>
+      <form class="d-flex me-4" v-if = "$store.getters.role < 4">
+        <button @click="goCreateProposal" class="right-button px-3" type="button" >+Proposal</button>
+      </form>
+    </div>
   </div>
+</nav>
+
   
   <div v-if = "proposals.length > 0" class="right-section-content">
 
       <div @click="goProposalDetail(p._id)" class="block-container-proposal" v-for="(p) in proposals">
-          <div class="header">
-              <span class="fw-bolder text-dark" style="font-size: 22px;">{{trimmedProposalTitle(p.title)}}
-                  
-
-                </span>
-                <span><img v-if = "p.importance"   style="height: 35px;"   class="mb-1"    src="../../assets/staricon.png" /></span>
-              <span v-if = "p.passed == 1" class="status active">Active</span>
-              <span v-else-if = "p.passed == 0" class="status complete">Active</span>
-              <span v-else class="status complete">Complete</span>
+        <div class="my-2" style="display: flex;   justify-content: space-between;">
+          <div style="display: flex; ">
+            <p class="fw-bolder text-dark px-0 m-0 py-2" style="font-size: 22px;">{{trimmedProposalTitle(p.title)}}</p>
+            <img v-if = "p.importance"   style="height: 35px;"   class="ms-2"    src="../../assets/staricon.png" />
           </div>
-          <span class="fw-bolder">Broadcast by {{p.creator.name ? trimmedAccountNameAndLowercase(p.creator.name) +"." + p.slug: trimmedAccountAddress(p.creator.address) }}</span>
-          <span class="text-dark" style="height: 100px;">{{trimmedAnnounceSummary(p.description)}}</span>
-          <span class="valid-till"><img src="../../assets/clock-icon.png"/>Time left &nbsp;<img src="../../assets/line1.png"/> {{p.leftTime}}</span>
-          <span class="cheak" v-if = "p.passed == 1"><img src="../../assets/uncheack.png" style="height: 25px;"/>Voting under process, result will be announced soon</span>
-          <span class="cheak" v-else-if = "p.passed == 0"><img src="../../assets/uncheack.png" style="height: 25px;"/>Comming soon</span>
-          <span class="cheak" v-else><img src="../../assets/cheack.png" style="height: 25px;"/>{{calculateWinner(p)}}</span>
-
+          <div class="my-2 " style="float: right;">
+            <p v-if = "p.passed == 1" class="status active px-3">Active</p>
+            <p v-else-if = "p.passed == 0" class="status complete px-3">Active</p>
+            <p v-else class="status complete px-3">Complete</p>
+          </div>
+        </div>
+        <span class="fw-bolder">Broadcast by {{p.creator.name ? trimmedAccountNameAndLowercase(p.creator.name) +"." + p.slug: trimmedAccountAddress(p.creator.address) }}</span>
+        <span class="text-dark" style="height: 100px;">{{trimmedAnnounceSummary(p.description)}}</span>
+        <span class="valid-till"><img src="../../assets/clock-icon.png"/>Time left &nbsp;<img src="../../assets/line1.png"/> {{p.leftTime}}</span>
+        <span class="cheak" v-if = "p.passed == 1"><img src="../../assets/uncheack.png" style="height: 25px;"/>Voting under process, result will be announced soon</span>
+        <span class="cheak" v-else-if = "p.passed == 0"><img src="../../assets/uncheack.png" style="height: 25px;"/>Comming soon</span>
+        <span class="cheak" v-else><img src="../../assets/cheack.png" style="height: 25px;"/>{{calculateWinner(p)}}</span>
       </div>
   </div>
-  <div v-else class="right-section-no-content">
+  <div v-else class="right-section-no-content" :style="`min-height: ${height}px`">
     <img src="../../assets/townhall-quiet.png" />
     <span>There are no announcements currently. Let’s wait for someone to broadcast. </span>
   </div>
@@ -48,8 +64,8 @@ export default {
         return {
           slug : this.$route.params['slug'],
           proposals: [],
-          index : 0, //0: expecting 1: on process 2: passed, -1: all
-
+          index : -1, //0: expecting 1: on process 2: passed, -1: all
+          height: innerHeight - 210
           // role: -1,
         }
     },
@@ -92,7 +108,6 @@ export default {
             return title
       },
       trimmedAnnounceSummary(summary){
-        // console.log(summary.length)
         if (summary.length > 334)
             return summary.slice(0, 334) + "..." 
           else
@@ -101,12 +116,15 @@ export default {
       calculateWinner(p){
         if(p.quorum_status){
           let threshold = p.totalToken * p.percent / 100
-          if (p.s_result && (p.s_result[0].option > threshold))
-            return p.s_result[0].option + ' is a winner'
-          else if (p.result && (p.result[0].option > threshold))
-            return p.result[0].option + ' is a winner'
-          else 
-            return 'N/A. Proposal do not meet the quorum threshold'
+          if (p.s_result && p.s_result.length > 0){
+            if (p.s_result && (p.s_result[0].option > threshold))
+              return p.s_result[0].option + ' is a winner'
+          }
+          if (p.result && p.result.length > 0){
+            if (p.result && (p.result[0].option > threshold))
+              return p.result[0].option + ' is a winner'
+          }
+          return 'N/A. Proposal do not meet the quorum threshold'
         } else {
           if (p.s_result)
             return p.s_result[0].option + ' is a winner'
@@ -261,16 +279,23 @@ export default {
   margin: 5px;
   width: 100px;
   border-radius: 5px;
-  font-size: 17px;
+  font-size: 15px;
   border: none;
   font-weight: 900;
 }
-
-.right-section>.head .options button.selected {
-  border: 1px solid #959595;
+.selected {
+  border: 1px solid #595959 !important;
 }
 
 
+.right-button{
+   background: rgba(220, 6, 43, 1) !important;
+     border-radius: 25px;
+       padding: 5px 10px;
+         color: white;
+         font-size: 13px;
+         font-weight: 900;
+}
 
 .right-section .head .right-button-holder {
   display: flex;
@@ -334,19 +359,17 @@ export default {
   height: 30px;
 }
 
-.block-container-proposal .header .status {
+.status {
   border-radius: 20px;
   height: 25px;
-  padding: 2px 15px;
   color: white;
-  font-family: Inter;
   font-weight: Bold;
   font-size: 15px;
 }
-.block-container-proposal .header .active {
+.active {
   background: rgba(80,200,120,1);
 }
-.block-container-proposal .header .complete {
+.complete {
   background: rgba(114,114,114,1);
 }
 
@@ -413,6 +436,7 @@ span.cheak img {
   font-size: 18px;
   line-height: 20px;
   color: #959595;
+  /* min-height: 500px; */
 }
 .right-section-no-content > img{
   height: 200px;

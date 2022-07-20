@@ -41,8 +41,8 @@
         </form>
     </div> -->
     <div style="padding-left: 35px; margin-left: 100px;">
-        <button v-if="steps == 1" type = "button" class="btn btn-default mt-3 p-0" @click="backToProposal"><b>&#8592; Back</b></button>
-        <p class="mt-5  fw-bolder fs-1 text-dark">Create a proposal</p>
+        <button v-if="steps == 1" type = "button" class="btn btn-default mt-5 p-0" @click="backToProposal"><b>&#8592; Back</b></button>
+        <p class="mt-5 pt-5 fw-bolder fs-1 text-dark">Create a proposal</p>
 
         <div class="mt-4 mb-5" >
 
@@ -71,22 +71,30 @@
                     <div class="mb-3 mt-3">
 						<label for="name" class="form-label fw-bolder fs-6">Discussions</label>
 						<p class="fw-bolder" style="color: #959595; font-size: 14px;">Paste the links to the discussion post or forum of this proposal</p>
-                        <div v-for="(item, index) in stepOne.discussions" class="my-1">
-                            <input v-model="stepOne.discussions[index]" type="text" class="form-control d-inline" style="width: 80%;">
-                            <button @click="pushOneDiscussion" type = "button" class="btn ms-4 superwarden-border"  style="font-size: 16px;">+</button>
-                            <button @click="sliceOneDiscussion(index)" v-if = "index > 0" type = "button" class="btn ms-4 superwarden-border"  style="font-size: 16px;">-</button>
+                        <div v-for="(item, index) in stepOne.discussions" class="my-1" style="display: flex;">
+                            <input v-model="stepOne.discussions[index]" type="text" class="form-control" style="width: 80%;">
+                            <img  @click="pushOneDiscussion" src="../assets/btn_plus.png" class="superwarden-border p-2 ms-2" style="height: 40px; width: 40px; cursor: pointer;"/>
+                            <img @click="sliceOneDiscussion(index)" v-if = "index > 0" src="../assets/delete-icon.png" class="superwarden-border p-2 ms-2" style="cursor: pointer; height: 40px; "/>
+
                         </div>
 					</div>
                     <div class="mb-3 mt-3">
 						<label for="name" class="form-label fw-bolder fs-6">Attachments</label>
 						<p class="fw-bolder" style="color: #959595; font-size: 14px;">Paste the links of the attachments of this proposal</p>
-                        <div v-for="(item, index) in stepOne.attachments" class="my-1">
-                            <input v-model="stepOne.attachments[index]" type="text" placeholder="https://www.superwardenforum.com/post2" class="form-control d-inline" style="width: 80%;">
-                            <button @click="pushOneAttachment" type = "button" class="btn ms-4 superwarden-border" style="font-size: 16px;">+</button>
-                            <button @click="sliceOneAttachment(index)" v-if = "index > 0" type = "button" class="btn ms-4 superwarden-border" style="font-size: 16px;">-</button>
+                        <div v-for="(item, index) in stepOne.attachments" class="my-1" style="display: flex;">
+                            <input v-model="stepOne.attachments[index]" type="text" placeholder="https://www.superwardenforum.com/post2" class="form-control" style="width: 80%;">
+                            <img  @click="pushOneAttachment"  v-if = "index > 0"  src="../assets/btn_plus.png" class="superwarden-border p-2 ms-2" style="height: 40px; width: 40px; cursor: pointer;"/>
+                            <img @click="sliceOneAttachment(index)" v-if = "index > 1" src="../assets/delete-icon.png" class="superwarden-border p-2 ms-2" style="cursor: pointer; height: 40px; "/>
                         </div>
 					</div>
-                    <button class="btn btn-danger float-end px-4" type="submit" style="margin-right: 20%;">Next</button>
+                        <div class="mb-3 mt-3">
+						<label for="name" class="form-label fw-bolder fs-6">Important proposal</label>
+						<p class="fw-bolder" style="color: #959595; font-size: 14px;">If check, the proposal will be marked with a red star</p>
+                                        <div class="form-check form-switch mt-2">
+                    <input v-model="stepOne.importance" style="height: 32px; width: 65px" class="form-check-input" type="checkbox">
+                </div>
+                        </div>
+                    <button class="btn btn-danger float-end px-4 my-5" type="submit" style="margin-right: 20%;">Next</button>
                 </div>
             </form>
 
@@ -113,9 +121,9 @@
                             display: flex;
                             justify-content: flex-start;
                             align-items: center;
-                            column-gap: 20px;">
-                                <span @click="setEdit" class="fw-bolder" style="font-size: 15px; color: #959595; cursor: pointer;"><img src = "../assets/edit.png" style="height: 22px;"/> Edit</span>
-                                <span @click="setPreview" class="fw-bolder" style="font-size: 15px; color: #959595; cursor: pointer;"><img src = "../assets/preview.png" style="height: 22px;"/> Preview</span>
+                            column-gap: 45px;">
+                                <span @click="setEdit" class="fw-bolder" style="font-size: 15px; color: #959595; cursor: pointer; display: flex; align-items: center;"><img class="" src = "../assets/edit.png" style="height: 18px;"/> Edit</span>
+                                <span @click="setPreview" class="fw-bolder" style="font-size: 15px; color: #959595; cursor: pointer;  display: flex; align-items: center;"><img src = "../assets/preview.png" style="height: 18px;"/> Preview</span>
                             </div>
                             <div v-if = "preview" v-html = "previewContent"
                                 class="form-control border-top-0" style="border: 1px solid #959595; border-radius: 0px 0px 5px 5px; min-height: calc(1.5em + 0.75rem + 2px);
@@ -131,7 +139,7 @@
                         <button class="btn btn-danger float-end mt-4 px-4" type="submit">Next</button>
                 </div>
                 <div class="col-md-5" style="display: flex; justify-content: center; align-items: center;">
-                    <div>
+                    <div class="p-5" style="background-color: #F6F6F6;">
                         <p class="fw-bolder fs-6">Markdown Tips</p>
                         <p class="fw-bolder mb-2 superwarden-text-small"><span class="dot"></span>## Heading 2</p>
                         <p class="fw-bolder superwarden-text-small"><span class="dot"></span>### Heading 3</p>
@@ -156,19 +164,19 @@
                     <p class="fw-bolder fs-4 mt-3">3. Voting System</p>
                     <p class="fw-bolder superwarden-text-small mb-4">Choose a voting system which is suitable for your proposal.</p>
                     <div :class = "{'superwarden-invalid': validation.invalid.type} ">
-                        <div @click = "setSystem(0)" class="voting-sys p-4 mb-4" :class="stepThree.type === 0?  'selected': ''">
+                        <div @click = "setSystem(0)" class="voting-sys p-4 mb-4 superwarden-border" :class="stepThree.type === 0?  'warden-selected': ''">
                             <p class="fw-bolder fs-6">Single Choice Voting</p>
                             <p class= "fw-bolder p-0 m-0 superwarden-text-small">
                                 Each voter can only vote for one candidate or choice. It is ideal for scenario where voter needs to choose on option from many.
                             </p>
                         </div>
-                        <div @click = "setSystem(1)" class="voting-sys p-4 mb-4" :class="stepThree.type === 1?  'selected': ''">
+                        <div @click = "setSystem(1)" class="voting-sys p-4 mb-4 superwarden-border" :class="stepThree.type === 1?  'warden-selected': ''">
                             <p class="fw-bolder fs-6">Approval Voting</p>
                             <p class= "fw-bolder p-0 m-0 superwarden-text-small">
                                 Each voter can vote or “approve” multiple choices. Note that each selected choice will receive equal voting power.
                             </p>
                         </div>
-                        <div @click = "setSystem(2)" class="voting-sys p-4" :class="stepThree.type === 2?  'selected': ''">
+                        <div @click = "setSystem(2)" class="voting-sys p-4 superwarden-border" :class="stepThree.type === 2?  'warden-selected': ''">
                             <p class="fw-bolder fs-6">Two Round Voting</p>
                             <p class= "fw-bolder p-0 m-0 superwarden-text-small">
                                 A single choice voting system with two round. The two candidates or choices who received the most votes in the first round will enter the second round voting.
@@ -183,15 +191,19 @@
                         <p class="fw-bolder fs-5 mt-3">Voting options</p>
                         <p  v-if="stepThree.type == 2" class="fw-bolder superwarden-text-small">Minimum three voting options is required for single choice voting.</p>
                         <p v-else class="fw-bolder superwarden-text-small">Minimum two voting options is required for single choice voting.</p>
-                        <div v-for="(item, index) in stepThree.options" class="my-1">
+                        <div v-for="(item, index) in stepThree.options" class="my-1" style="display: flex;">
                             <input v-model="stepThree.options[index]" 
                             v-bind:class="{ 'is-valid': validation.valid.options, 'is-invalid': validation.invalid.options }" 
                             v-on:focus="clearValidation('options')"
-                            type="text" class="form-control d-inline" style="width: 80%;">
-                            <button v-if = "index > 1 && stepThree.type == 2" @click="pushOneOption" type = "button" class="btn ms-4 superwarden-border" style="font-size: 16px;">+</button>
-                            <button v-if = "index > 0 && (stepThree.type == 0 || stepThree.type == 1 )" type = "button" @click="pushOneOption" class="btn ms-4 superwarden-border" style="font-size: 16px;">+</button>
-                            <button v-if = "index > 2 && stepThree.type == 2" @click="sliceOneOption(index)" type = "button" class="btn ms-4 superwarden-border" style="font-size: 16px;">-</button>
-                            <button v-if = "index > 1 && (stepThree.type == 0 || stepThree.type == 1 )" type = "button" @click="sliceOneOption(index)"  class="btn ms-4 superwarden-border" style="font-size: 16px;">-</button>
+                            type="text" class="form-control" style="width: 80%;">
+                            <img v-if = "index > 1 && stepThree.type == 2" @click="pushOneOption"  src="../assets/btn_plus.png" class="superwarden-border p-2 ms-2" style="height: 40px; width: 40px; cursor: pointer;"/>
+                            <img v-if = "index > 0 && (stepThree.type == 0 || stepThree.type == 1 )" @click="pushOneOption" src="../assets/btn_plus.png" class="superwarden-border p-2 ms-2" style="height: 40px; width: 40px; cursor: pointer;"/>
+                            <img v-if = "index > 2 && stepThree.type == 2" @click="sliceOneOption(index)" src="../assets/delete-icon.png" class="superwarden-border p-2 ms-2" style="cursor: pointer; height: 40px; "/>
+                            <img v-if = "index > 1 && (stepThree.type == 0 || stepThree.type == 1 )"  @click="sliceOneOption(index)" src="../assets/delete-icon.png" class="superwarden-border p-2 ms-2" style="cursor: pointer; height: 40px; "/>
+                            <!-- <button v-if = "index > 1 && stepThree.type == 2" @click="pushOneOption" type = "button" class="btn ms-4 superwarden-border" style="font-size: 16px;">+</button>
+                            <button v-if = "index > 0 && (stepThree.type == 0 || stepThree.type == 1 )"  @click="pushOneOption" class="btn ms-4 superwarden-border" style="font-size: 16px;">+</button>
+                            <button v-if = "index > 2 && stepThree.type == 2" @click="sliceOneOption(index)"  class="btn ms-4 superwarden-border" style="font-size: 16px;">-</button>
+                            <button v-if = "index > 1 && (stepThree.type == 0 || stepThree.type == 1 )"  @click="sliceOneOption(index)"  class="btn ms-4 superwarden-border" style="font-size: 16px;">-</button> -->
                         </div>
                     </div>
                     <div class="invalid-feedback" v-if="validation.invalid.options" style="display: flex">{{ validation.invalid.options }}</div>
@@ -218,25 +230,25 @@
                     <p class="fw-bolder superwarden-text-small mb-4">Choose a voting strategies which is suitable for your proposal.</p>
                     <div class="row" :class = "{'superwarden-invalid': validation.invalid.strategy} ">
                         <div class="col-md-6">
-                                        <div @click = "setStrategy('trc-10')" class="voting-sys p-4 mb-4" :class="stepFour.strategy ===  'trc-10'?  'selected': ''">
-                        <p class="fw-bolder fs-6">TRC-10 Balance</p>
-                        <p class= "fw-bolder p-0 m-0 superwarden-text-small">
-                            The balance of TRC-10 token in the voter’s wallet will be used to calculate the voting result. One token represents one vote (1T1V).
-                        </p>
-                    </div>
-                                        <div @click = "setStrategy('trc-20')" class="voting-sys p-4 mb-4" :class="stepFour.strategy === 'trc-20'?  'selected': ''">
+                            <div @click = "setStrategy('trc-10')"  style="height: 200px" class="voting-sys p-4 mb-4 superwarden-border" :class="stepFour.strategy ===  'trc-10'?  'warden-selected': ''">
+                                <p class="fw-bolder fs-6">TRC-10 Balance</p>
+                                <p class= "fw-bolder p-0 m-0 superwarden-text-small">
+                                    The balance of TRC-10 token in the voter’s wallet will be used to calculate the voting result. One token represents one vote (1T1V).
+                                </p>
+                            </div>
+                                        <div @click = "setStrategy('trc-20')" style="height: 200px" class="voting-sys p-4 mb-4 superwarden-border" :class="stepFour.strategy === 'trc-20'?  'warden-selected': ''">
                         <p class="fw-bolder fs-6">TRC-20 Balance</p>
                         <p class= "fw-bolder p-0 m-0 superwarden-text-small">
                             The balance of TRC-20 token in the voter’s wallet will be used to calculate the voting result. One token represents one vote (1T1V).
                         </p>
                     </div>
-                                        <div @click = "setStrategy('trc-721')" class="voting-sys p-4 mb-4" :class="stepFour.strategy === 'trc-721'?  'selected': ''">
+                                        <div @click = "setStrategy('trc-721')" style="height: 200px" class="voting-sys p-4 mb-4 superwarden-border" :class="stepFour.strategy === 'trc-721'?  'warden-selected': ''">
                         <p class="fw-bolder fs-6">TRC-721 Voting </p>
                         <p class= "fw-bolder p-0 m-0 superwarden-text-small">
                             The amount of TRC-721 token (NFT) in the voter’s wallet will be used to calculate the voting result. One token represents one vote (1T1V).
                         </p>
                     </div>
-                                        <div @click = "setStrategy('whitelist')" class="voting-sys p-4" :class="stepFour.strategy === 'whitelist'?  'selected': ''">
+                                        <div @click = "setStrategy('whitelist')" style="height: 200px" class="voting-sys p-4 superwarden-border" :class="stepFour.strategy === 'whitelist'?  'warden-selected': ''">
                         <p class="fw-bolder fs-6">Whitelist Voting</p>
                         <p class= "fw-bolder p-0 m-0 superwarden-text-small">
                             Voters in the whitelist can vote the proposal. Each of the voter will have a voting ticket with custom symbol. One person represents one vote (1P1V) and it is a single choice voting.
@@ -245,19 +257,19 @@
 
                         </div>
                         <div class="col-md-6">
-                            <div @click = "setStrategy('trc-10-th')" class="voting-sys p-4 mb-4" :class="stepFour.strategy === 'trc-10-th'?  'selected': ''">
+                            <div @click = "setStrategy('trc-10-th')" style="height: 200px" class="voting-sys p-4 mb-4 superwarden-border" :class="stepFour.strategy === 'trc-10-th'?  'warden-selected': ''">
                                 <p class="fw-bolder fs-6">TRC-10 Balance /w Threshold</p>
                                 <p class= "fw-bolder p-0 m-0 superwarden-text-small">
                                     In order to vote, the balance of TRC-10 token in the voter’s wallet need to be equal or greater than the minimum threshold set. 
                                 </p>
                             </div>
-                            <div @click = "setStrategy('trc-20-th')" class="voting-sys p-4 mb-4" :class="stepFour.strategy  === 'trc-20-th'?  'selected': ''">
+                            <div @click = "setStrategy('trc-20-th')" style="height: 200px" class="voting-sys p-4 mb-4 superwarden-border" :class="stepFour.strategy  === 'trc-20-th'?  'warden-selected': ''">
                                 <p class="fw-bolder fs-6">TRC-20 Balance /w Threshold </p>
                                 <p class= "fw-bolder p-0 m-0 superwarden-text-small">
                                     Each voter can only vote for one candidate or choice. It is ideal for scenario where voter needs to choose on option from many.
                                 </p>
                             </div>
-                            <div @click = "setStrategy('trc-721-multi')" class="voting-sys p-4" :class="stepFour.strategy === 'trc-721-multi'?  'selected': ''">
+                            <div @click = "setStrategy('trc-721-multi')" style="height: 200px" class="voting-sys p-4 superwarden-border" :class="stepFour.strategy === 'trc-721-multi'?  'warden-selected': ''">
                                 <p class="fw-bolder fs-6">TRC-721 Voting /w Multiplier </p>
                                 <p class= "fw-bolder p-0 m-0 superwarden-text-small">
                                     Each voter can only vote for one candidate or choice. It is ideal for scenario where voter needs to choose on option from many.
@@ -315,18 +327,24 @@
 							Apply quorum threshold?
 						</label>
 						<p class="fw-bolder" style="color: #959595; font-size: 14px;">A quorum is the minimum number of participating members or tokens required for a proposal to be approved.</p>
-                        <input v-if ="stepFive.quorum_status" v-model = "stepFive.percent" 
-								v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
-                                v-on:focus="clearValidation('percent')" 
-								type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
-                        <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
-                        <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
-                        <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
-								v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
-                                v-on:focus="clearValidation('totalToken')" 
-								type="number" class="form-control" placeholder="Eg. 100000">
-                        <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
-                        <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                        <div class="my-1">
+
+                            <input v-if ="stepFive.quorum_status" v-model = "stepFive.percent" 
+                                    v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
+                                    v-on:focus="clearValidation('percent')" 
+                                    type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
+                            <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
+                            <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
+                        </div>
+                        <div class="my-1">
+
+                            <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
+                                    v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
+                                    v-on:focus="clearValidation('totalToken')" 
+                                    type="number" class="form-control" placeholder="Eg. 100000">
+                            <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
+                            <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                        </div>
 					</div>
                     
                 </div>
@@ -364,18 +382,24 @@
 							Apply quorum threshold?
 						</label>
 						<p class="fw-bolder" style="color: #959595; font-size: 14px;">A quorum is the minimum number of participating members or tokens required for a proposal to be approved.</p>
-                        <input v-if ="stepFive.quorum_status"  v-model = "stepFive.percent" 
-								v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
-                                v-on:focus="clearValidation('percent')" 
-								type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
-                        <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
-                        <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
-                        <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
-								v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
-                                v-on:focus="clearValidation('totalToken')" 
-								type="number" class="form-control" placeholder="Eg. 100000">
-                        <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
-                        <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                        <div class="my-1">
+
+                            <input v-if ="stepFive.quorum_status"  v-model = "stepFive.percent" 
+                                    v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
+                                    v-on:focus="clearValidation('percent')" 
+                                    type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
+                            <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
+                            <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
+                        </div>
+                        <div class="my-1">
+
+                            <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
+                                    v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
+                                    v-on:focus="clearValidation('totalToken')" 
+                                    type="number" class="form-control" placeholder="Eg. 100000">
+                            <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
+                            <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                        </div>
 					</div>
                 </div>
                 <div v-else-if = "stepFour.strategy ===  'whitelist'">
@@ -401,7 +425,7 @@
 							<div class="valid-feedback" v-if="validation.valid.whitelist" style="display: flex;">{{ validation.valid.whitelist }}</div>
 							<div class="invalid-feedback" v-if="validation.invalid.whitelist" style="display: flex;">{{ validation.invalid.whitelist }}</div>
 						</div>
-                        <button type="button"  class="btn btn-success fw-bolder py-2" style="width: 50%; font-size: 14px;"><a href="https://practical-brahmagupta.103-233-0-73.plesk.page/download" style="color: #fff; text-decoration: none;">Download boilerplate whitelist.xlsx</a></button>
+                        <a href="https://superwarden.org/download" type="button"  class="btn btn-success fw-bolder py-2" style="width: 100%; font-size: 14px; color: #fff; text-decoration: none;">Download boilerplate whitelist.xlsx</a>
 
 					</div>
                     <div class="form-check mt-4 mb-3">
@@ -410,18 +434,23 @@
 							Apply quorum threshold?
 						</label>
 						<p class="fw-bolder" style="color: #959595; font-size: 14px;">A quorum is the minimum number of participating members or tokens required for a proposal to be approved.</p>
-                        <input v-if ="stepFive.quorum_status" v-model = "stepFive.percent" 
+                        <div class="my-1">
+                            <input v-if ="stepFive.quorum_status" v-model = "stepFive.percent" 
 								v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
                                 v-on:focus="clearValidation('percent')" 
 								type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
                         <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
                         <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
-                        <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
-								v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
-                                v-on:focus="clearValidation('totalToken')" 
-								type="number" class="form-control" placeholder="Eg. 100000">
-                        <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
-                        <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                        </div>
+                        <div class="my-1">
+
+                            <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
+                                    v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
+                                    v-on:focus="clearValidation('totalToken')" 
+                                    type="number" class="form-control" placeholder="Eg. 100000">
+                            <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
+                            <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                        </div>
 					</div>
                 
                 </div>
@@ -450,18 +479,24 @@
 							Apply quorum threshold?
 						</label>
 						<p class="fw-bolder" style="color: #959595; font-size: 14px;">A quorum is the minimum number of participating members or tokens required for a proposal to be approved.</p>
-                        <input  v-if ="stepFive.quorum_status" v-model = "stepFive.percent" 
-								v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
-                                v-on:focus="clearValidation('percent')" 
-								type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
-                        <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
-                        <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
-                        <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
-								v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
-                                v-on:focus="clearValidation('totalToken')" 
-								type="number" class="form-control" placeholder="Eg. 100000">
-                        <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
-                        <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                        <div class="my-1">
+                            
+                            <input  v-if ="stepFive.quorum_status" v-model = "stepFive.percent" 
+                                    v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
+                                    v-on:focus="clearValidation('percent')" 
+                                    type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
+                            <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
+                            <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
+                        </div>
+                        <div class="my-1">
+
+                            <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
+                                    v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
+                                    v-on:focus="clearValidation('totalToken')" 
+                                    type="number" class="form-control" placeholder="Eg. 100000">
+                            <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
+                            <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                        </div>
 					</div>
                 </div>
                 <button type=" " class="btn btn-default mt-5 p-0 float-start" @click="goBack"><b>&#8592; Back</b></button>
@@ -501,103 +536,213 @@
                         <div class="valid-feedback" v-if="validation.valid.timezone">{{ validation.valid.timezone }}</div>
                         <div class="invalid-feedback" v-if="validation.invalid.timezone">{{ validation.invalid.timezone }}</div>
                     </div>
-                    <div
-                        :class="{ 'is-valid': validation.valid.s_date, 'superwarden-invalid': validation.invalid.s_date }" 
-                        class = "row mt-2 p-1">
-                        <div class = "col-md-6" >
-                            <div class="input-group ">
-                                <label for="time-zone" class="form-label fw-bolder fs-6">Start date</label>
-                                <div  style="width: 75%;">
-                                    <Datepicker
-                                        v-model="stepSix.f_start_date_at"
-                                        v-on:focus="clearValidation('s_date')"
-                                        class="form-control border-end-0 superwarden-right-border" placeholder="Choose a date" />
+                    <div  v-if ="stepThree.type != 2">
+                        <div
+                            :class="{ 'is-valid': validation.valid.s_date, 'superwarden-invalid': validation.invalid.s_date }" 
+                            class = "row mt-2 p-1">
+                            <div class = "col-md-6" >
+                                <div class="input-group ">
+                                    <label for="time-zone" class="form-label fw-bolder fs-6">Start date</label>
+                                    <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
+                                        <div  style="width: 75%;">
+
+                                            <Datepicker
+                                              v-model="stepSix.f_start_date_at"
+                                            v-on:focus="clearValidation('s_date')"
+                                                style = "border-radius: 8px;"
+                                                class="form-control border-0 " placeholder="Choose a date" />
+                                        </div>
+                                        <span  class="input-group-text border-0" style = "border-radius: 8px;"><img src="../assets/calendar.png" style="height: 20px" /></span>
+                                    </div>
+                                   
                                 </div>
-                                    <span  class="input-group-text "><img src="../assets/calendar.png" style="height: 20px" /></span>
+                            </div>
+                            <div class = "col-md-6 " >
+                                <div class="input-group float-end" style="width: 97%;">
+                                <label for="time-zone" class="form-label fw-bolder fs-6">Start time</label>
+                                <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
+                                    <div style = "width: 82%;">
+
+                                        <VueTimepicker 
+                                            v-model="stepSix.f_start_time_at"
+                                            v-on:change="clearValidation('s_date')"
+                                            style="display: flex; font-size: 17px;"
+                                            class="form-control border-0 p-0  " placeholder = "Choose time"/>
+                                    </div>
+                                        <span  class="input-group-text border-0" style = "border-radius: 8px;"><img src="../assets/clock.png" style="height: 20px" /></span>
+                                </div>
+                                    
+                                </div>
+                            </div>
+                        
+                        
+                        </div>
+                        <div class="invalid-feedback" v-if="validation.invalid.s_date" style="display: flex;">{{ validation.invalid.s_date }}</div>
+
+                        <div 
+                            :class="{ 'is-valid': validation.valid.e_date, 'superwarden-invalid': validation.invalid.e_date }" 
+                        
+                        class = "row mt-4 py-1">
+                            <div class = "col-md-6" >
+                                <div class="input-group ">
+                                    <label for="time-zone" class="form-label fw-bolder fs-6">End date</label>
+<div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
+                                        <div  style="width: 75%;">
+
+                                            <Datepicker
+                                               v-model="stepSix.f_end_date_at" 
+                                            v-on:focus="clearValidation('e_date')"
+                                                style = "border-radius: 8px;"
+                                                class="form-control border-0 " placeholder="Choose a date" />
+                                        </div>
+                                        <span  class="input-group-text border-0" style = "border-radius: 8px;"><img src="../assets/calendar.png" style="height: 20px" /></span>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class = "col-md-6 " >
+                                <div class="input-group float-end" style="width: 97%;">
+                                <label for="time-zone" class="form-label fw-bolder fs-6">End time</label>
+                                <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
+                                    <div style = "width: 82%;">
+
+                                        <VueTimepicker 
+                                            v-model="stepSix.f_end_time_at"
+                                            v-on:change="clearValidation('e_date')"
+                                            style="display: flex; font-size: 17px;"
+                                            class="form-control border-0 p-0  " placeholder = "Choose time"/>
+                                    </div>
+                                        <span  class="input-group-text border-0" style = "border-radius: 8px;"><img src="../assets/clock.png" style="height: 20px" /></span>
+                                </div>
+                                </div>
                             </div>
                         </div>
-                        <div class = "col-md-6 " >
-                            <div class="input-group float-end" style="width: 97%;">
-                            <label for="time-zone" class="form-label fw-bolder fs-6">Start time</label>
-                                <div style = "width: 82%;">
-
-                                    <VueTimepicker 
-                                        v-model="stepSix.f_start_time_at"
-                                        v-on:change="clearValidation('s_date')"
-
-                                        class="form-control border-end-0 p-0 superwarden-right-border" placeholder = "Choose time"/>
-                                </div>
-                                    <span  class="input-group-text "><img src="../assets/clock.png" style="height: 20px" /></span>
-                            </div>
-                        </div>
-                       
-                    
+                        <div class="invalid-feedback" style="display: flex;">{{ validation.invalid.e_date }}</div>
                     </div>
-                    <div class="invalid-feedback" v-if="validation.invalid.s_date" style="display: flex;">{{ validation.invalid.s_date }}</div>
 
-                    <div 
-                        :class="{ 'is-valid': validation.valid.e_date, 'superwarden-invalid': validation.invalid.e_date }" 
-                    
-                    class = "row mt-4 py-1">
-                        <div class = "col-md-6" >
-                            <div class="input-group ">
-                                <label for="time-zone" class="form-label fw-bolder fs-6">End date</label>
+                    <div v-else>
+                        <p class="fw-bolder fs-5 mt-5">First Round Voting:</p>
 
-                                <div  style="width: 75%;">
+                                                <div
+                            :class="{ 'is-valid': validation.valid.s_date, 'superwarden-invalid': validation.invalid.s_date }" 
+                            class = "row mt-2 p-1">
+                            <div class = "col-md-6" >
+                                <div class="input-group ">
+                                    <label for="time-zone" class="form-label fw-bolder fs-6">Start date</label>
+                                                         <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
+                                        <div  style="width: 75%;">
 
-                                    <Datepicker
-                                        v-model="stepSix.f_end_date_at" 
-                                        v-on:focus="clearValidation('e_date')"
-                                        class="form-control border-end-0 superwarden-right-border" placeholder="Choose a date" />
+                                            <Datepicker
+                                               v-model="stepSix.f_start_date_at"
+                                            v-on:focus="clearValidation('s_date')"
+                                                style = "border-radius: 8px;"
+                                                class="form-control border-0 " placeholder="Choose a date" />
+                                        </div>
+                                        <span  class="input-group-text border-0" style = "border-radius: 8px;"><img src="../assets/calendar.png" style="height: 20px" /></span>
+                                    </div>
+                                    
                                 </div>
-                                    <span  class="input-group-text "><img src="../assets/calendar.png" style="height: 20px" /></span>
+                            </div>
+                            <div class = "col-md-6 " >
+                                <div class="input-group float-end" style="width: 97%;">
+                                <label for="time-zone" class="form-label fw-bolder fs-6">Start time</label>
+                                <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
+                                    <div style = "width: 82%;">
+
+                                        <VueTimepicker 
+                                            v-model="stepSix.f_start_time_at"
+                                            v-on:change="clearValidation('s_date')"
+                                            style="display: flex; font-size: 17px;"
+                                            class="form-control border-0 p-0  " placeholder = "Choose time"/>
+                                    </div>
+                                        <span  class="input-group-text border-0" style="border-radius: 8px;"><img src="../assets/clock.png" style="height: 20px" /></span>
+                                </div>
+                                    
+                                </div>
+                            </div>
+                        
+                        
+                        </div>
+                        <div class="invalid-feedback" v-if="validation.invalid.s_date" style="display: flex;">{{ validation.invalid.s_date }}</div>
+
+                        <div 
+                            :class="{ 'is-valid': validation.valid.e_date, 'superwarden-invalid': validation.invalid.e_date }" 
+                        
+                        class = "row mt-4 py-1">
+                            <div class = "col-md-6" >
+                                <div class="input-group ">
+                                    <label for="time-zone" class="form-label fw-bolder fs-6">End date</label>
+                                                                               <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
+                                        <div  style="width: 75%;">
+
+                                            <Datepicker
+                                               v-model="stepSix.f_end_date_at" 
+                                            v-on:focus="clearValidation('e_date')"
+                                                style = "border-radius: 8px;"
+                                                class="form-control border-0 " placeholder="Choose a date" />
+                                        </div>
+                                        <span  class="input-group-text border-0" style = "border-radius: 8px;"><img src="../assets/calendar.png" style="height: 20px" /></span>
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+                            <div class = "col-md-6 " >
+                                <div class="input-group float-end" style="width: 97%;">
+                                <label for="time-zone" class="form-label fw-bolder fs-6">End time</label>
+                                <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
+                                    <div style = "width: 82%;">
+
+                                        <VueTimepicker 
+                                            v-model="stepSix.f_end_time_at"
+                                            v-on:change="clearValidation('e_date')"
+                                            style="display: flex; font-size: 17px;"
+                                            class="form-control border-0 p-0  " placeholder = "Choose time"/>
+                                    </div>
+                                        <span  class="input-group-text border-0" style = "border-radius: 8px;"><img src="../assets/clock.png" style="height: 20px" /></span>
+                                </div>
+                                </div>
                             </div>
                         </div>
-                        <div class = "col-md-6 " >
-                            <div class="input-group float-end" style="width: 97%;">
-                            <label for="time-zone" class="form-label fw-bolder fs-6">End time</label>
-                                <div style = "width: 82%;">
-
-                                    <VueTimepicker 
-                                        v-model="stepSix.f_end_time_at"
-                                        v-on:change="clearValidation('e_date')"
-                                        class="form-control border-end-0 p-0 superwarden-right-border" placeholder = "Choose time"/>
-                                </div>
-                                    <span  class="input-group-text "><img src="../assets/clock.png" style="height: 20px" /></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="invalid-feedback" style="display: flex;">{{ validation.invalid.e_date }}</div>
-
-                    <div v-if ="stepThree.type == 2">
+                        <div class="invalid-feedback" style="display: flex;">{{ validation.invalid.e_date }}</div>
+                        <p class="fw-bolder fs-5 mt-5">Second Round Voting:</p>
                         <div 
                         :class="{ 'is-valid': validation.valid.ss_date, 'superwarden-invalid': validation.invalid.ss_date }" 
                         class = "row mt-4 py-1">
                             <div class = "col-md-6" >
                                 <div class="input-group ">
                                     <label for="time-zone" class="form-label fw-bolder fs-6">Start date</label>
+                                                                        <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
+                                        <div  style="width: 75%;">
 
-                                    <div  style="width: 75%;">
-
-                                        <Datepicker
-                                            v-model="stepSix.s_start_date_at" 
+                                            <Datepicker
+                                                v-model="stepSix.s_start_date_at" 
                                             v-on:focus="clearValidation('ss_date')"
-                                            class="form-control border-end-0 superwarden-right-border" placeholder="Choose a date" />
+                                                style = "border-radius: 8px;"
+                                                class="form-control border-0 " placeholder="Choose a date" />
+                                        </div>
+                                        <span  class="input-group-text border-0" style = "border-radius: 8px;"><img src="../assets/calendar.png" style="height: 20px" /></span>
                                     </div>
-                                        <span  class="input-group-text "><img src="../assets/calendar.png" style="height: 20px" /></span>
+
+                                    
                                 </div>
                             </div>
                             <div class = "col-md-6 " >
                                 <div class="input-group float-end" style="width: 97%;">
                                 <label for="time-zone" class="form-label fw-bolder fs-6">Start time</label>
+                                <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
                                     <div style = "width: 82%;">
 
                                         <VueTimepicker 
-                                            v-model="stepSix.s_start_time_at"
-                                            v-on:change="clearValidation('ss_date')"
-                                            class="form-control border-end-0 p-0 superwarden-right-border" placeholder = "Choose time"/>
+                                                v-model="stepSix.s_start_time_at"
+                                                v-on:change="clearValidation('ss_date')"
+                                            style="display: flex; font-size: 17px;"
+                                            class="form-control border-0 p-0  " placeholder = "Choose time"/>
                                     </div>
-                                        <span  class="input-group-text "><img src="../assets/clock.png" style="height: 20px" /></span>
+                                    <span  class="input-group-text border-0" style = "border-radius: 8px;"><img src="../assets/clock.png" style="height: 20px" /></span>
+                                </div>
+
+                                    
                                 </div>
                             </div>
                         </div>
@@ -610,30 +755,36 @@
                             <div class = "col-md-6" >
                                 <div class="input-group ">
                                     <label for="time-zone" class="form-label fw-bolder fs-6">End date</label>
+                                    
+                                    <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
+                                        <div  style="width: 75%;">
 
-                                    <div  style="width: 75%;">
-
-                                        <Datepicker
-                                            v-model="stepSix.s_end_date_at" 
-                                            v-on:focus="clearValidation('se_date')"
-
-                                            class="form-control border-end-0 superwarden-right-border" placeholder="Choose a date" />
+                                            <Datepicker
+                                                v-model="stepSix.s_end_date_at" 
+                                                v-on:focus="clearValidation('se_date')"
+                                                style = "border-radius: 8px;"
+                                                class="form-control border-0 " placeholder="Choose a date" />
+                                        </div>
+                                        <span  class="input-group-text border-0" style = "border-radius: 8px;"><img src="../assets/calendar.png" style="height: 20px" /></span>
                                     </div>
-                                        <span  class="input-group-text "><img src="../assets/calendar.png" style="height: 20px" /></span>
                                 </div>
                             </div>
                             <div class = "col-md-6 " >
                                 <div class="input-group float-end" style="width: 97%;">
                                 <label for="time-zone" class="form-label fw-bolder fs-6">End time</label>
+                                                                <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
                                     <div style = "width: 82%;">
 
                                         <VueTimepicker 
                                             v-model="stepSix.s_end_time_at" 
                                             v-on:change="clearValidation('se_date')"
-
-                                            class="form-control border-end-0 p-0 superwarden-right-border" placeholder = "Choose time"/>
+                                            style="display: flex; font-size: 17px;"
+                                            class="form-control border-0 p-0  " placeholder = "Choose time"/>
                                     </div>
-                                        <span  class="input-group-text "><img src="../assets/clock.png" style="height: 20px" /></span>
+                                    <span  class="input-group-text border-0" style = "border-radius: 8px;"><img src="../assets/clock.png" style="height: 20px" /></span>
+                                </div>
+                                
+                                    
                                 </div>
                             </div>
                         
@@ -654,6 +805,7 @@
                     <button type=" " class="btn btn-default mt-4 p-0 float-start" @click="goBack"><b>&#8592; Back</b></button>
                     <button class="btn btn-danger float-end mt-4 px-4" type="submit">Next</button>
                 </div>
+                <!-- <div class="col-md-6 overflow-hidden w-[800px]"></div> -->
             </form>
 
 
@@ -683,22 +835,22 @@
                         <div style = "display:inline-table">
                         <div class="mt-4" style="display: flex; float: left">
                             <img src="../assets/check.png" style="width: 25px; height: 25px; margin-top: 2px;"/>
-                            <p class="fw-bolder ps-1" style="color: #959595;"> The submitted proposal cannot be edited. However, you have the option to delete the proposal and create again.</p>
+                            <p class="fw-bolder ps-1" style="color: #959595; font-size: 15px;"> The submitted proposal cannot be edited. However, you have the option to delete the proposal and create again.</p>
                         </div>
                         <div class="mt-2" style="display: flex; float: left">
                             <img src="../assets/check.png" style="width: 25px; height: 25px; margin-top: 2px;"/>
-                            <p class="fw-bolder ps-1" style="color: #959595;"> Submitted proposal will be stored on your IPFS storage tools (Web3.Storage and Pinata). Hence, for permanent deletion, you need to delete it from Web3.storage and also unpin the CID at Pinata.</p>
+                            <p class="fw-bolder ps-1" style="color: #959595; font-size: 15px;"> Submitted proposal will be stored on your IPFS storage tools (Web3.Storage and Pinata). Hence, for permanent deletion, you need to delete it from Web3.storage and also unpin the CID at Pinata.</p>
                         </div>
                         <div class="mt-2" style="display: flex; float: left; ">
                             <img src="../assets/check.png" style="width: 25px; height: 25px; margin-top: 2px;"/>
-                            <p class="fw-bolder ps-1" style="color: #959595;"> The proposal voting result will be stored on your IPFS storage tools (Web3.Storage and Pinata) when the voting period ends.</p>
+                            <p class="fw-bolder ps-1" style="color: #959595; font-size: 15px;"> The proposal voting result will be stored on your IPFS storage tools (Web3.Storage and Pinata) when the voting period ends.</p>
                         </div>
                         </div>
 
                         <div class="form-check mt-4 mb-3" style="display: block;">
                                 <input v-model= "stepSeven.check" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                                 <label class="form-check-label form-label fw-bolder fs-6" for="flexCheckDefault" style="font-weight: bold;">
-                                    I understand my role as a superwarden.
+                                    I understand and will like to continue my proposal submission. 
                                 </label>
                             </div>
 
@@ -742,7 +894,8 @@ export default {
                 title: '',
                 description: '',
                 discussions: [''],
-                attachments: ['']
+                attachments: ['', ''],
+                importance: false
             },
             stepTwo: {summary: ''},
             stepThree: {
@@ -1229,8 +1382,8 @@ export default {
     border: 1px solid #959595;
     /* margin-bottom: 20px; */
 }
-.selected {
-    border: 1px solid #000000
+.warden-selected {
+    border: 2px solid #000000
 
 }
 /* .voting-sys:hover{

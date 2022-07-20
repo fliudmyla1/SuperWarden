@@ -1,19 +1,19 @@
 <template>
     <div style="padding-left: 35px; margin-left: 100px;">
-        <button type=" " class="btn btn-default mt-3 p-0" @click="backToAnnounce"><b>&#8592; Back</b></button>
-        <p class="mt-5  fw-bolder fs-1 text-dark">Broadcast announcement</p>
+        <button type=" " class="btn btn-default mt-5 p-0" @click="backToAnnounce"><b>&#8592; Back</b></button>
+        <p class="my-5  fw-bolder fs-1 text-dark">Broadcast announcement</p>
         <form v-on:submit.prevent="validateAnnouncement" class="row mt-4 mb-5" style="width: 100%;">
         
             <div class="col-md-7">
-                <div class="lisi-item mb-3">
-                    <img src="../assets/check.png" />
-                    <span class="fw-bolder">The broadcasted announcement will be store on Web3.storage</span>
+                <div class="lisi-item my-1">
+                    <img src="../assets/check.png" style="height: 20px;" />
+                    <span class="fw-bolder" style="font-size: 15px">The broadcasted announcement will be store on Web3.storage</span>
                 </div>
-                <div class="lisi-item mb-3">
+                <div class="lisi-item my-1">
                     <img src="../assets/check.png" />
                     <span class="fw-bolder">Pinata will perform additional pinning</span>
                 </div>
-                <div class="lisi-item mb-3">
+                <div class="lisi-item my-1">
                     <img src="../assets/check.png" />
                     <span class="fw-bolder">
                     You can delete the announcement after it was broadcasted. However, it will just be invisibile
@@ -21,20 +21,11 @@
                 unpin the CID at Pinata.
                     </span>
                 </div>
-                <div class="lisi-item mb-5">
+                <div class="lisi-item my-1">
                     <img src="../assets/check.png" />
                     <span class="fw-bolder">Please note that if there are nodes on IPFS network still saving a copy of your announcement,
                         you can’t really permenantly delete it.</span>
                 </div>
-
-
-
-
-
-
-
-
-
 
 
                 
@@ -43,7 +34,7 @@
 
 
 
-                <div class="mb-4 mt-2">
+                <div class="mb-4 mt-4">
                     <label for="title" class="form-label fw-bolder fs-6">Title of announcement</label>
                     <input  v-model="announce.title" 
                             v-bind:class="{ 'is-valid': validation.valid.title, 'is-invalid': validation.invalid.title }" 
@@ -63,10 +54,10 @@
                 </div>
                 <div class="mb-4 mt-2">
                     <label for="attachment_link" class="form-label fw-bolder fs-6">Attachment link</label>
-                    <input v-model="announce.attachment" type="text" class="form-control"  placeholder="Eg. blog post">
+                    <input v-model="announce.attachment" type="text" class="form-control"  placeholder="Eg. wwww.example.com">
                 </div>
                 <div class="mb-4 mt-2">
-                    <label for="attachment_link" class="form-label fw-bolder fs-6">Valid till?</label>
+                    <label for="attachment_link" class="form-label fw-bolder fs-6">Valid till</label>
                     <div class="input-group "
                         :class="{ 'is-valid': validation.valid.date, 'superwarden-invalid': validation.invalid.date }"
                     >
@@ -97,7 +88,7 @@
                 <div class="form-check form-switch mt-2">
                     <input v-model="announce.importance" style="height: 32px; width: 65px" class="form-check-input" type="checkbox">
                 </div>
-                <button type="submit" class="btn btn-danger float-end mt-4">Broadcast</button>
+                <button type="submit" class="btn btn-danger float-end my-5 px-4">Broadcast</button>
             </div>
             
         </form>
@@ -255,7 +246,10 @@ export default {
 }
 
 .lisi-item>img {
-  height: 25px;
+  height: 20px;
+}
+.lisi-item>span {
+  font-size: 15px;
 }
 
 </style>

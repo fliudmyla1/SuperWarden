@@ -1,42 +1,50 @@
 <template>
-  <div class="head p-2" style="width: 100%;">
-      <span class="px-5 py-1 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Announcement</span>
-      <div class="options">
-          <button @click = "getAnnouncementList('all')" :class="index === 'all'?  'selected': ''" style="background-color: #fff">All</button>
-          <button @click = "getAnnouncementList('open')" :class="index === 'open'?  'selected': ''" style="background-color: #fff">Open</button>
-          <button @click = "getAnnouncementList('important')" :class="index === 'important'?  'selected': ''" style="background-color: #fff">Important</button>
-          <button @click = "getAnnouncementList('closed')" :class="index === 'closed'?  'selected': ''" style="background-color: #fff">Closed</button>
-      </div>
-      <div v-if = "role < 2" class="right-button-holder"><button @click="goCreateAnnouncement" class="right-button">+ Broadcast Announcement</button>
-      </div>
+<nav class="navbar navbar-expand-sm h-[65px]" style="border-bottom: 1px solid #d5d5d5">
+  <div class="container-fluid">
+    <label class="navbar-brand ps-5 pe-4 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Announcement</label>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mynavbar">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <label @click = "getAnnouncementList('all')" :class="index === 'all'?  'selected': ''" class="nav-link superwarden-nav" style="background-color: #fff">All</label>
+        </li>
+        <li class="nav-item">
+          <label @click = "getAnnouncementList('open')" :class="index === 'open'?  'selected': ''" class="nav-link superwarden-nav"  style="background-color: #fff">Open</label>
+        </li>
+        <li class="nav-item">
+          <label @click = "getAnnouncementList('important')" :class="index === 'important'?  'selected': ''" class="nav-link superwarden-nav" style="background-color: #fff">Important</label>
+        </li>
+        <li class="nav-item">
+          <label @click = "getAnnouncementList('closed')" :class="index === 'closed'?  'selected': ''" class="nav-link superwarden-nav" style="background-color: #fff">Closed</label>
+        </li>
+      </ul>
+      <form class="d-flex me-4" v-if = "$store.getters.role < 2">
+        <button @click="goCreateAnnouncement" class="right-button px-3"  type="button">+Announcement</button>
+      </form>
+    </div>
   </div>
-  <!-- <div v-if = "announcements.length > 0" class="right-section-content" style="height: 73.8vh; overflow-y: scroll;"> -->
+</nav>
+
   <div v-if = "announcements.length > 0" class="right-section-content">
-
-
-
-
-
     <div @click="goAnnounceDetail(i._id)"  class="block-container-announcement" v-for = "(i) in announcements">
-      <div class="header">
-          <span class="fw-bolder text-dark" style="font-size: 22px;">{{trimmedAnnounceTitle(i.title)}}
-           
-          </span>
-          <span> <img v-if = "i.importance"      class="mb-1"    src="../../assets/staricon.png" /></span>
-          <span   v-if="i.passed" class="status complete" style="justify-content: center;
-    vertical-align: middle;
-    display: inline-table;">closed</span>
-          <span v-else class="status active" style="justify-content: center;
-    vertical-align: middle;
-    display: inline-table;">open</span>
-
+      <div class="my-2" style="display: flex;   justify-content: space-between;">
+        <div style="display: flex; ">
+          <p class="fw-bolder text-dark px-0 m-0 py-2" style="font-size: 22px;">{{trimmedAnnounceTitle(i.title)}}</p>
+          <img v-if = "i.importance"   style="height: 35px;"   class="ms-2"    src="../../assets/staricon.png" />
+        </div>
+        <div class="my-2 " style="float: right;">
+          <p v-if = "!i.passed" class="status active px-3">open</p>
+          <p v-else class="status complete px-3">closed</p>
+        </div>
       </div>
           <span class="fw-bolder">Broadcast by {{i.creator.name ? trimmedAccountNameAndLowercase(i.creator.name) +"." + i.slug: trimmedAccountAddress(i.creator.address) }}</span>
           <span class="text-dark" style="height: 100px">{{trimmedAnnounceSummary(i.summary)}}</span>
           <span class="valid-till"><img src="../../assets/clock-icon.png"/>Valid Till &nbsp;<img src="../../assets/line1.png" style="height: 20px;"/> {{getDateString(i.expire_at)}} ({{'UTC ' + i.timezone.offset}})</span>
     </div>
   </div>
-  <div v-else class="right-section-no-content">
+  <div v-else class="right-section-no-content" :style="`min-height: ${height}px`">
     <img src="../../assets/townhall-quiet.png" />
     <span>There are no announcements currently. Let’s wait for someone to broadcast. </span>
   </div>
@@ -56,6 +64,7 @@ export default {
           index: '',
           date: '',
           announcements: [],
+          height: innerHeight - 210
 
 
         }
@@ -66,6 +75,8 @@ export default {
     },
 
     created() {
+      console.log(this.$store.getters.role)
+      this.index = 'all'; 
       this.$parent.$parent.tag = 'a'
       this.getAnnouncementList('all')
 
@@ -158,15 +169,15 @@ export default {
   margin: 5px;
   width: 100px;
   border-radius: 5px;
-  font-size: 17px;
+  font-size: 15px;
   border: none;
   font-weight: 900;
   /* padding: 5px 20px; */
   /* cursor: pointer; */
 }
 
-.right-section>.head .options button.selected {
-  border: 1px solid #959595;
+.selected {
+  border: 1px solid #595959 !important;
 }
 .right-section>.head .options button.none {
   cursor: default;
@@ -177,18 +188,13 @@ export default {
   flex-grow: 1;
   justify-content: flex-end;
 }
-
-.right-section .head .right-button {
-  background: rgba(220, 6, 43, 1);
-  border-radius: 25px;
-  color: white;
-  padding: 5px 15px;
-  border: none;
-  font-family: Inter;
-  font-weight: Bold;
-  font-size: 13px;
-  opacity: 1;
-  text-align: left;
+.right-button{
+   background: rgba(220, 6, 43, 1) !important;
+     border-radius: 25px;
+       padding: 5px 10px;
+         color: white;
+         font-size: 13px;
+         font-weight: 900;
 }
 
 .right-section-content {
@@ -227,19 +233,17 @@ export default {
   height: 30px;
 }
 
-.block-container-announcement .header .status {
+.status {
   border-radius: 20px;
   height: 25px;
-  padding: 2px 15px;
   color: white;
-  font-family: Inter;
   font-weight: Bold;
   font-size: 15px;
 }
-.block-container-announcement .header .active {
+.active {
   background: rgba(80,200,120,1);
 }
-.block-container-announcement .header .complete {
+.complete {
   background: rgba(114,114,114,1);
 }
 

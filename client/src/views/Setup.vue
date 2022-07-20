@@ -1,7 +1,7 @@
 <template>
     <div style="padding-left: 35px; margin-left: 100px;">
         <!-- <div class="" style=""> -->
-			<p class="mt-5 mb-4 fw-bolder fs-1 text-dark">Create a townhall</p>
+			<p class="my-5 pt-5 fw-bolder fs-1 text-dark">Create a townhall</p>
 			
 
 
@@ -9,7 +9,7 @@
 			<form v-if ="steps == 1"               v-on:submit.prevent="validateFirstStep" autocomplete="off"               class="row mb-5" style="width: 95%;">
 				<div class="col-lg-6">
 					<p class="fw-bolder fs-4">1. Basic Info</p>
-					<div class="mb-3 mt-3">
+					<div class="mb-3 mt-4">
 						<label for="name" class="form-label fw-bolder fs-6">Name of the townhall</label>
 						<input v-model = "tempName" 
 								v-bind:class="{ 'is-valid': validation.valid.name, 'is-invalid': validation.invalid.name }" 
@@ -86,7 +86,7 @@
 							<div class="invalid-feedback" v-if="validation.invalid.slug" style="display: flex;">{{ validation.invalid.slug }}</div>
 						</div>
 					</div>
-					<button class="btn btn-danger float-end mt-3 px-4 " type="submit">Next</button>
+					<button class="btn btn-danger float-end mt-3 px-5 " type="submit">Next</button>
 				</div>
 			</form>
 
@@ -109,7 +109,7 @@
 			<form v-if ="steps == 2"    v-on:submit.prevent="validateSecondStep" autocomplete="off"    class="row mb-5" style="width: 95%;">
 				<div class="col-lg-6">
 					<p class="fw-bolder fs-4">2. Social Media and Details</p>
-					<div class="mb-3 mt-3">
+					<div class="mb-3 mt-4">
 						<label for="name" class="form-label fw-bolder fs-6" >Twitter</label>
 						<input  v-model = "stepTwo.twitter" 
 								v-bind:class="{ 'is-valid': validation.valid.twitter, 'is-invalid': validation.invalid.twitter }" 
@@ -172,7 +172,7 @@
 					</div>
 					<div>
 						<button type=" " class="btn btn-default float-start mt-3 p-0" @click="prevStep"><b>&#8592; Back</b></button>
-						<button type="submit" class="btn btn-danger float-end mt-3 px-4">Next</button>
+						<button type="submit" class="btn btn-danger float-end mt-3 px-5">Next</button>
 					</div>
 				</div>
 			</form>
@@ -202,7 +202,7 @@
 			<form v-if ="steps == 3"   v-on:submit.prevent="validateThirdStep" class="row mb-5" style="width: 95%;">
 				<div class="col-lg-6">
 					<p class="fw-bolder fs-4">3. IPFS Settings and Visibility</p>
-					<div class="mb-3 mt-3">
+					<div class="mb-3 mt-4">
 						<label for="name" class="form-label fw-bolder fs-6">Web3.storage API key</label>
 						<input  v-model = "stepThree.webThrKey" 
 								v-bind:class="{ 'is-valid': validation.valid.webThrKey, 'is-invalid': validation.invalid.webThrKey }" 
@@ -231,7 +231,8 @@
 					</div>
 					<div>
 						<button type=" " class="btn btn-default float-start mt-3 p-0" @click="prevStep"><b>&#8592; Back</b></button>
-						<button type="submit" class="btn btn-danger float-end mt-3 px-4" >Next</button>
+												<button type="submit" class="btn btn-danger float-end mt-3 px-5">Next</button>
+
 					</div>
 				</div>
 			</form>
@@ -248,20 +249,20 @@
 
 			<form v-if ="steps == 4"    v-on:submit.prevent="validateFourthStep"    class="row mb-5" style="width: 95%;">
 				<div class="col-lg-6">
-					<p class="fw-bolder fs-4">4. Assign Masters</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Master can only create and publish proposal</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Can only be assigned by superwarden and warden </p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Can only be removed by superwarden and warden  </p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> You can edit the role assignment anytime</p>
+					<p class="fw-bolder fs-4 superwarden-sm-f">4. Assign Masters</p>
+					<p class="fw-bolder superwarden-sm-f mt-4" style="color: #959595; display: flex;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Master can only create and publish proposal</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595; display: flex;"><img class="me-2"  src="../assets/check.png" style="width: 25px;"/> Can only be assigned by superwarden and warden </p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595;display: flex;"><img class="me-2"  src="../assets/check.png" style="width: 25px;"/> Can only be removed by superwarden and warden  </p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595;display: flex;"><img class="me-2"  src="../assets/check.png" style="width: 25px;"/> You can edit the role assignment anytime</p>
 					
 					
 					<p class="fs-5 fw-bolder mt-5">Masters</p>
-					<p class="fw-bolder" style="color: #959595;">Format of assigning:</p>
-					<p class="fw-bolder" style="color: #959595;">{{"Tronlink wallet address 1 < SPACE > nickname < new line >"}}</p>
-					<p class="fw-bolder" style="color: #959595;">{{"Tronlink wallet address 2 < SPACE > nickname < new line >"}}</p>
-					<p class="fw-bolder" style="color: #959595;">...</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595;">Format of assigning:</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595;">{{"Tronlink wallet address 1 < SPACE > nickname < new line >"}}</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595;">{{"Tronlink wallet address 2 < SPACE > nickname < new line >"}}</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595;">...</p>
 			
-					<p class="fw-bolder" style="color: #959595;">*Nickname should be all lowercase and no space allowed</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595;">*Nickname should be all lowercase and no space allowed</p>
 					<div class="mb-3 mt-2">
 						<textarea 	v-model = "stepFour.master"  
 									v-bind:class="{ 'is-valid': validation.valid.master, 'is-invalid': validation.invalid.master }" 
@@ -276,7 +277,8 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"></textarea>
 					</div>
 					<div>
 						<button type=" " class="btn btn-default float-start mt-3 p-0" @click="prevStep"><b>&#8592; Back</b></button>
-						<button type="submit" class="btn btn-danger float-end mt-3 px-4">Next</button>
+												<button type="submit" class="btn btn-danger float-end mt-3 px-5">Next</button>
+
 					</div>
 				</div>
 				<div class="col-lg-5" style="position: relative;">
@@ -304,18 +306,18 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"></textarea>
 			<form v-if ="steps == 5"    v-on:submit.prevent="validateFifthStep" class="row mb-5" style="width: 95%;">
 				<div class="col-lg-6">
 					<p class="fw-bolder fs-4">5. Assign Wardens</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Warden can create and publish proposal</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Warden can broadcast announcement </p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Can only be assigned and removed by superwarden   </p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Warden can assign master</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> You can edit the role assignment anytime</p>
+					<p class="fw-bolder mt-4 superwarden-sm-f superwarden-sm-f" style="color: #959595; display: flex;"><img class = "me-2" src="../assets/check.png" style="width: 25px;"/> Warden can create and publish proposal</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595; display: flex;"><img class = "me-2" src="../assets/check.png" style="width: 25px;"/> Warden can broadcast announcement </p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595; display: flex;"><img class = "me-2" src="../assets/check.png" style="width: 25px;"/> Can only be assigned and removed by superwarden   </p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595; display: flex;"><img class = "me-2" src="../assets/check.png" style="width: 25px;"/> Warden can assign master</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595; display: flex;"><img class = "me-2" src="../assets/check.png" style="width: 25px;"/> You can edit the role assignment anytime</p>
 					<p class="fs-5 fw-bolder mt-5">Wardens</p>
-					<p class="fw-bolder" style="color: #959595;">Format of assigning:</p>
-					<p class="fw-bolder" style="color: #959595;">{{"Tronlink wallet address 1 < SPACE > nickname < new line >"}}</p>
-					<p class="fw-bolder" style="color: #959595;">{{"Tronlink wallet address 2 < SPACE > nickname < new line >"}}</p>
-					<p class="fw-bolder" style="color: #959595;">...</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595;">Format of assigning:</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595;">{{"Tronlink wallet address 1 < SPACE > nickname < new line >"}}</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595;">{{"Tronlink wallet address 2 < SPACE > nickname < new line >"}}</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595;">...</p>
 			
-					<p class="fw-bolder" style="color: #959595;">*Nickname should be all lowercase and no space allowed</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595;">*Nickname should be all lowercase and no space allowed</p>
 					<div class="mb-3 mt-2">
 						<textarea 	v-model = "stepFive.warden" 
 									v-bind:class="{ 'is-valid': validation.valid.warden, 'is-invalid': validation.invalid.warden }" 
@@ -331,7 +333,8 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"
 					</div>
 					<div>
 						<button type=" " class="btn btn-default float-start mt-3 p-0" @click="prevStep"><b>&#8592; Back</b></button>
-						<button type="submit" class="btn btn-danger float-end mt-3 px-4">Next</button>
+												<button type="submit" class="btn btn-danger float-end mt-3 px-5">Next</button>
+
 					</div>
 				</div>
 				<div class="col-lg-5" style="position: relative;">
@@ -361,7 +364,7 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"
 			<form v-if ="steps == 6"    v-on:submit.prevent="validateSixthStep"    class="row mb-5" style="width: 95%;">
 				<div class="col-lg-6">
 					<p class="fw-bolder fs-4">6. Proposal Publishing Permission</p>
-					<div class="form-check mt-3 mb-3">
+					<div class="form-check mt-4 mb-3">
 						<input  class="form-check-input" type="checkbox" checked disabled id="flexCheckDefault">
 						<label  class="form-check-label fw-bolder fs-6" for="flexCheckDefault" style="font-weight: bold;">
 							Allow masters to create and publish proposal
@@ -429,7 +432,8 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"
 					</div>
 					<div>
 						<button type=" " class="btn btn-default float-start mt-3 p-0" @click="prevStep"><b>&#8592; Back</b></button>
-						<button type="submit" class="btn btn-danger float-end mt-3 px-4">Next</button>
+												<button type="submit" class="btn btn-danger float-end mt-3 px-5">Next</button>
+
 					</div>
 				</div>
 			</form>
@@ -440,13 +444,13 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"
 			<div v-if ="steps == 7 " class="row mb-5" style="width: 95%;">
 				<div class="col-lg-6">
 					<p class="fw-bolder fs-4">7. Understanding your role | Superwarden</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Superwarden can create and publish proposal</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Superwarden can broadcast announcement</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Can’t be removed by anyone</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Can remove warden and master</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Superwarden can assign warden and master</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Superwarden can edit townhall settings</p>
-					<p class="fw-bolder" style="color: #959595;"><img src="../assets/check.png" style="width: 25px;"/> Every townhall has only one superwarden</p>
+					<p class="fw-bolder mt-4" style="color: #959595; display: flex;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Superwarden can create and publish proposal</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595; display: flex;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Superwarden can broadcast announcement</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595; display: flex;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Can’t be removed by anyone</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595; display: flex;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Can remove warden and master</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595; display: flex;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Superwarden can assign warden and master</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595; display: flex;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Superwarden can edit townhall settings</p>
+					<p class="fw-bolder superwarden-sm-f" style="color: #959595; display: flex;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Every townhall has only one superwarden</p>
 					<div class="form-check mt-5 mb-3">
 						<input v-model= "stepSeven.role" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
 						<label class="form-check-label form-label fw-bolder fs-6" for="flexCheckDefault" style="font-weight: bold;">
@@ -455,7 +459,7 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"
 					</div>
 					<div  class="form-check mt-3 mb-3">
 						<input v-model= "stepSeven.oneTownhall" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-						<label class="form-check-label form-label fw-bolder fs-6" for="flexCheckDefault" style="font-weight: bold;">
+						<label class="form-check-label form-label fw-bolder fs-6 " for="flexCheckDefault" style="font-weight: bold;">
 							I understand this is the only townhall I can create (one wallet, one townhall).
 						</label>
 					</div>
@@ -468,7 +472,7 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"
 					
 					<div>
 						<button type=" " class="btn btn-default float-start mt-3 ps-0" @click="prevStep"><b>&#8592; Back</b></button>
-						<button type=" " class="btn btn-danger mt-3 ms-4 px-4" @click="checkCreation">Create</button>
+						<button type=" " class="btn btn-danger mt-3 ms-4 px-5" @click="checkCreation">Create</button>
 					</div>
 				</div>
 				<div class="col-lg-5" style="position: relative;">
@@ -484,26 +488,22 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"
 
 <!-- Modal Region -->
 	<div v-if="succeedCreationModalShow" class="modal" style="display:block;!important">
-	<div class="modal-dialog">
+	<div class="modal-dialog" style="min-width: 600px;">
 		<div class="modal-content">
 		
 		<div class="modal-body mt-3 p-5">
-			<h5 class="modal-title text-center">Townhall created successfully!</h5>
-			<div class="mb-3  mt-5 text-center">
-				<img class="" src="../assets/townhall-complete.png" style="width: 80%;"/>
+			<p class="modal-title text-center fs-4 text-dark fw-bolder">Townhall created successfully!</p>
+			<div class="mb-3  mt-5 px-5 mx-5">
+				<img class="" src="../assets/townhall-complete.png" style="width: 100%;"/>
 			</div>
-			<div class="mb-1 mt-3">
-				<label class="form-label" style="color: #a8a8aa;">What you can do now?</label>
+			<div class="mb-1 mt-5">
+				<label class="form-label fw-bolder" style="color: #959595;">What you can do now?</label>
 			</div>
-			<div class=" " style="display: flex; justify-content: center; align-items: center;">
-				<p class="pt-1 pb-1 ps-2 border border-secondary" style="width: 100%;"><img src="../assets/check.png" style="width: 25px;"/> Create and publish your first proposal</p>
-			</div>
-			<div class="  " style="display: flex; justify-content: center; align-items: center;">
-				<p class="pt-1 pb-1 ps-2 border border-secondary" style="width: 100%;"><img src="../assets/check.png" style="width: 25px;"/> Broadcast your first townhall announcement</p>
-			</div>
-			<div class="" style="display: flex; justify-content: center; align-items: center;">
-				<p class="ps-2 pt-1 pb-1 border border-secondary" style="width: 100%;"><img src="../assets/check.png" style="width: 25px;"/> Invite your community to join the townhall</p>
-			</div>
+			<p class="py-2 ps-2 border border-secondary fw-bolder" style="color: #959595; width: 100%; display: flex;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Create and publish your first proposal</p>
+				<p class="py-2 ps-2 border border-secondary fw-bolder" style="color: #959595; width: 100%;  display: flex;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Broadcast your first townhall announcement</p>
+		
+				<p class="ps-2 py-2 border border-secondary fw-bolder" style="color: #959595; width: 100%;  display: flex;"><img class="me-2" src="../assets/check.png" style="width: 25px;"/> Invite your community to join the townhall</p>
+
 
 			<button @click="backToHome" type="button" class="btn btn-danger text-center" style="width: 100%;">Back to World</button>
 		</div>
@@ -615,7 +615,7 @@ export default {
                 this.validation.invalid.name = 'Please type the name of your townhall.';
                 err = true
             } else {
-				const response = await axios.get('https://practical-brahmagupta.103-233-0-73.plesk.page/api/v1/search/slugName'+'?s='+this.tempName);
+				const response = await axios.get('https://superwarden.org/api/v1/search/slugName'+'?s='+this.tempName);
 				if (response.data.count > 0){
 					this.validation.invalid.name = 'This name is already taken.';
 					err = true
@@ -669,7 +669,7 @@ export default {
             } else {
 				let string = this.tempSlug.replace(/\s+/g, '').trim().toLowerCase() + ".tron";
 				let pass = false
-				const response = await axios.get('https://practical-brahmagupta.103-233-0-73.plesk.page/api/v1/search/slugName'+'?s='+string);
+				const response = await axios.get('https://superwarden.org/api/v1/search/slugName'+'?s='+string);
 				// console.log(response)
 				if (response.data.count == 0)
 					pass = true
