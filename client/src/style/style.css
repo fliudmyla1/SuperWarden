@@ -334,7 +334,7 @@ h3 {
 
 /*markdown styling*/
   .markdown-body ol {
-    list-style-type: inherit;
+    list-style-type: decimal;
   }
   .markdown-body ul {
     list-style-type: inherit;

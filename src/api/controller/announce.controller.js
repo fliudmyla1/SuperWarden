@@ -29,7 +29,7 @@ async function getAnnouncementList (req, res, next){
         let query = {}
         query.slug = req.body.slug;
         if (req.body.index == 'closed' || req.body.index == 'open'){
-            Announce.find(query).populate('creator').sort('-expire_at').exec()
+            Announce.find(query).populate('creator').sort('-created_at').exec()
             .then((list)=>{
                 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
                 let closedList = []
@@ -54,7 +54,7 @@ async function getAnnouncementList (req, res, next){
         } else {
             if (req.body.index == 'important')
                 query.importance = true
-            Announce.find(query).populate('creator').sort('-expire_at').exec()
+            Announce.find(query).populate('creator').sort('-created_at').exec()
             .then((list)=>{
                 res.json({list: list})
             })

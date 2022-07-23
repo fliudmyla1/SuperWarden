@@ -3,28 +3,28 @@
       style="position: fixed; border-right: 1px solid #d5d5d5; height: 100%; z-index: 50;"
       class="lg:w-1/4 float-left hidden lg:block p-0 m-0 overflow-hidden"
       id="sidebar-left">
-	<ul class="nav flex-column">
+	<ul class="nav flex-column px-2">
 		<li class="nav-item ">
 			<!-- <a class="nav-link fontsize30">Settings</a> -->
 			<p class="nav-link text-dark fw-bolder my-4 fs-3">Settings</p>
 		</li>
 		<li v-if = "role == 0" @click="setStep(1)" :class="steps == 1? 'navbar-active' : ''" class="nav-item" style="width: 100% !important;">
-			<a class="nav-link disabled"  style="font-size: 16px;">Basic Info</a>
+			<a class="nav-link disabled fw-bolder"  style="font-size: 16px;">Basic Info</a>
 		</li>
 		<li v-if = "role == 0" @click="setStep(2)" :class="steps == 2? 'navbar-active' : ''" class="nav-item">
-			<a class="nav-link disabled"  style="font-size: 16px;">Social Media and Details</a>
+			<a class="nav-link disabled fw-bolder"  style="font-size: 16px;">Social Media and Details</a>
 		</li>
 		<li v-if = "role == 0" @click="setStep(3)" :class="steps == 3? 'navbar-active' : ''" class="nav-item">
-			<a class="nav-link disabled" style="font-size: 16px;">IPFS Settings and Visibility</a>
+			<a class="nav-link disabled fw-bolder" style="font-size: 16px;">IPFS Settings and Visibility</a>
 		</li>
 		<li v-if = "role < 2" @click="setStep(4)" :class="steps == 4? 'navbar-active' : ''" class="nav-item">
-			<a class="nav-link disabled" style="font-size: 16px;">Master Role Assignment</a>
+			<a class="nav-link disabled fw-bolder" style="font-size: 16px;">Master Role Assignment</a>
 		</li>
 		<li v-if = "role == 0" @click="setStep(5)" :class="steps == 5? 'navbar-active' : ''" class="nav-item">
-			<a class="nav-link disabled" style="font-size: 16px;">Warden Role Assignment</a>
+			<a class="nav-link disabled fw-bolder" style="font-size: 16px;">Warden Role Assignment</a>
 		</li>
 		<li v-if = "role == 0" @click="setStep(6)" :class="steps == 6? 'navbar-active' : ''" class="nav-item">
-			<a class="nav-link disabled" style="font-size: 16px;">Proposal Publishing Permission</a>
+			<a class="nav-link disabled fw-bolder" style="font-size: 16px;">Proposal Publishing Permission</a>
 		</li>
 	</ul>
 </div>

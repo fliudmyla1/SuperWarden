@@ -11,7 +11,7 @@
                             </h2>
                                 <img v-if = "proposal.importance"   style="height: 35px;"   class="mb-1"    src="../assets/staricon.png" />
                         </div>
-                        <span class="fw-bolder mt-2">Broadcast by {{proposal.creator.name ? trimmedAccountName(proposal.creator.name) +"." + proposal.slug: trimmedAccountAddress(proposal.creator.address) }}
+                        <span class="fw-bolder mt-2">Proposed by {{proposal.creator.name ? trimmedAccountName(proposal.creator.name) +"." + proposal.slug: trimmedAccountAddress(proposal.creator.address) }}
                             <span   v-if="proposal.status == 1" class="status-active ms-2">Active</span>
                             <span v-else-if = "proposal.status == 0" class="status-complete ms-2">Expecting</span>
                             <span v-else class="status-complete ms-2">Complete</span>
@@ -19,8 +19,9 @@
                         </span>
                         <!-- <span class="valid-till fw-bolder mt-2"><img src="../assets/clock-icon.png" class="pb-1 me-2" style="height: 25px;"/>Valid Till &nbsp;<img src="../assets/line1.png" style="height: 20px;"/> {{getDateString(announce.expire_at)}} ({{'UTC ' + announce.timezone.offset}})</span> -->
                     </div>
-                    <div v-html="markdownToHtml" class="mt-4"
-                        :class="{'show-less': !showMore} "></div>
+                    <div v-html="markdownToHtml" class="mt-4 markdown-body"
+                        :class="{'show-less': !showMore} ">
+                    </div>
                     <div class="text-center">
                         <button @click="showMore = !showMore" class="py-1 px-3 text-center fw-bolder my-4" style="border: 1px solid #959595; color:#959595;  background-color: #fff; border-radius: 7px;">
                         <span v-if = "showMore">Show less...</span>
@@ -29,9 +30,12 @@
                     </div>
                     <div class="my-2">
                         <p class="fs-5 fw-bolder text-dark">Discussions</p>
-                        <div class="file-details mb-2" v-for="(i) in proposal.discussions">
-                            <span class="fw-bolder">{{trimmedProposalDiscussion(i)}}</span>
-                        </div>
+                        <a :href="`https://${i}`" v-for="(i) in proposal.discussions" style = "text-decoration: none;">
+                            <div class="file-details mb-2" >
+                                <span class="fw-bolder">{{trimmedProposalDiscussion(i)}}</span>
+                            </div>
+
+                        </a>
                     </div>
                     <div class="mt-4">
                         <p class="fs-5 fw-bolder text-dark">Attachments</p>
@@ -39,8 +43,8 @@
                     </div>
                     <div class="mt-4">
                         <p class="fs-5 fw-bolder text-dark">Voting Option</p>
-                        <div class="file-details mb-2" v-for="(i, index) in proposal.options">
-                            <span class="fw-bolder">Candidate {{index+1}} - {{i}}</span>
+                        <div class="file-details mb-2" v-for="(i) in proposal.options">
+                            <span class="fw-bolder">{{i}}</span>
 
                             <!-- <span class="fw-bolder">{{trimmedDiscussionTitle(i)}}</span> -->
                         </div>
@@ -49,105 +53,222 @@
                         <p class="fs-5 fw-bolder text-dark">Voters</p>
                         
                         <div style="border-radius: 7px; border: 1px solid #959595">
-  
-                            <div v-if ="proposal.shield" class="text-center py-2" style=" border-bottom: 1px solid #D5D5D5;">
-                                <img src = "../assets/voter-security.png" style="height: 200px;"/>
+
+                            <div v-if ="proposal.shield && proposal.status != 2" class="text-center py-4" style=" border-bottom: 1px solid #D5D5D5;">
+                                <div class=" px-5 mx-4">
+                                    <img src = "../assets/voter-security.png" style="height: 200px;"/>
+                                </div>
                             </div>
-                            <div v-else v-for = "(v) in voters" class="ps-4 fw-bolder voter-container">
-                                <img src="../assets/logo-icon.png" style="height: 20px; border-radius: 50%"/>
-                                <p class="mt-3 ps-2">{{trimmedVotersAddress(v._addr)}}</p>
-                                <p class="mt-3 ps-5">{{v.option}}</p>
-                                <p class="mt-3 me-2" style="margin-left: auto;">{{trimmedBalance(v.balance)}} {{v.symbol}}</p>
+                            <div v-else >
+                                <div v-if = "voters.length > 0">
+                                    <!-- <div v-for = "(v) in voters" class="ps-4 fw-bolder voter-container"> -->
+                                    <div v-for = "(v) in voters" class="ps-4 fw-bolder" style="border-bottom: 1px solid #d5d5d5;">
+                                        <div class="row" style="font-size: 14px;">
+                                            <div class="col-md-4" style="padding: 15px; display: flex; column-gap: 20px; justify-content: space-between;  align-items: center;">
+                                                <img src="../assets/logo-icon.png" style="height: 20px; border-radius: 50%"/>
+                                                <p class="p-0 m-0">{{trimmedVotersAddress(v._addr)}}
+                                            
+                                                </p>
+                                                <div class="superwarden-tooltip" style="float: right;">
+                                                    <img src="../assets/coppy-icon.png" style = "cursor: pointer; height: 22px;" @click="copyAddress(v._addr)"/>
+                                                    <span class="tooltiptext" id="myTooltip" >Copy to</span>
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-4" style="display: flex; justify-content: center;  align-items: center;">{{v.option}}</div>
+
+                                            <div class="col-md-4 pe-4" style="display: flex; justify-content: flex-end;  align-items: center;">
+                                                {{trimmedBalance(v.balance)}} {{v.symbol}}
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-else style="justify-content: center; align-items: center; display: flex; height: 200px; border-bottom: 1px solid #d5d5d5;">
+                                    <img src="../assets/no-proposal.png" style="width: 50%; "/>
+                                    
+                                </div>
                             </div>
+
                             <div @click="voterViewHandler" class="text-center voter-count-handler"><span v-if = "viewVoterMore" style="color: #959595;">View less</span>
                                 <span v-else style="color: #959595;">View more</span></div>
                         </div>
                     </div>
-
-                    <!-- <p>404 error</p> -->
                 </div>
             </div>
             <div class="col-md-5 pt-5 pe-5" >
                 <div class="mt-5  pt-2" style=" border: 1px solid #595959; margin-right: 100px; border-radius: 7px;">
                     <p class="fw-bolder ps-3 pb-2 mt-2" style="border-bottom: 1px solid #d5d5d5;">Proposal Voting Info</p>
-                    <p class="fw-bolder ps-3 mt-4">Voting System: 
-                        <span v-if = "proposal.type == 0"  style= "color: #959595">Single Choice Voting</span>
-                        <span v-if = "proposal.type == 1" style= "color: #959595">Approval Voting</span>
-                        <span v-if = "proposal.type == 2" style= "color: #959595">Two Round Voting</span>
-                    </p>
-
-                                       
-                    <p class="fw-bolder ps-3 mt-2">Voting Strategy: 
-                        <span v-if="proposal.strategy == 'trc-10'" style= "color: #959595">TRC-10 Balance</span>
-                        <span v-if="proposal.strategy == 'trc-20'" style= "color: #959595">TRC-20 Balance</span>
-                        <span v-if="proposal.strategy == 'trc-721'" style= "color: #959595">TRC-721 Voting</span>
-                        <span v-if="proposal.strategy == 'whitelist'" style= "color: #959595">Whitelist Voting</span>
-                        <span v-if="proposal.strategy == 'trc-10-th'" style= "color: #959595">TRC-10 Balance /w Threshold</span>
-                        <span v-if="proposal.strategy == 'trc-20-th'" style= "color: #959595; ">TRC-20 Balance /w Threshold</span>
-                        <span v-if="proposal.strategy == 'trc-721-multi'" style= "color: #959595">TRC-721 Voting /w Multiplier</span>
-                    </p>
-                    <p class="fw-bolder ps-3 mt-2">Threshold: 
-                        <span v-if="proposal.threshold == 0" style= "color: #959595">N/A</span>
-                        <span v-else style= "color: #959595">{{proposal.threshold}}</span>
-                    </p>
-                    <p class="fw-bolder ps-3 mt-2">Multiplier: 
-                        <span v-if="proposal.multiplier == 1" style= "color: #959595">N/A</span>
-                        <span v-else style= "color: #959595">{{proposal.multiplier}}</span>
-                    </p>
-                    <p class="fw-bolder ps-3 mt-2" style="display: flex;">Proposal CID: 
-                        <span class="ms-1" style= "color: #959595; display: flex;">{{trimmedProposalCid(proposal.cid)}}</span>
-                            <div class="superwarden-tooltip">
-                                <img src="../assets/coppy-icon.png" style = "cursor: pointer; height: 22px;" @click="myFunction"/>
-                                <span class="tooltiptext" id="myTooltip" >Copy to</span>
+                    <div class="ps-3" style="font-size: 15px;">
+                        <div class="mt-4" style="display: flex;">
+                            <p class="fw-bolder">Voting System:</p>
+                            <div class="ms-2">
+                                <span v-if = "proposal.type == 0"  style= "color: #959595">Single Choice Voting</span>
+                                <span v-if = "proposal.type == 1" style= "color: #959595">Approval Voting</span>
+                                <span v-if = "proposal.type == 2" style= "color: #959595">Two Round Voting</span>
                             </div>
-                        <!-- <span><img src = "../assets/coppy-icon.png" style="height:22px; cursor: pointer;"></span> -->
-                    </p>
-                    <p class="fw-bolder ps-3 mt-2">Voting Result CID: 
-                        <span v-if="proposal.votedCid">
-                            <span style= "color: #959595">{{trimmedProposalCid(proposal.votedCid)}}</span>
-                            <span><img src = "../assets/coppy-icon.png" style="height:22px"></span>
-                        </span>
-                        <span v-else style= "color: #959595">N/A</span>
+                        </div>
+                        <div style="display: flex;">
+                            <p class="fw-bolder">Voting Strategy:</p>
+                            <div class="ms-2">
+                                <span v-if="proposal.strategy == 'trc-10'" style= "color: #959595">TRC-10 Balance</span>
+                                <span v-if="proposal.strategy == 'trc-20'" style= "color: #959595">TRC-20 Balance</span>
+                                <span v-if="proposal.strategy == 'trc-721'" style= "color: #959595">TRC-721 Voting</span>
+                                <span v-if="proposal.strategy == 'whitelist'" style= "color: #959595">Whitelist Voting</span>
+                                <span v-if="proposal.strategy == 'trc-10-th'" style= "color: #959595">TRC-10 Balance /w Threshold</span>
+                                <span v-if="proposal.strategy == 'trc-20-th'" style= "color: #959595; ">TRC-20 Balance /w Threshold</span>
+                                <span v-if="proposal.strategy == 'trc-721-multi'" style= "color: #959595">TRC-721 Voting /w Multiplier</span>
+                            </div>
+                        </div>
+                        <div style="display: flex;">
+                            <p class="fw-bolder">Threshold:</p>
+                            <div class="ms-2">
+                                <span v-if="proposal.threshold == 0" style= "color: #959595">N/A</span>
+                                <span v-else style= "color: #959595">{{proposal.threshold}}</span>
+                            </div>
+                        </div>
+                        <div style="display: flex;">
+                            <p class="fw-bolder">Multiplier:</p>
+                            <div class="ms-2">
+                                <span v-if="proposal.multiplier == 1" style= "color: #959595">N/A</span>
+                                <span v-else style= "color: #959595">{{proposal.multiplier}}</span>
+                            </div>
+                        </div>
+                        <div style="display: flex;">
+                            <p class="fw-bolder">Proposal CID:</p>
+                            <div class="ms-2" style="display: flex;">
+                                <span style= "color: #959595; display: flex;">{{trimmedProposalCid(proposal.cid)}}</span>
+                                <div class="superwarden-tooltip">
+                                    <img src="../assets/coppy-icon.png" style = "cursor: pointer; height: 22px;" @click="myFunction"/>
+                                    <span class="tooltiptext" id="myTooltip" >Copy to</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="display: flex;">
+                            <p class="fw-bolder">Voting Result CID:</p>
+                            <div class="ms-2" style="display: flex;">
+                                <span v-if="proposal.votedCid">
+                                    <span style= "color: #959595">{{trimmedProposalCid(proposal.votedCid)}}</span>
+                                    <span><img src = "../assets/coppy-icon.png" style="height:22px"></span>
+                                </span>
+                                <span v-else style= "color: #959595">TBA</span>
+                            </div>
+                        </div>
+                        <div v-if ="proposal.type != 2" >
+                            <div style="display: flex;">
+                                <p class="fw-bolder">Start:</p>
+                                <div class="ms-2">
+                                    <span style="color: #959595;">{{getDateAndTimeString(proposal.f_start_at)}}</span>
+                                </div>
+                            </div>
+                            <div style="display: flex;">
+                                <p class="fw-bolder">End:</p>
+                                <div class="ms-2">
+                                    <span style="color: #959595;">{{getDateAndTimeString(proposal.f_end_at)}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else >
+                            <div style="display: flex;">
+                                <p class="fw-bolder">Round 1 Start:</p>
+                                <div class="ms-2">
+                                    <span style="color: #959595;">{{getDateAndTimeString(proposal.f_start_at)}}</span>
+                                </div>
+                            </div>
+                            <div style="display: flex;">
+                                <p class="fw-bolder">Round 1 End:</p>
+                                <div class="ms-2">
+                                    <span style="color: #959595;">{{getDateAndTimeString(proposal.f_end_at)}}</span>
+                                </div>
+                            </div>
+                            <div style="display: flex;">
+                                <p class="fw-bolder">Round 2 Start:</p>
+                                <div class="ms-2">
+                                    <span style="color: #959595; font-size: 15px;">{{getDateAndTimeString(proposal.s_start_at)}}</span>
+                                </div>
+                            </div>
+                            <div style="display: flex;">
+                                <p class="fw-bolder">Round 2 End:</p>
+                                <div class="ms-2">
+                                    <span style="color: #959595;">{{getDateAndTimeString(proposal.s_end_at)}}</span>
+                                </div>
+                            </div>
 
-                    </p>
-                    <p class="fw-bolder ps-3 mt-2">Start: 
-                        <span style="color: #959595;">{{getDateAndTimeString(proposal.f_start_at)}}</span>
-                    </p>
-                    <p class="fw-bolder ps-3 mt-2">End: 
-                        <span style="color: #959595;">{{getDateAndTimeString(proposal.f_end_at)}}</span>
-                    </p>
-                    <p class="fw-bolder ps-3 mt-2">Timezone: 
-                        <span style="color: #959595;">{{`UTC ${parseInt(proposal.timezone.offset)}`}}</span>
-                    </p>
-                    <p class="fw-bolder ps-3 mt-2">Duration: 
-                        <span v-if = "round == 1" style="color: #959595;">{{getTimeDifference(proposal.f_start_at, proposal.f_end_at)}}</span>
-                        <span v-else style="color: #959595;">{{getTimeDifference(proposal.s_start_at, proposal.s_end_at)}}</span>
-                    </p>
-                </div>
-                <div class="mt-5  pt-2" style=" border: 1px solid #595959; margin-right: 100px; border-radius: 7px;">
-                    <p class="fw-bolder ps-3 pb-2 mt-2" style="border-bottom: 1px solid #d5d5d5;">Quorum</p>
-                    <p class="fw-bolder ps-3 mt-4">Threshold: 
-                        <span v-if="proposal.percent == 0" style= "color: #959595">N/A</span>
-                        <span v-else style= "color: #959595">{{proposal.percent}}%</span>
-                    </p>
-                    <p class="fw-bolder ps-3 mt-2">Votes required: 
-                        <span v-if="proposal.percent == 0" style= "color: #959595">N/A</span>
-                        <span v-else style= "color: #959595">{{parseInt(proposal.totalToken * proposal.percent / 100) / 100 + "K " + proposal.tk_symbol}}</span>
-                    </p>
-                </div>
-                <div v-if ="proposal.type != 2" class="mt-5  pt-2" style=" border: 1px solid #595959; margin-right: 100px; border-radius: 7px;">
-                    <p class="fw-bolder ps-3 pb-3 mt-2" style="border-bottom: 1px solid #d5d5d5;">Voting Result</p>
-                    <div v-if = "proposal.shield" class="text-center">
-                        <img  src="../assets/security.png" style="width: 185px"/>
+                        </div>
+                        <div style="display: flex;">
+                            <p class="fw-bolder">Timezone:</p>
+                            <div class="ms-2">
+                                <span style="color: #959595;">{{`UTC ${proposal.timezone.offset}`}}</span>
+                            </div>
+                        </div>
+
+                        <div v-if ="proposal.type != 2" >
+                            <div style="display: flex;">
+                                <p class="fw-bolder">Duration:</p>
+                                <div class = "ms-2"></div>
+                                <span style="color: #959595;">{{getTimeDifference(proposal.f_start_at, proposal.f_end_at)}}</span>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div style="display: flex;">
+                                <p class="fw-bolder">First Round Duration:</p>
+                                <span style="color: #959595;">{{getTimeDifference(proposal.f_start_at, proposal.f_end_at)}}</span>
+                            </div>
+                            <div style="display: flex;">
+                                <p class="fw-bolder">Second Round Duration:</p>
+                                <span  style="color: #959595;">{{getTimeDifference(proposal.s_start_at, proposal.s_end_at)}}</span>
+                            </div>
+                        </div>
+
                     </div>
-                    <div v-else-if = "proposal.result.length > 1" class = "py-2">
-                        <div v-for ="(r, i) in proposal.result">
-                            <p class="fw-bolder ps-3" style="font-size: 14px;">Candidate - {{i+1}} {{trimmedVotingOption(r.option)}}
-                            <span class="float-end me-4">{{r.amount / 1000}}K {{r.symbol}} {{getProgressWidth(r)}}</span>
-                            </p>
-                            <div class="px-3 mb-4">
-                                <div class="progress ">
-                                    <div class="progress-bar bg-danger" role="progressbar" :style="`width : ${getProgressWidth(r)}`" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="mt-4  pt-2" style=" border: 1px solid #595959; margin-right: 100px; border-radius: 7px;">
+                    <p class="fw-bolder ps-3 pb-2 mt-2" style="border-bottom: 1px solid #d5d5d5;">Quorum</p>
+                    <div class="ps-3" style="font-size: 15px;">
+                        <div style="display: flex; ">
+                            <p class="fw-bolder">Threshold:</p>
+                            <div class="ms-2">
+                                <span v-if="proposal.percent == 0" style= "color: #959595">N/A</span>
+                                <span v-else style= "color: #959595">{{proposal.percent}}%</span>
+                            </div>
+                        </div>
+                        <div style="display: flex;">
+                            <p class="fw-bolder">Votes required:</p>
+                            <div class="ms-2">
+                                <span v-if="proposal.percent == 0" style= "color: #959595">N/A</span>
+                                <span v-else style= "color: #959595">{{parseInt(proposal.totalToken * proposal.percent / 100) / 1000 + "K " + proposal.tk_symbol}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-if ="proposal.type != 2" class="mt-4  pt-2" style=" border: 1px solid #595959; margin-right: 100px; border-radius: 7px;">
+                    <p class="fw-bolder ps-3 pb-3 mt-2" style="border-bottom: 1px solid #d5d5d5;">Voting Result</p>
+
+                    <div v-if = "proposal.shield && proposal.status != 2" class="text-center px-5 mx-4" >
+                        <img  src="../assets/security.png" style="width: 100%"/>
+                    </div>
+                    <div v-else>
+                        <div v-if = "proposal.result.length > 1" class = "py-2">
+                            <div v-for ="(r) in proposal.result">
+                                <p class="fw-bolder ps-3" style="font-size: 14px;">{{trimmedVotingOption(r.option)}}
+                                <span class="float-end me-4">{{trimmedBalance(r.amount)}} {{r.symbol}} {{getProgressWidth(r)}}</span>
+                                </p>
+                                <div class="px-3 mb-4">
+                                    <div class="progress ">
+                                        <div class="progress-bar bg-danger" role="progressbar" :style="`width : ${getProgressWidth(r)}`" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class = "py-2">
+                            <div v-for ="(r) in proposal.options">
+                                <p class="fw-bolder ps-3" style="font-size: 14px;">{{trimmedVotingOption(r)}}
+                                <span class="float-end me-4">0K {{proposal.tk_symbol}} 0%</span>
+                                </p>
+                                <div class="px-3 mb-4">
+                                    <div class="progress ">
+                                        <div class="progress-bar bg-danger" role="progressbar" :style="`width : ${0}`" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -160,17 +281,31 @@
                 <div v-else>
                     <div class="mt-5  pt-2" style=" border: 1px solid #595959; margin-right: 100px; border-radius: 7px;">
                         <p class="fw-bolder ps-3 pb-3 mt-2" style="border-bottom: 1px solid #d5d5d5;">Round 1 Voting Result</p>
-                        <div v-if = "proposal.shield" class="text-center">
+                        <div v-if = "proposal.shield && !proposal.s_result && proposal.status !=2" class="text-center">
                             <img  src="../assets/security.png" style="width: 185px"/>
                         </div>
-                        <div v-else-if = "proposal.result" class = "py-2">
-                            <div v-for ="(r, i) in proposal.result">
-                                <p class="fw-bolder ps-3 mt-4" style="font-size: 14px;">Candidate - {{i+1}} {{trimmedVotingOption(r.option)}}
-                                <span class="float-end me-4">{{r.amount / 1000}}K {{r.symbol}} {{getProgressWidth(r)}}</span>
-                                </p>
-                                <div class="px-3">
-                                    <div class="progress ">
-                                        <div class="progress-bar bg-danger" role="progressbar" :style="`width : ${getProgressWidth(r)}`" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div v-else class = "py-2">
+                            <div v-if = "proposal.result.length > 1" class = "py-2">
+                                <div v-for ="(r, i) in proposal.result">
+                                    <p class="fw-bolder ps-3 mt-4" style="font-size: 14px;">{{trimmedVotingOption(r.option)}}
+                                    <span class="float-end me-4">{{trimmedBalance(r.amount)}}K {{r.symbol}} {{getProgressWidth(r)}}</span>
+                                    </p>
+                                    <div class="px-3">
+                                        <div class="progress ">
+                                            <div class="progress-bar bg-danger" role="progressbar" :style="`width : ${getProgressWidth(r)}`" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-else class = "py-2">
+                                <div v-for ="(r) in proposal.options">
+                                    <p class="fw-bolder ps-3" style="font-size: 14px;">{{trimmedVotingOption(r)}}
+                                    <span class="float-end me-4">0K {{proposal.tk_symbol}} 0%</span>
+                                    </p>
+                                    <div class="px-3 mb-4">
+                                        <div class="progress ">
+                                            <div class="progress-bar bg-danger" role="progressbar" :style="`width : ${0}`" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -182,19 +317,36 @@
                     </div>
                     <div class="mt-4  pt-2" style=" border: 1px solid #595959; margin-right: 100px; border-radius: 7px;">
                         <p class="fw-bolder ps-3 pb-3 mt-2" style="border-bottom: 1px solid #d5d5d5;">Round 2 Voting Result</p>
-                        <div v-if ="round ==1" class="text-center fw-bolder" style="min-height: 50px;"></div>
+                        <!-- <div v-if ="round ==1" class="text-center fw-bolder" style="min-height: 50px;"></div> -->
+                         <div v-if ="round ==1" style="justify-content: center; align-items: center; display: flex; height: 50px; vertical-align: middle;">
+                            <p class="fw-bolder">TBA</p>
+                        </div>
                         <div v-else>
-                            <div v-if = "proposal.shield" class="text-center">
+                            <div v-if = "proposal.shield && proposal.s_result && proposal.status !=2" class="text-center">
                                 <img  src="../assets/security.png" style="width: 185px"/>
                             </div>
                             <div v-else class = "py-2">
-                                <div v-for ="(r, i) in proposal.s_result">
-                                    <p class="fw-bolder ps-3 mt-4" style="font-size: 14px;">Candidate - {{i+1}} {{trimmedVotingOption(r.option)}}
-                                    <span class="float-end me-4">{{r.amount / 1000}}K {{r.symbol}} {{getProgressWidth(r)}}</span>
-                                    </p>
-                                    <div class="px-3">
-                                        <div class="progress ">
-                                            <div class="progress-bar bg-danger" role="progressbar" :style="`width : ${getProgressWidth(r)}`" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div v-if = "proposal.s_result.length > 1" class = "py-2">
+                                    <div v-for ="(r, i) in proposal.s_result">
+                                        <p class="fw-bolder ps-3 mt-4" style="font-size: 14px;">{{trimmedVotingOption(r.option)}}
+                                        <span class="float-end me-4">{{trimmedBalance(r.amount)}}K {{r.symbol}} {{getProgressWidth(r)}}</span>
+                                        </p>
+                                        <div class="px-3">
+                                            <div class="progress ">
+                                                <div class="progress-bar bg-danger" role="progressbar" :style="`width : ${getProgressWidth(r)}`" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-else class = "py-2">
+                                    <div v-for ="(r) in proposal.options">
+                                        <p class="fw-bolder ps-3" style="font-size: 14px;">{{trimmedVotingOption(r)}}
+                                        <span class="float-end me-4">0K {{proposal.tk_symbol}} 0%</span>
+                                        </p>
+                                        <div class="px-3 mb-4">
+                                            <div class="progress ">
+                                                <div class="progress-bar bg-danger" role="progressbar" :style="`width : ${0}`" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -233,22 +385,22 @@
                 <form   v-on:submit.prevent="validateVoteNow" class="my-3 p-2 text-center">
                     <div v-bind:class="{'superwarden-invalid': validation.invalid.voteOptions }">
                         
-                        <div @click="setOption(i)"  v-for="(i, index) in proposal.options"
+                        <div @click="setOption(i)"  v-for="(i) in proposal.options"
                             :class = "voteOptions.includes(i)? 'selected': ''"
                             class="file-details-modal my-3 mx-1">
-                            <span class="fw-bolder">Candidate {{index+1}} - {{i}}</span>
+                            <span class="fw-bolder">{{i}}</span>
                         </div>
                     </div>
                    
                     <div v-if="validation.invalid.voteOptions" class="invalid-feedback text-center " style="display: block;">{{ validation.invalid.voteOptions }}</div>
                     <div class="mt-4" >
-                        <div v-if = "votable">
-                            <img src="../assets/vote-able.png" style="width:80% "/>
-                            <button class="btn btn-danger mt-5" style="width:80% " type="submit">Submit Vote</button>
+                        <div v-if = "votable" class="px-4 mx-3" >
+                            <img src="../assets/vote-able.png" style="width:100% "/>
+                            <button class="btn btn-danger mt-5" style="width:100% " type="submit">Submit Vote</button>
                         </div>
-                        <div v-else>
-                            <img src="../assets/vote-unable.png" style="width:80% "/>
-                            <button class="btn btn-danger mt-5" disabled style="width:80% ">Submit Vote</button>
+                        <div class="px-4 mx-3"  v-else>
+                            <img src="../assets/vote-unable.png" style="width:100% "/>
+                            <button class="btn btn-danger mt-5" disabled style="width:100% ">Submit Vote</button>
                         </div>
                     </div>
                 </form>
@@ -345,7 +497,7 @@ export default {
 
         }
     },
-computed: {
+    computed: {
         markdownToHtml(){
             if (this.proposal.summary){
                 return marked.parse(this.proposal.summary.toString())  ;
@@ -354,18 +506,44 @@ computed: {
     },
 
     created() {
-        if (this.$store.getters.role == 10)
-            this.$router.push(`/`)
-        else
+        // if (this.$store.getters.role == 10)
+        //     this.$router.push(`/`)
+        // else
             this.getProposalData()
-
-
     },
     mounted() {
         
     },
     methods: {
-                trimmedAccountName(name){
+        getTimeDifference(s, e){
+            let start = new Date(s)
+            let end = new Date(e)
+            let DurationTimeValue = end.getTime()-start.getTime()
+            let day = parseInt(DurationTimeValue/(1000 * 3600 * 24))
+            let hour = parseInt((DurationTimeValue - day * 1000 * 3600 * 24)/(1000 * 3600))
+            let minute = parseInt((DurationTimeValue - day * 1000 * 3600 * 24 - hour * 1000 * 3600)/(1000 * 60)) 
+            return `${day} days ${hour} hours ${minute} minutes`
+        },
+        getDateAndTimeString(string){
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            let year = string.slice(0, 4)
+            let month = string.slice(5,7)
+            month = monthNames[parseInt(month)-1]
+            let day = string.slice(8, 10)
+            let hour =  string.slice(11, 13)
+            let tag = "AM"
+            if (parseInt(hour) > 12){
+                let a = parseInt(hour) - 12
+                if (a > 10)
+                    hour = a.toString()
+                else
+                    hour = "0" + a.string
+                tag = "PM"
+            }
+            let minute = string.slice(14, 16)
+            return `${day} ${month}, ${year}, ${hour}.${minute} ${tag}`;
+        },
+        trimmedAccountName(name){
             if (name.length > 12)
                 return name.slice(0, 9) + "..." + name.slice(name.length - 4, name.length)
             else
@@ -380,13 +558,16 @@ computed: {
                 return addr
         },
         trimmedVotingOption(option){
-            if (option.length > 5)
-                return option.slice(0, 5) + "..."
+            if (option.length > 12)
+                return option.slice(0, 12) + "..."
             else
                 return option
         },
         trimmedBalance(balance){
-            return (balance / 1000).toString() + "K"
+            if (balance< 1000) 
+                return balance
+            else
+                return (balance / 1000).toString() + "K"
         },
         trimmedVotersAddress(_addr){
             return _addr.slice(0, 7) + "..."
@@ -419,12 +600,12 @@ computed: {
               return summary
         },
         trimmedProposalDiscussion(discussion){
-                        if (!discussion)
+            if (!discussion)
                 return
-          if (discussion.length > 55)
-              return discussion.slice(0, 55) + "..." 
+            if (discussion.length > 55)
+                return discussion.slice(0, 55) + "..." 
             else
-              return discussion
+                return discussion
         },
         getProgressWidth(r){
             let total = 0
@@ -479,54 +660,52 @@ computed: {
             this.validation.invalid[field] = '';
         },
         
-        getDateAndTimeString(string){
-          const monthNames = ["January", "February", "March", "April", "May", "June",
-              "July", "August", "September", "October", "November", "December"];
-            let year = string.slice(0, 4)
-            let month = string.slice(5,7)
-            month = monthNames[parseInt(month)-1]
-            let day = string.slice(8, 10)
-            let hour =  string.slice(11, 13)
-            let tag = "AM"
-            if (parseInt(hour) > 12){
-                let a = parseInt(hour) - 12
-                if (a > 10)
-                    hour = a.toString()
-                else
-                    hour = "0" + a.string
-                tag = "PM"
-            }
-            let minute = string.slice(14, 16)
-            return `${day} ${month}, ${year}, ${hour}.${minute} ${tag}`;
-        },
-        getTimeDifference(s, e){
-            let start = new Date(s)
-            let end = new Date(e)
-            let DurationTimeValue = end.getTime()-start.getTime()
-            let day = parseInt(DurationTimeValue/(1000 * 3600 * 24))
-            let hour = parseInt((DurationTimeValue - day * 1000 * 3600 * 24)/(1000 * 3600))
-            let minute = parseInt((DurationTimeValue - day * 1000 * 3600 * 24 - hour * 1000 * 3600)/(1000 * 60)) 
-            return `${day} days ${hour} hours ${minute} minutes`
 
-        },
+
 
         backToProposalList(){this.$router.push(`/${this.proposal.slug}/proposal`)},
 
         
         async viewVoteNowModal(){
-            const contract = await tronWeb.contract().at(this.proposal.ctr_addr)
-            const my_balance = await contract.methods.balanceOf(window.tronWeb.defaultAddress.base58).call();
-            let balance = parseInt(my_balance.toString())
-            // balance = 1200
-            // console.log('Client wallet balance: ' + balance)
-            // console.log('DB: the threshold of proposal')
-            // console.log(this.proposal.threshold)
-            this.balance = balance
-            if (balance > this.proposal.threshold)
-                this.votable = true
-            else
-                this.votable = false
-            this.voteNowModal = true
+            console.log('vote checking - contract address: ' + this.proposal.ctr_addr)
+
+            // this.proposal.ctr_addr = 'TMvtRK7UEfGm3fKxSgxSeT1QyeGa36fs51'
+            // this.proposal.ctr_addr = 'TFczxzPhnThNSqr5by8tvxsdCFRRz6cPNq'
+
+            if (this.proposal.whitelist){
+                if (this.proposal.whitelist.includes(this.$store.getters._addr))
+                {
+                    this.balance = 1
+                    this.votable = true
+                    this.voteNowModal = true
+                } else {
+                    this.votable = false
+                    this.$toast.error("Sorry, you are not on the whitelist.")
+                }
+                // console.log()
+            } else {
+                const contract = await tronWeb.contract().at(this.proposal.ctr_addr)
+                const my_balance = await contract.methods.balanceOf(window.tronWeb.defaultAddress.base58).call();
+                let balance = parseInt(my_balance.toString())
+                if (this.proposal.strategy == 'trc-721' || this.proposal.strategy == 'trc-721-multi')
+                    this.balance = balance
+                else
+                    this.balance = balance / 1000000
+    
+                console.log('vote checking - account balance: ' + balance)
+                console.log('vote checking - account balance: ' + this.balance)
+                console.log('vote checking - threshold: ' + this.proposal.threshold)
+    
+    
+                if (this.balance > this.proposal.threshold)
+                    this.votable = true
+                else
+                    this.votable = false
+                console.log(this.votable)
+                this.voteNowModal = true
+
+            }
+
         },
 
         setOption(i){
@@ -557,62 +736,66 @@ computed: {
                 obj.symbol = this.proposal.tk_symbol
                 obj.option = v
                 obj._addr = this.$store.getters._addr
-                obj.balance = parseInt(this.balance / this.voteOptions.length)
+                obj.balance = parseInt(this.balance * this.multiplier) / this.voteOptions.length
                 data.push(obj)
             })
             
-            api.sendVote({_id:this.proposal._id,  data: data}, (res => {
+            api.sendVote({_id:this.proposal._id,  data: data}, ( async (res) => {
                 if (res.data.updated){
-                    this.$toast.success('You successfully voted')
+                    this.voted = true
+                    this.$toast.success('You successfully voted.')
+                    await this.getProposalData()
                     this.voteNowModal = false
-                    this.getProposalData()
                 }
             }), err =>{
                 console.log(err)
             })
         },
-            myFunction(){
-      var copyText = this.proposal.cid;
-    //   copyText.select();
-    //   copyText.setSelectionRange(0, 99999);
-      navigator.clipboard.writeText(copyText);
-      var tooltip = document.getElementById("myTooltip");
-      tooltip.innerHTML = "Copied";
-    },
+        myFunction(){
+            var copyText = this.proposal.cid;
+            //   copyText.select();
+            //   copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText);
+            var tooltip = document.getElementById("myTooltip");
+            tooltip.innerHTML = "Copied";
+        },
+        copyAddress(_addr){
+            var copyText = _addr;
+            //   copyText.select();
+            //   copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText);
+            var tooltip = document.getElementById("myTooltip");
+            tooltip.innerHTML = "Copied";
+
+        },
         getProposalData(){
             api.getProposalData({_id: this.idx}, (res => {
                 this.proposal = res.data.proposal
                 console.log(this.proposal)
-                if (this.proposal.s_start_at)
+                if (this.proposal.s_result)
                     this.round = 2
                 else
                     this.round = 1
-                if (this.proposal.whitelist){
-                    if (!this.proposal.whitelist.includes(this.$store.getters._addr))
-                        this.voted = true
+                if (this.round == 1){
+                    this.totalVoters = res.data.proposal.voters
+                    this.proposal.voters.map((v) => {
+                        if (v._addr == this.$store.getters._addr){
+                            this.voted = true
+                        }
+                    })
                 } else {
-                    if (this.round == 1){
-                        this.totalVoters = res.data.proposal.voters
-                        this.proposal.voters.map((v) => {
-                            if (v._addr == this.$store.getters._addr){
-                                this.voted = true
-                            }
-                        })
-                    } else {
-                        this.totalVoters = res.data.proposal.s_voters
-                        this.proposal.s_voters.map((v) => {
-                            if (v._addr == this.$store.getters._addr){
-                                this.voted = true
-                            }
-                        })
-                    }
+                    this.totalVoters = res.data.proposal.s_voters
+                    this.proposal.s_voters.map((v) => {
+                        if (v._addr == this.$store.getters._addr){
+                            this.voted = true
+                        }
+                    })
                 }
                 this.viewVoterMore = false
                 this.voters = this.totalVoters.slice(0, 7)
             }), err =>{
                 console.log(err)
             })
-
         }
     }
 }

@@ -91,6 +91,7 @@ export default {
       this.getTownhallData()},
     // mounted() {},
     methods: {
+      
       getTownhallData(){
         console.log(this.slug)
         api.getTownhallData({slug: this.slug}, (async (res) => {

@@ -211,7 +211,7 @@ export default {
   padding-left: 30px;
   padding-right: 30px;
   padding-bottom: 30px;
-  padding-top: 40px;
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
   row-gap: 20px;

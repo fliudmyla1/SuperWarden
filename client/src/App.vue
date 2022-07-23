@@ -1,4 +1,64 @@
 <template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <div class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen">
     <div id="sidebar" class="flex flex-col">
       <div class="h-screen sticky top-0 bg-skin-bg z-40 overflow-hidden max-w-[85px] min-w-[85px] sm:w-auto transition-all" style="border-right: 1px solid #d5d5d5;">
@@ -76,8 +136,8 @@
                     <label class="form-label popup-content-text">The townhall is where your community can vote proposal and listen to announcement broadcast.
                         Create yours and start today.</label>
                 </div>
-                <div class=" mb-3 text-center">
-                    <img class="" src="./assets/townhall-building.png" style="width: 80%;"/>
+                <div class=" mb-3 px-5">
+                    <img class="" src="./assets/townhall-building.png" />
                 </div>
                 <div class="mb-1 mt-3 text-center ">
                     <label class="form-label text-center popup-content-text">Note: Each wallet address can only create one townhall</label>
@@ -88,8 +148,8 @@
                 <img src="./assets/check.png" style="width: 25px; "/>
                     <span > Every townhall has only one superwarden</span>
                 </div>
+                <button @click="goSetup()" type="button" class="btn btn-danger text-center mt-4 mb-1 " style="width: 100%;">Proceed</button>
                 </div>
-                <button @click="goSetup()" type="button" class="btn btn-danger text-center mt-3 mb-1" style="width: 100%;">Proceed</button>
             </div>
         </div>
     </div>
@@ -99,7 +159,7 @@
 </template>
 <script>
 import BaseContainer from './components/BaseContainer.vue'
-import BaseButton from './components/BaseButton.vue'
+
 export default {
     name: "index",
     components: {BaseContainer},
@@ -112,7 +172,7 @@ export default {
                 setup: true,
             },
             toggleShow: false,
-            tabs: []
+            tabs: [],
         }
     },
     computed: {
@@ -140,6 +200,7 @@ export default {
         goProfile(){ this.$router.push('/profile'); this.toggleShow = false},
         goSetup(){ this.$router.push('/setup'); this.createTownhallModalShow = false},
         checkTronStatus(){
+
             if(window.tronLink){
                 this.connectWallet()
             } else {
@@ -156,11 +217,11 @@ export default {
             this.toggleShow = false
         },
         getAccountData(){
+            
             let _addr = window.tronWeb.defaultAddress.base58
             // _addr = 'TGwBRQxCuj26zNsBYirfLHNSUR5swjqEH2'
+            // _addr = 'TXEX5keZqiamZJRRiV3LgkpwUSJ8PF48YC'
             // _addr = 'jj'
-
-            
             api.getAccountData({_addr: _addr}, (res => {
                 this.$store.dispatch('account/setAccount', res.data.account)
                 if (res.data.account.name){
@@ -176,7 +237,9 @@ export default {
                     }
 
                 })
-                this.tabs[0].getTownhallList()
+                this.tabs[0].getTownhallList();
+                
+                
             }), err =>{
                 console.log(err)
             })

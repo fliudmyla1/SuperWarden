@@ -33,18 +33,25 @@ import VueUniversalModal from 'vue-universal-modal';
 
 import Toaster from "@meforma/vue-toaster";
 
+import VueLoading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+
 // Create and mount the root instance.
 const app = createApp(App)
 app.use(VueUniversalModal, {
     teleportTarget: '#modals',
   });
-
-  app.use(Toaster, {
-    // One of the options
-    position: "top-right",
-  });
-// app.component("font-awesome-icon", FontAwesomeIcon)
-// app.component("font-awesome-icon", FontAwesomeIcon).mount("#app");
+  app.use(VueLoading, {
+    // props
+    color: '#595959',
+    loader: 'dots',
+}, {
+    // slots
+})
+app.use(Toaster, {
+  // One of the options
+  position: "top-right",
+});
 app.use(router).use(store).mount('#app')
 
 

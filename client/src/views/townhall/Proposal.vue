@@ -1,33 +1,38 @@
 <template>
-<nav class="navbar navbar-expand-sm h-[65px]" style="border-bottom: 1px solid #d5d5d5">
-  <div class="container-fluid">
-    <label class="navbar-brand ps-5 pe-4 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Proposal</label>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="mynavbar">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <label  @click = "getProposalList(-1)" :class="index === -1?  'selected': ''" class="nav-link superwarden-nav" style="background-color: #fff">All</label>
-        </li>
-        <li class="nav-item">
-          <label @click = "getProposalList(1)" :class="index === 1?  'selected': ''" class="nav-link superwarden-nav"  style="background-color: #fff">Active</label>
-        </li>
-        <li class="nav-item">
-          <label  @click = "getProposalList(0)" :class="index === 0?  'selected': ''" class="nav-link superwarden-nav me-3" style="background-color: #fff">Important</label>
-        </li>
-        <li class="nav-item">
-          <label @click = "getProposalList(2)" :class="index === 2?  'selected': ''" class="nav-link superwarden-nav " style="background-color: #fff">Complete</label>
-        </li>
-      </ul>
-      <form class="d-flex me-4" v-if = "$store.getters.role < 4">
-        <button @click="goCreateProposal" class="right-button px-3" type="button" >+Proposal</button>
-      </form>
-    </div>
-  </div>
-</nav>
+<div v-if = "loading"  style="width: 70%; height: 85%; display: flex; justify-content: center; vertical-align: middle; position: fixed; align-items: center; text-align: center;">
 
+  <fade-loader class="ms-5" :loading="loading" color="#000" height="10px" width="10px"></fade-loader>
+</div>
+<div v-else>
+  <nav class="navbar navbar-expand-sm h-[65px]" style="border-bottom: 1px solid #d5d5d5">
+    <div class="container-fluid">
+      <label class="navbar-brand ps-5 pe-4 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Proposal</label>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mynavbar">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <label  @click = "getProposalList(-1)" :class="index === -1?  'selected': ''" class="nav-link superwarden-nav" style="background-color: #fff">All</label>
+          </li>
+          <li class="nav-item">
+            <label @click = "getProposalList(1)" :class="index === 1?  'selected': ''" class="nav-link superwarden-nav"  style="background-color: #fff">Active</label>
+          </li>
+          <li class="nav-item">
+            <label  @click = "getProposalList(0)" :class="index === 0?  'selected': ''" class="nav-link superwarden-nav me-3" style="background-color: #fff">Important</label>
+          </li>
+          <li class="nav-item">
+            <label @click = "getProposalList(2)" :class="index === 2?  'selected': ''" class="nav-link superwarden-nav " style="background-color: #fff">Complete</label>
+          </li>
+        </ul>
+        <form class="d-flex me-4" v-if = "$store.getters.role < 4">
+          <button @click="goCreateProposal" class="right-button px-3" type="button" >+Proposal</button>
+        </form>
+      </div>
+    </div>
+  </nav>
   
+
   <div v-if = "proposals.length > 0" class="right-section-content">
 
       <div @click="goProposalDetail(p._id)" class="block-container-proposal" v-for="(p) in proposals">
@@ -42,7 +47,7 @@
             <p v-else class="status complete px-3">Complete</p>
           </div>
         </div>
-        <span class="fw-bolder">Broadcast by {{p.creator.name ? trimmedAccountNameAndLowercase(p.creator.name) +"." + p.slug: trimmedAccountAddress(p.creator.address) }}</span>
+        <span class="fw-bolder">Proposed by {{p.creator.name ? trimmedAccountNameAndLowercase(p.creator.name) +"." + p.slug: trimmedAccountAddress(p.creator.address) }}</span>
         <span class="text-dark" style="height: 100px;">{{trimmedAnnounceSummary(p.description)}}</span>
         <span class="valid-till"><img src="../../assets/clock-icon.png"/>Time left &nbsp;<img src="../../assets/line1.png"/> {{p.leftTime}}</span>
         <span class="cheak" v-if = "p.passed == 1"><img src="../../assets/uncheack.png" style="height: 25px;"/>Voting under process, result will be announced soon</span>
@@ -53,35 +58,27 @@
   <div v-else class="right-section-no-content" :style="`min-height: ${height}px`">
     <img src="../../assets/townhall-quiet.png" />
     <span>There are no announcements currently. Let’s wait for someone to broadcast. </span>
-  </div>
+  </div> 
+
+</div>
 </template>
 <script>
 import moment from 'moment';
+import FadeLoader from 'vue-spinner/src/FadeLoader.vue';
 
 export default {
     name: "Proposal",
+    components: {FadeLoader},
     data() {
         return {
           slug : this.$route.params['slug'],
           proposals: [],
           index : -1, //0: expecting 1: on process 2: passed, -1: all
-          height: innerHeight - 210
-          // role: -1,
+          height: innerHeight - 210,
+          loading: true,
         }
     },
-    computed: {
-      role(){
-        return this.$parent.$parent.role
-      }
-
-    },
-    // computed(){
-    //   },
-    created() {
-
-      this.getProposalList(-1)
-
-    },
+    created() {this.getProposalList(-1)},
     mounted() {
       
 
@@ -126,10 +123,11 @@ export default {
           }
           return 'N/A. Proposal do not meet the quorum threshold'
         } else {
-          if (p.s_result)
-            return p.s_result[0].option + ' is a winner'
-          else
-            return p.result[0].option + ' is a winner'
+          if (p.s_result && p.s_result.length > 0)
+              return p.s_result[0].option + ' is a winner'
+          if (p.result && p.result.length > 0)
+              return p.result[0].option + ' is a winner'
+          return 'N/A. Proposal does not have the result'
         }
 
       },
@@ -148,21 +146,25 @@ export default {
 
       goCreateProposal(){this.$router.push(`/proposal/create/${this.slug}`)},
         getProposalList(index){
+          this.loading = true
           this.index = index
           api.getProposalList({slug : this.slug, index: this.index}, (res => {
             this.proposals = res.data.list
-            console.log(this.proposals)
+            // console.log(this.proposals)
             this.proposals.map((p) => {
               let now = new Date()
               let localTimeOffset = now.getTimezoneOffset() * 60 * 1000;
-              let localTimeValue = now.getTime() - localTimeOffset
+              let localTimeValue = now.getTime() + localTimeOffset
               let serverTimeOffset = moment().utcOffset(p.timezone.offset).utcOffset() * 60 * 1000
               let start_at_f = new Date(p.f_start_at);
-              let startTimeValue = start_at_f.getTime() - serverTimeOffset
+              let startTimeValue = start_at_f.getTime() - serverTimeOffset + localTimeOffset
               let end_at_f = new Date(p.f_end_at);
-              let endTimeValue = end_at_f.getTime() - serverTimeOffset
+              let endTimeValue = end_at_f.getTime() - serverTimeOffset + localTimeOffset
               let toStart = startTimeValue - localTimeValue
               let toEnd = endTimeValue - localTimeValue
+
+
+
               
               if (toStart > 0){
                 p.passed = 0
@@ -180,11 +182,11 @@ export default {
                 let day = parseInt(toEnd/(1000 * 3600 * 24))
                 let hour = parseInt((toEnd - day * 1000 * 3600 * 24)/(1000 * 3600))
                 let minute = parseInt((toEnd - day * 1000 * 3600 * 24 - hour * 1000 * 3600)/(1000 * 60)) 
-                console.log(minute)
+                // console.log(minute)
 
                 p.leftTime = `${day} days ${hour} hours ${minute} minutes`
               }
-              // 0: expecting 1: on process 2: passed
+              this.loading = false
 
             })
           }), err =>{
@@ -316,13 +318,7 @@ export default {
   text-align: left;
 }
 
-/* .right-section-content {
-  display: flex;
-  flex-direction: column;
-  row-gap: 30px;
-  width: 100%;
-  padding: 30px 50px;
-} */
+
 
 .right-section-content .block-container-proposal {
   border: 1px solid #d5d5d5;
@@ -330,7 +326,7 @@ export default {
   padding-left: 30px;
   padding-right: 30px;
   padding-bottom: 10px;
-  padding-top: 40px;
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
   row-gap: 20px;

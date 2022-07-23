@@ -8,7 +8,7 @@
         <label class="mb-3" style=" font-size: 2vw; color: #FFFFFF; font-weight: 700;">Explore the Superwarden World</label>
         <div class="input-group mb-3" style="background-color: #FFFFFF; border-radius: 8px;">
             <input  v-model = "searchPattern.name" style="width: 45%;" type="text" class="form-control border-0" placeholder="Search your townhall...">
-            <span @click="search" class="input-group-text border-0"><img src="../assets/search-icon.png" style="height: 22px" /></span>
+            <span @click="search" class="input-group-text border-0"><img src="../assets/search-icon.png" style="height: 22px; cursor: pointer;" /></span>
             <span style="display: flex; justify-content: center; align-items: center;"><img src="../assets/line.png" style="height: 30px" /></span>
             <span class="input-group-text border-0"><img src="../assets/boxicon.png" style="height: 22px" /></span>
             
@@ -54,28 +54,29 @@
 
   <Modal v-model="joinModalShow" :close="closeModal" style="z-index: 9999;">
   <div class="modal-dialog modal-lg">
-      <div class="modal-content pb-3">
+      <div class="modal-content " style="min-width: 850px;">
         <div @click="joinModalShow = false">
           <button style="right: 15px; position: absolute;" type="button" class="close border-0 mt-2 fs-4">
               <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class = "row">
-          <div class="col-md-5">
-              <img :src = "joiningTownhall.details.coverPhoto" style="width: 100%; " class="top-radius" />
+        <div class = "row p-0 m-0">
+          <div class="col-md-5 p-0" style="border-right: 1px solid #d5d5d5;">
+            
+              <img :src = "joiningTownhall.details.coverPhoto" style="width: 100%; border-top-right-radius: 0px;" class="top-radius" />
               <div class="ms-5 me-1">
-                  <img class="" :src="joiningTownhall.details.avatar" style="width: 70px; margin-top: -35px; border-radius: 50%; border: 2px solid #ffffff;"  />
+                  <img class="" :src="joiningTownhall.details.avatar" style="display: inline-table; width: 80px; margin-top: -35px; margin-left: -5px; border-radius: 50%; border: 2px solid #ffffff;"  />
                   <div>
                     <label class="mt-2 fw-bolder">{{joiningTownhall.villagers.length}} Villagers</label>
                   </div>
-                  <div>
+                  <div class="me-4">
                     <label class="mt-2 text-dark popup-content-text">
                       {{joiningTownhall.details.bio}}
                     </label>
                   </div>
               </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-7 px-5">
             <div class = "mt-5 mb-5 ">
               <div class="text-center">
                 <label class="fw-bolder mb-0 pb-0">Become the villager of</label>
@@ -89,25 +90,25 @@
               <div class="mb-1">
                 <label class="form-label popup-content-text fw-bolder">What you can do here?</label>
               </div>
-              <div style="display: flex; justify-content: center; align-items: center;" >
-                  <p class="ps-2 pt-2 pb-2 popup-content-bold-text popup-content-text-border" style="width: 100%; display: flex;">
-                   <img src="../assets/check.png" style="width: 25px; "/>
+              <div style="display: flex; justify-content: center; align-items: center; " >
+                  <p class="ps-2 pt-2 pb-2 popup-content-bold-text popup-content-text-border" style="width: 100%; display: flex; border-radius: 7px;">
+                   <img class = "me-2"  src="../assets/check.png" style="width: 25px; "/>
                    You can vote proposals with community token
                   </p>
               </div>
               <div style="display: flex; justify-content: center; align-items: center;" >
-                  <p class="ps-2 pt-2 pb-2 popup-content-bold-text popup-content-text-border" style="width: 100%; display: flex; ">
-                   <img src="../assets/check.png" style="width: 25px; "/>
+                  <p class="ps-2 pt-2 pb-2 popup-content-bold-text popup-content-text-border" style="width: 100%; display: flex;  border-radius: 7px; ">
+                   <img class = "me-2" src="../assets/check.png" style="width: 25px; height: 25px;"/>
                    Have the chance to become a warden or master
                   </p>
               </div>
-              <div style="display: flex; justify-content: center; align-items: center;" >
-                  <p class="ps-2 pt-2 pb-2 popup-content-bold-text popup-content-text-border" style="width: 100%; display: flex;">
-                   <img src="../assets/check.png" style="width: 25px; "/>
+              <div style="display: flex; justify-content: center; align-items: center; " >
+                  <p class="ps-2 pt-2 pb-2 popup-content-bold-text popup-content-text-border" style="width: 100%; display: flex; border-radius: 7px;">
+                   <img class = "me-2"  src="../assets/check.png" style="width: 25px; "/>
                    Stay alert to townhall activities
                   </p>
               </div>
-              <button @click="joinTownhall" type="button" class="btn btn-danger text-center" style="float: right;">Join</button>
+              <button @click="joinTownhall" type="button" class="btn btn-danger text-center px-5 mt-2 mb-4" style="float: right;">Join</button>
             </div>
           </div>
         </div>
@@ -131,25 +132,23 @@ export default {
           joiningTownhall: {
             details: {}
           },
-            townhalls: [],
-					categories : [ 'Media', 'Social', 'Entertainment', 'Protocol', 'Investment', 'Collectors', 'Grant', 'Art and Culture', 
-			'Education', 'Research', 'Creator', 'Service'],
-
+          townhalls: [],
+					categories : [ 'Media', 'Social', 'Entertainment', 'Protocol', 'Investment', 'Collectors', 'Grant', 'Art and Culture','Education', 'Research', 'Creator', 'Service'],
+          loader: ''
         }
     },
-    computed: {
-
-
-    },
+    computed: {},
     beforeCreate(){this.$parent.$parent.tabs.push(this);},
     created(){this.getTownhallList();},
     methods: {
+
       trimmedTownhallName(name){
         if (name.length > 20)
             return name.slice(0, 15) + "..." + name.slice(name.length - 4, name.length)
         else
           return name
       },
+
       trimmedTownhallBio(bio){
         if (bio.length > 95)
           return bio.slice(0, 95) + "..."
@@ -157,16 +156,7 @@ export default {
           return bio
       },
 
-
-
-      search(){
-        // console.log(this.searchPattern)
-        this.getTownhallList()
-      },
-
-
-
-
+      search(){this.getTownhallList()},
 
       closeModal() {this.joinModalShow = false;},
 
@@ -193,9 +183,9 @@ export default {
           this.$router.push(`/${slug}/proposal`)
         },
         getTownhallList(){
+          // let loader = this.$loading.show()
           api.getTownhallList({search: this.searchPattern}, (res => {
               this.townhalls = res.data.data
-              console.log(this.townhalls)
               this.townhalls.map((i) =>{
                   for (var j = 0; j < i.villagers.length; j++){
                       if (i.villagers[j]._id == this.$store.getters._id){
@@ -203,6 +193,8 @@ export default {
                       }
                   }
               })
+              // loader.hide()
+              
           }), err =>{
               console.log(err)
           })

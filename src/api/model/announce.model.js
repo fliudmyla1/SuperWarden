@@ -9,7 +9,9 @@ const announce = new mongoose.Schema({
   attachment: {type: String},
   expire_at: {type: Date, required: true},
   timezone: {type: mongoose.Schema.Types.Mixed, required: true},
-  importance: {type: Boolean, default: false}
+  importance: {type: Boolean, default: false},
+  created_at: {type: Date, default: Date.now}
+
 });
 // }, { strict: false });
 

@@ -191,7 +191,7 @@ export default {
             const rootCid = await client.put(ee, {maxRetries: 3});
             // let rootCid = 'afefe'
             if (rootCid){
-                this.$toast.success(`succeeded to ipfs upload`);
+                this.$toast.success(`Uploaded on Web3.Storage.`);
                 if (this.townhall.details.pinataKey != '' && this.townhall.details.pinataSecret != ''){
                     const pinata = pinataSDK(this.townhall.details.pinataKey, this.townhall.details.pinataSecret);
                     const options = {
@@ -200,7 +200,7 @@ export default {
                         },
                     };
                     pinata.pinByHash(rootCid, options).then((result) => {
-                            this.$toast.success(`succeeded to pinata upload`);
+                            this.$toast.success(`Pinned on Pinata.`);
                         }).catch((err) => {
                             this.$toast.error(`failed to pinata upload`);
                         })
@@ -211,7 +211,7 @@ export default {
                 api.createBroadcast({slug: this.slug, announce: this.announce, creator: this.$store.getters._id, cid: rootCid}, (res => {
                     console.log(res.data)
                     if (res.data.announce.title){
-                        this.$toast.success(`succeeded to broadcast an announcement.`);
+                        this.$toast.success(`Announcement broadcast successfully.`);
                         this.$router.push(`/${this.slug}/announcement`)
                     } else {
                         this.$toast.error(`fail to connect to the server.`);

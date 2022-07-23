@@ -116,14 +116,15 @@
                     
                         <p class="fw-bolder" style="color: #959595; font-size: 14px;">Write down what’s your proposal about. Format your proposal summary in Markdown.</p>
 
-                          <div class=" p-2 border-bottom-0" style=" height: 45px; border-radius: 5px 5px 0px 0px;
+                          <div class="border-bottom-0" style=" height: 45px; border-radius: 5px 5px 0px 0px;
                             border: 1px solid #959595;
                             display: flex;
                             justify-content: flex-start;
                             align-items: center;
-                            column-gap: 45px;">
-                                <span @click="setEdit" class="fw-bolder" style="font-size: 15px; color: #959595; cursor: pointer; display: flex; align-items: center;"><img class="" src = "../assets/edit.png" style="height: 18px;"/> Edit</span>
-                                <span @click="setPreview" class="fw-bolder" style="font-size: 15px; color: #959595; cursor: pointer;  display: flex; align-items: center;"><img src = "../assets/preview.png" style="height: 18px;"/> Preview</span>
+                            
+                            background-color: #F6F6F6;">
+                                <span @click="setEdit" class="fw-bolder px-4" :class=" preview ? '' : 'mark-selected'" style="height: 100%; border-top-left-radius: 6px; font-size: 15px; color: #959595; cursor: pointer; display: flex; align-items: center;"><img class="" src = "../assets/edit.png" style="height: 18px;"/> Edit</span>
+                                <span @click="setPreview" class="fw-bolder px-2" :class=" preview ? 'mark-selected' : ''" style=" height: 100%; font-size: 15px; color: #959595; cursor: pointer;  display: flex; align-items: center;"><img src = "../assets/preview.png" style="height: 18px;"/> Preview</span>
                             </div>
                             <div v-if = "preview" v-html = "previewContent"
                                 class="form-control border-top-0" style="border: 1px solid #959595; border-radius: 0px 0px 5px 5px; min-height: calc(1.5em + 0.75rem + 2px);
@@ -327,23 +328,28 @@
 							Apply quorum threshold?
 						</label>
 						<p class="fw-bolder" style="color: #959595; font-size: 14px;">A quorum is the minimum number of participating members or tokens required for a proposal to be approved.</p>
-                        <div class="my-1">
+                        <div v-if ="stepFive.quorum_status">
+                        
+                            <div  class="my-1" >
 
-                            <input v-if ="stepFive.quorum_status" v-model = "stepFive.percent" 
-                                    v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
-                                    v-on:focus="clearValidation('percent')" 
-                                    type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
-                            <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
-                            <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
-                        </div>
-                        <div class="my-1">
-
-                            <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
-                                    v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
-                                    v-on:focus="clearValidation('totalToken')" 
-                                    type="number" class="form-control" placeholder="Eg. 100000">
-                            <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
-                            <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                                <input v-model = "stepFive.percent" 
+                                        v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
+                                        v-on:focus="clearValidation('percent')" 
+                                        type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
+                                <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
+                                <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
+                            </div>
+                            <div class="my-1">
+                                                        <label  class="form-check-label fw-bolder fs-6 my-3" for="flexCheckDefault" style="font-weight: bold;">
+                                Current Total Circulating Supply
+                            </label>
+                                <input  v-model = "stepFive.totalToken" 
+                                        v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
+                                        v-on:focus="clearValidation('totalToken')" 
+                                        type="number" class="form-control" placeholder="Eg. 100,000,000">
+                                <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
+                                <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                            </div>
                         </div>
 					</div>
                     
@@ -382,23 +388,28 @@
 							Apply quorum threshold?
 						</label>
 						<p class="fw-bolder" style="color: #959595; font-size: 14px;">A quorum is the minimum number of participating members or tokens required for a proposal to be approved.</p>
-                        <div class="my-1">
+                        <div v-if ="stepFive.quorum_status">
+                        
+                            <div class="my-1">
 
-                            <input v-if ="stepFive.quorum_status"  v-model = "stepFive.percent" 
-                                    v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
-                                    v-on:focus="clearValidation('percent')" 
-                                    type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
-                            <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
-                            <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
-                        </div>
-                        <div class="my-1">
-
-                            <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
-                                    v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
-                                    v-on:focus="clearValidation('totalToken')" 
-                                    type="number" class="form-control" placeholder="Eg. 100000">
-                            <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
-                            <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                                <input v-if ="stepFive.quorum_status"  v-model = "stepFive.percent" 
+                                        v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
+                                        v-on:focus="clearValidation('percent')" 
+                                        type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
+                                <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
+                                <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
+                            </div>
+                            <div class="my-1">
+    <label  class="form-check-label fw-bolder fs-6 my-3" for="flexCheckDefault" style="font-weight: bold;">
+                                Current Total Circulating Supply
+                            </label>
+                                <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
+                                        v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
+                                        v-on:focus="clearValidation('totalToken')" 
+                                        type="number" class="form-control" placeholder="Eg. 100,000,000">
+                                <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
+                                <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                            </div>
                         </div>
 					</div>
                 </div>
@@ -434,22 +445,27 @@
 							Apply quorum threshold?
 						</label>
 						<p class="fw-bolder" style="color: #959595; font-size: 14px;">A quorum is the minimum number of participating members or tokens required for a proposal to be approved.</p>
-                        <div class="my-1">
-                            <input v-if ="stepFive.quorum_status" v-model = "stepFive.percent" 
-								v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
-                                v-on:focus="clearValidation('percent')" 
-								type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
-                        <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
-                        <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
-                        </div>
-                        <div class="my-1">
-
-                            <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
-                                    v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
-                                    v-on:focus="clearValidation('totalToken')" 
-                                    type="number" class="form-control" placeholder="Eg. 100000">
-                            <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
-                            <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                        <div v-if ="stepFive.quorum_status">
+                        
+                            <div class="my-1">
+                                <input v-if ="stepFive.quorum_status" v-model = "stepFive.percent" 
+                                    v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
+                                    v-on:focus="clearValidation('percent')" 
+                                    type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
+                            <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
+                            <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
+                            </div>
+                            <div class="my-1">
+    <label  class="form-check-label fw-bolder fs-6 my-3" for="flexCheckDefault" style="font-weight: bold;">
+                                Current Total Circulating Supply
+                            </label>
+                                <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
+                                        v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
+                                        v-on:focus="clearValidation('totalToken')" 
+                                        type="number" class="form-control" placeholder="Eg. 100,000,000">
+                                <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
+                                <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                            </div>
                         </div>
 					</div>
                 
@@ -479,23 +495,28 @@
 							Apply quorum threshold?
 						</label>
 						<p class="fw-bolder" style="color: #959595; font-size: 14px;">A quorum is the minimum number of participating members or tokens required for a proposal to be approved.</p>
-                        <div class="my-1">
-                            
-                            <input  v-if ="stepFive.quorum_status" v-model = "stepFive.percent" 
-                                    v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
-                                    v-on:focus="clearValidation('percent')" 
-                                    type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
-                            <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
-                            <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
-                        </div>
-                        <div class="my-1">
-
-                            <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
-                                    v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
-                                    v-on:focus="clearValidation('totalToken')" 
-                                    type="number" class="form-control" placeholder="Eg. 100000">
-                            <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
-                            <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                        <div v-if ="stepFive.quorum_status">
+                        
+                            <div class="my-1">
+                                
+                                <input  v-if ="stepFive.quorum_status" v-model = "stepFive.percent" 
+                                        v-bind:class="{ 'is-valid': validation.valid.percent, 'is-invalid': validation.invalid.percent }" 
+                                        v-on:focus="clearValidation('percent')" 
+                                        type="number" class="form-control" placeholder="Enter a percentage (maximum is 100%)">
+                                <div class="valid-feedback" v-if="validation.valid.percent">{{ validation.valid.percent }}</div>
+                                <div class="invalid-feedback" v-if="validation.invalid.percent">{{ validation.invalid.percent }}</div>
+                            </div>
+                            <div class="my-1">
+    <label  class="form-check-label fw-bolder fs-6 my-3" for="flexCheckDefault" style="font-weight: bold;">
+                                Current Total Circulating Supply
+                            </label>
+                                <input v-if ="stepFive.quorum_status" v-model = "stepFive.totalToken" 
+                                        v-bind:class="{ 'is-valid': validation.valid.totalToken, 'is-invalid': validation.invalid.percent }" 
+                                        v-on:focus="clearValidation('totalToken')" 
+                                        type="number" class="form-control" placeholder="Eg. 100,000,000">
+                                <div class="valid-feedback" v-if="validation.valid.totalToken">{{ validation.valid.totalToken }}</div>
+                                <div class="invalid-feedback" v-if="validation.invalid.totalToken">{{ validation.invalid.totalToken }}</div>
+                            </div>
                         </div>
 					</div>
                 </div>
@@ -543,13 +564,16 @@
                             <div class = "col-md-6" >
                                 <div class="input-group ">
                                     <label for="time-zone" class="form-label fw-bolder fs-6">Start date</label>
-                                    <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
-                                        <div  style="width: 75%;">
+                                    <div style="display: flex;  border: 1px solid #d5d5d5; border-radius: 7px;">
+                                        <div  style="width: 82%;">
 
                                             <Datepicker
                                               v-model="stepSix.f_start_date_at"
                                             v-on:focus="clearValidation('s_date')"
                                                 style = "border-radius: 8px;"
+                                                disabledTime
+                                                upperLimit
+                                                inputFormat = "yyyy-MM-dd"
                                                 class="form-control border-0 " placeholder="Choose a date" />
                                         </div>
                                         <span  class="input-group-text border-0" style = "border-radius: 8px;"><img src="../assets/calendar.png" style="height: 20px" /></span>
@@ -587,12 +611,14 @@
                                 <div class="input-group ">
                                     <label for="time-zone" class="form-label fw-bolder fs-6">End date</label>
 <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
-                                        <div  style="width: 75%;">
+                                        <div  style="width: 82%;">
 
                                             <Datepicker
                                                v-model="stepSix.f_end_date_at" 
                                             v-on:focus="clearValidation('e_date')"
                                                 style = "border-radius: 8px;"
+                                                lowerLimit
+                                                disabledTime
                                                 class="form-control border-0 " placeholder="Choose a date" />
                                         </div>
                                         <span  class="input-group-text border-0" style = "border-radius: 8px;"><img src="../assets/calendar.png" style="height: 20px" /></span>
@@ -630,7 +656,7 @@
                                 <div class="input-group ">
                                     <label for="time-zone" class="form-label fw-bolder fs-6">Start date</label>
                                                          <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
-                                        <div  style="width: 75%;">
+                                        <div  style="width: 82%;">
 
                                             <Datepicker
                                                v-model="stepSix.f_start_date_at"
@@ -673,7 +699,7 @@
                                 <div class="input-group ">
                                     <label for="time-zone" class="form-label fw-bolder fs-6">End date</label>
                                                                                <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
-                                        <div  style="width: 75%;">
+                                        <div  style="width: 82%;">
 
                                             <Datepicker
                                                v-model="stepSix.f_end_date_at" 
@@ -713,7 +739,7 @@
                                 <div class="input-group ">
                                     <label for="time-zone" class="form-label fw-bolder fs-6">Start date</label>
                                                                         <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
-                                        <div  style="width: 75%;">
+                                        <div  style="width: 82%;">
 
                                             <Datepicker
                                                 v-model="stepSix.s_start_date_at" 
@@ -757,7 +783,7 @@
                                     <label for="time-zone" class="form-label fw-bolder fs-6">End date</label>
                                     
                                     <div style="display: flex; border: 1px solid #d5d5d5; border-radius: 7px;">
-                                        <div  style="width: 75%;">
+                                        <div  style="width: 82%;">
 
                                             <Datepicker
                                                 v-model="stepSix.s_end_date_at" 
@@ -890,6 +916,7 @@ export default {
 
             slug : this.$route.params['slug'],
 			steps: 1,
+            // editSelected: true,
             stepOne: {
                 title: '',
                 description: '',
@@ -905,6 +932,7 @@ export default {
             stepFour: {strategy: ''},
             stepFive: {},
             stepSix: {},
+            stepSix_real: {},
             stepSeven: {check: false},
 
             filename: '',
@@ -990,10 +1018,13 @@ export default {
             })
       },
       async  createProposal(){
+
             if (!this.stepSeven.check)
                 return
                 let data = {};
-            data = Object.assign(this.stepOne, this.stepTwo, this.stepThree, this.stepFour, this.stepFive, this.stepSix);
+            data = Object.assign(this.stepOne, this.stepTwo, this.stepThree, this.stepFour, this.stepFive, this.stepSix_real);
+            console.log(data)
+            // return
             if (this.townhall.details.webThrKey){
                 var client = new Web3Storage({ token: this.townhall.details.webThrKey});
                 const blob = new Blob([JSON.stringify(data)], { type: 'application/json' })
@@ -1001,7 +1032,7 @@ export default {
                 const rootCid = await client.put(ee, {maxRetries: 3});
                 // let rootCid = 'afefe'
                 if (rootCid){
-                    this.$toast.success(`succeeded to ipfs upload`);
+                    this.$toast.success(`Uploaded on Web3.Storage.`);
                     if (this.townhall.details.pinataKey != '' && this.townhall.details.pinataSecret != ''){
                         const pinata = pinataSDK(this.townhall.details.pinataKey, this.townhall.details.pinataSecret);
                         const options = {
@@ -1010,7 +1041,7 @@ export default {
                             },
                         };
                         pinata.pinByHash(rootCid, options).then((result) => {
-                                this.$toast.success(`succeeded to pinata upload`);
+                                this.$toast.success(`Pinned on Pinata.`);
                             }).catch((err) => {
                                 this.$toast.error(`failed to pinata upload`);
                             })
@@ -1020,7 +1051,7 @@ export default {
 
                      api.createProposal({slug: this.slug, _id: this.$store.getters._id, data: data, cid: rootCid}, (res =>{
 					if (res.data.proposal){
-                            this.$toast.success('created your proposal')
+                            this.$toast.success('Proposal created successfully.')
                             this.$router.push(`/${this.slug}/proposal`)
                          } else {
                             this.$toast.error(`fail to connect to the server.`);
@@ -1085,7 +1116,7 @@ export default {
                 this.validation.invalid.type = 'Please select your voting system first.';
                 return
             } else {
-                this.validation.valid.type = 'The your voting system is OK.';
+                this.validation.valid.type = 'The voting system is selected.';
             }
             let flag = false
             this.stepThree.options.map((i)=>{
@@ -1184,13 +1215,29 @@ export default {
             this.validate.invalid = {}
 
         },
-
+        makeTimeString(date){
+            // if ()
+            let year = date.getFullYear().toString()
+            let month = ''
+            if (date.getMonth() < 9)
+                month = '0' + (date.getMonth() + 1).toString()
+            else
+                month = (date.getMonth() + 1).toString()
+            let day = ''
+            if (date.getDate() < 10)
+                day = '0' + date.getDate().toString()
+            else
+                day = date.getDate().toString()
+            // return year + month + day
+            return `${year}-${month}-${day}`
+        },
         validateSixthStep(){
             let error = false
             if(!this.stepSix.timezone){
                 this.validation.invalid.timezone = 'Please select your timezone.';
                 error = true
             }else {
+                this.stepSix_real.timezone = this.stepSix.timezone
                     this.validation.valid.timezone = 'The timezone is added.';
             }
             //time validation still not date
@@ -1200,7 +1247,10 @@ export default {
             } else {
                 if (!this.stepSix.f_start_time_at.HH || !this.stepSix.f_start_time_at.mm){
                     error = true
-                this.validation.invalid.s_date = 'Please insert your date and time correctly.';
+                    this.validation.invalid.s_date = 'Please insert your date and time correctly.';
+                } else {
+                    this.stepSix_real.f_start_date_at = this.makeTimeString(this.stepSix.f_start_date_at)
+                    this.stepSix_real.f_start_time_at = this.stepSix.f_start_time_at
                 }
             }
             if (!this.stepSix.f_end_time_at || !this.stepSix.f_end_date_at){
@@ -1209,7 +1259,10 @@ export default {
             } else {
                 if (!this.stepSix.f_end_time_at.HH || !this.stepSix.f_end_time_at.mm){
                     error = true
-                this.validation.invalid.e_date = 'Please insert your date and time correctly.';
+                    this.validation.invalid.e_date = 'Please insert your date and time correctly.';
+                } else {
+                    this.stepSix_real.f_end_date_at = this.makeTimeString(this.stepSix.f_end_date_at)
+                    this.stepSix_real.f_end_time_at = this.stepSix.f_end_time_at
                 }
             }
             if (this.stepThree.type == 2){
@@ -1217,22 +1270,29 @@ export default {
                 if (!this.stepSix.s_start_time_at || !this.stepSix.s_start_date_at){
                     error = true
                     this.validation.invalid.ss_date = 'Please insert your date and time correctly.';
-                            } else {
+                } else {
                     if (!this.stepSix.s_start_time_at.HH || !this.stepSix.s_start_time_at.mm){
                         error = true
-                    this.validation.invalid.ss_date = 'Please insert your date and time correctly.';
+                        this.validation.invalid.ss_date = 'Please insert your date and time correctly.';
+                    } else {
+                        this.stepSix_real.s_start_date_at = this.makeTimeString(this.stepSix.s_start_date_at)
+                        this.stepSix_real.s_start_time_at = this.stepSix.s_start_time_at
                     }
                 }
                 if (!this.stepSix.s_end_time_at || !this.stepSix.s_end_date_at){
                     error = true
                     this.validation.invalid.se_date = 'Please insert your date and time correctly.';
-                                        } else {
+                } else {
                     if (!this.stepSix.s_end_time_at.HH || !this.stepSix.s_end_time_at.mm){
                         error = true
-                    this.validation.invalid.se_date = 'Please insert your date and time correctly.';
+                        this.validation.invalid.se_date = 'Please insert your date and time correctly.';
+                    } else {
+                        this.stepSix_real.s_end_date_at = this.makeTimeString(this.stepSix.s_end_date_at)
+                        this.stepSix_real.s_end_time_at = this.stepSix.s_end_time_at
                     }
                 }
             }
+            this.stepSix_real.shield = this.stepSix.shield
 
             
             // console.log(this.stepSix)
@@ -1369,6 +1429,9 @@ export default {
 }
 </script>
 <style>
+.mark-selected{
+    background-color: #fff;
+}
 .dot {
   height: 5px;
   width: 5px;
