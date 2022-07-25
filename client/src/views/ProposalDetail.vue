@@ -13,7 +13,7 @@
                         </div>
                         <span class="fw-bolder mt-2">Proposed by {{proposal.creator.name ? trimmedAccountName(proposal.creator.name) +"." + proposal.slug: trimmedAccountAddress(proposal.creator.address) }}
                             <span   v-if="proposal.status == 1" class="status-active ms-2">Active</span>
-                            <span v-else-if = "proposal.status == 0" class="status-complete ms-2">Expecting</span>
+                            <span v-else-if = "proposal.status == 0" class="status-active ms-2">Active</span>
                             <span v-else class="status-complete ms-2">Complete</span>
 
                         </span>
@@ -54,15 +54,38 @@
                         
                         <div style="border-radius: 7px; border: 1px solid #959595">
 
-                            <div v-if ="proposal.shield && proposal.status != 2" class="text-center py-4" style=" border-bottom: 1px solid #D5D5D5;">
+                            <div v-if ="proposal.shield && proposal.status == 1" class="text-center py-4" style=" border-bottom: 1px solid #D5D5D5;">
                                 <div class=" px-5 mx-4">
                                     <img src = "../assets/voter-security.png" style="height: 200px;"/>
                                 </div>
                             </div>
                             <div v-else >
                                 <div v-if = "voters.length > 0">
-                                    <!-- <div v-for = "(v) in voters" class="ps-4 fw-bolder voter-container"> -->
-                                    <div v-for = "(v) in voters" class="ps-4 fw-bolder" style="border-bottom: 1px solid #d5d5d5;">
+                                    <div  v-if = "proposal.type !=2">
+                                        <div v-for = "(v) in voters" class="ps-4 fw-bolder" style="border-bottom: 1px solid #d5d5d5;">
+                                            <div class="row" style="font-size: 14px;">
+                                                <div class="col-md-4" style="padding: 15px; display: flex; column-gap: 20px; justify-content: space-between;  align-items: center;">
+                                                    <img src="../assets/logo-icon.png" style="height: 20px; border-radius: 50%"/>
+                                                    <p class="p-0 m-0">{{trimmedVotersAddress(v._addr)}}
+                                                
+                                                    </p>
+                                                    <div class="superwarden-tooltip" style="float: right;">
+                                                        <img src="../assets/coppy-icon.png" style = "cursor: pointer; height: 22px;" @click="copyAddress(v._addr,v._addr)"/>
+                                                        <span class="tooltiptext" :id="v._addr" >Copy to</span>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-md-4" style="display: flex; justify-content: center;  align-items: center;">{{v.option}}</div>
+
+                                                <div class="col-md-4 pe-4" style="display: flex; justify-content: flex-end;  align-items: center;">
+                                                    {{trimmedBalance(v.balance)}} {{v.symbol}}
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div v-else>
+                                        <div v-for = "(v) in voters" class="ps-4 fw-bolder" style="border-bottom: 1px solid #d5d5d5;">
                                         <div class="row" style="font-size: 14px;">
                                             <div class="col-md-4" style="padding: 15px; display: flex; column-gap: 20px; justify-content: space-between;  align-items: center;">
                                                 <img src="../assets/logo-icon.png" style="height: 20px; border-radius: 50%"/>
@@ -70,12 +93,19 @@
                                             
                                                 </p>
                                                 <div class="superwarden-tooltip" style="float: right;">
-                                                    <img src="../assets/coppy-icon.png" style = "cursor: pointer; height: 22px;" @click="copyAddress(v._addr)"/>
-                                                    <span class="tooltiptext" id="myTooltip" >Copy to</span>
+                                                    <img src="../assets/coppy-icon.png" style = "cursor: pointer; height: 22px;" @click="copyAddress(v._addr,v._addr)"/>
+                                                    <span class="tooltiptext" :id="v._addr" >Copy to</span>
                                                 </div>
 
                                             </div>
-                                            <div class="col-md-4" style="display: flex; justify-content: center;  align-items: center;">{{v.option}}</div>
+                                            <div class="col-md-4" style="display: flex; justify-content: space-around;  align-items: center;">
+                                            <p class="p-o m-0">
+                                            {{v.option}}    
+                                            </p>
+                                            <p v-if = "v.round" class="m-0 p-0">(R2)</p>
+                                            <p v-else class="m-0 p-0">(R1)</p>
+
+                                            </div>
 
                                             <div class="col-md-4 pe-4" style="display: flex; justify-content: flex-end;  align-items: center;">
                                                 {{trimmedBalance(v.balance)}} {{v.symbol}}
@@ -83,6 +113,10 @@
 
                                         </div>
                                     </div>
+
+                                    </div>
+
+                                    
                                 </div>
                                 <div v-else style="justify-content: center; align-items: center; display: flex; height: 200px; border-bottom: 1px solid #d5d5d5;">
                                     <img src="../assets/no-proposal.png" style="width: 50%; "/>
@@ -139,17 +173,20 @@
                             <div class="ms-2" style="display: flex;">
                                 <span style= "color: #959595; display: flex;">{{trimmedProposalCid(proposal.cid)}}</span>
                                 <div class="superwarden-tooltip">
-                                    <img src="../assets/coppy-icon.png" style = "cursor: pointer; height: 22px;" @click="myFunction"/>
-                                    <span class="tooltiptext" id="myTooltip" >Copy to</span>
+                                    <img src="../assets/coppy-icon.png" style = "cursor: pointer; height: 22px;" @click="copyAddress(proposal.cid, proposal.cid)"/>
+                                    <span class="tooltiptext" :id="proposal.cid" >Copy to</span>
                                 </div>
                             </div>
                         </div>
                         <div style="display: flex;">
                             <p class="fw-bolder">Voting Result CID:</p>
                             <div class="ms-2" style="display: flex;">
-                                <span v-if="proposal.votedCid">
-                                    <span style= "color: #959595">{{trimmedProposalCid(proposal.votedCid)}}</span>
-                                    <span><img src = "../assets/coppy-icon.png" style="height:22px"></span>
+                                <span v-if="proposal.resultCID" style="display: flex;">
+                                    <span style= "color: #959595; display: flex;">{{trimmedProposalCid(proposal.resultCID)}}</span>
+                                   <div class="superwarden-tooltip">
+                                        <img src="../assets/coppy-icon.png" style = "cursor: pointer; height: 22px;" @click="copyAddress(proposal.resultCID, proposal.resultCID)"/>
+                                        <span class="tooltiptext" :id="proposal.resultCID" >Copy to</span>
+                                    </div>
                                 </span>
                                 <span v-else style= "color: #959595">TBA</span>
                             </div>
@@ -211,11 +248,11 @@
                         </div>
                         <div v-else>
                             <div style="display: flex;">
-                                <p class="fw-bolder">First Round Duration:</p>
+                                <p class="fw-bolder">Round 1 Duration:</p>
                                 <span style="color: #959595;">{{getTimeDifference(proposal.f_start_at, proposal.f_end_at)}}</span>
                             </div>
                             <div style="display: flex;">
-                                <p class="fw-bolder">Second Round Duration:</p>
+                                <p class="fw-bolder">Round 2 Duration:</p>
                                 <span  style="color: #959595;">{{getTimeDifference(proposal.s_start_at, proposal.s_end_at)}}</span>
                             </div>
                         </div>
@@ -244,8 +281,8 @@
                 <div v-if ="proposal.type != 2" class="mt-4  pt-2" style=" border: 1px solid #595959; margin-right: 100px; border-radius: 7px;">
                     <p class="fw-bolder ps-3 pb-3 mt-2" style="border-bottom: 1px solid #d5d5d5;">Voting Result</p>
 
-                    <div v-if = "proposal.shield && proposal.status != 2" class="text-center px-5 mx-4" >
-                        <img  src="../assets/security.png" style="width: 100%"/>
+                    <div v-if = "proposal.shield && proposal.status == 1" class="text-center px-3 " >
+                        <img  src="../assets/security.png" style="width: 100%;"/>
                     </div>
                     <div v-else>
                         <div v-if = "proposal.result.length > 1" class = "py-2">
@@ -281,14 +318,14 @@
                 <div v-else>
                     <div class="mt-5  pt-2" style=" border: 1px solid #595959; margin-right: 100px; border-radius: 7px;">
                         <p class="fw-bolder ps-3 pb-3 mt-2" style="border-bottom: 1px solid #d5d5d5;">Round 1 Voting Result</p>
-                        <div v-if = "proposal.shield && !proposal.s_result && proposal.status !=2" class="text-center">
-                            <img  src="../assets/security.png" style="width: 185px"/>
+                        <div v-if = "proposal.shield && round == 1 && proposal.status == 1" class="text-center  px-3">
+                            <img  src="../assets/security.png" style="width: 100%;"/>
                         </div>
                         <div v-else class = "py-2">
-                            <div v-if = "proposal.result.length > 1" class = "py-2">
+                            <div v-if = "proposal.result.length > 0" class = "py-2">
                                 <div v-for ="(r, i) in proposal.result">
                                     <p class="fw-bolder ps-3 mt-4" style="font-size: 14px;">{{trimmedVotingOption(r.option)}}
-                                    <span class="float-end me-4">{{trimmedBalance(r.amount)}}K {{r.symbol}} {{getProgressWidth(r)}}</span>
+                                    <span class="float-end me-4">{{trimmedBalance(r.amount)}} {{r.symbol}} {{getProgressWidth(r)}}</span>
                                     </p>
                                     <div class="px-3">
                                         <div class="progress ">
@@ -310,36 +347,35 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="text-center my-4 py-2" v-if = "proposal.status == 1">
+                        <div class="text-center my-4 py-2" v-if = "proposal.status == 1  && this.round == 1">
                             <button v-if ="voted" class="btn btn-danger text-center" disabled style="width: 80%;">Already voted</button>
                             <button v-else @click = "viewVoteNowModal" class="btn btn-danger text-center" style="width: 80%;">Vote Now</button>
                         </div>
                     </div>
                     <div class="mt-4  pt-2" style=" border: 1px solid #595959; margin-right: 100px; border-radius: 7px;">
                         <p class="fw-bolder ps-3 pb-3 mt-2" style="border-bottom: 1px solid #d5d5d5;">Round 2 Voting Result</p>
-                        <!-- <div v-if ="round ==1" class="text-center fw-bolder" style="min-height: 50px;"></div> -->
-                         <div v-if ="round ==1" style="justify-content: center; align-items: center; display: flex; height: 50px; vertical-align: middle;">
+                         <div v-if ="round == 1" style="justify-content: center; align-items: center; display: flex; height: 50px; vertical-align: middle;">
                             <p class="fw-bolder">TBA</p>
                         </div>
                         <div v-else>
-                            <div v-if = "proposal.shield && proposal.s_result && proposal.status !=2" class="text-center">
-                                <img  src="../assets/security.png" style="width: 185px"/>
+                            <div v-if = "proposal.shield && proposal.status ==1" class="text-center px-3 ">
+                                <img  src="../assets/security.png" style="width: 100%;"/>
                             </div>
                             <div v-else class = "py-2">
-                                <div v-if = "proposal.s_result.length > 1" class = "py-2">
+                                <div v-if = "proposal.s_result.length > 0" class = "py-2">
                                     <div v-for ="(r, i) in proposal.s_result">
                                         <p class="fw-bolder ps-3 mt-4" style="font-size: 14px;">{{trimmedVotingOption(r.option)}}
-                                        <span class="float-end me-4">{{trimmedBalance(r.amount)}}K {{r.symbol}} {{getProgressWidth(r)}}</span>
+                                        <span class="float-end me-4">{{trimmedBalance(r.amount)}} {{r.symbol}} {{getSecondProgressWidth(r)}}</span>
                                         </p>
                                         <div class="px-3">
                                             <div class="progress ">
-                                                <div class="progress-bar bg-danger" role="progressbar" :style="`width : ${getProgressWidth(r)}`" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                                <div class="progress-bar bg-danger" role="progressbar" :style="`width : ${getSecondProgressWidth(r)}`" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div v-else class = "py-2">
-                                    <div v-for ="(r) in proposal.options">
+                                    <div v-for ="(r) in proposal.s_options">
                                         <p class="fw-bolder ps-3" style="font-size: 14px;">{{trimmedVotingOption(r)}}
                                         <span class="float-end me-4">0K {{proposal.tk_symbol}} 0%</span>
                                         </p>
@@ -351,22 +387,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-center my-4 py-2" v-if = "proposal.status == 1">
+                            <div class="text-center my-4 py-2" v-if = "proposal.status == 1 && this.round == 2">
                                 <button v-if ="voted" class="btn btn-danger text-center" disabled style="width: 80%;">Already voted</button>
                                 <button v-else @click = "viewVoteNowModal" class="btn btn-danger text-center" style="width: 80%;">Vote Now</button>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-
-
-
-
-
-
-
             </div>
         </div>
     </div>
@@ -385,7 +412,12 @@
                 <form   v-on:submit.prevent="validateVoteNow" class="my-3 p-2 text-center">
                     <div v-bind:class="{'superwarden-invalid': validation.invalid.voteOptions }">
                         
-                        <div @click="setOption(i)"  v-for="(i) in proposal.options"
+                        <div v-if = "round == 1" @click="setOption(i)"  v-for="(i) in proposal.options"
+                            :class = "voteOptions.includes(i)? 'selected': ''"
+                            class="file-details-modal my-3 mx-1">
+                            <span class="fw-bolder">{{i}}</span>
+                        </div>
+                        <div v-else @click="setOption(i)"  v-for="(i) in proposal.s_options"
                             :class = "voteOptions.includes(i)? 'selected': ''"
                             class="file-details-modal my-3 mx-1">
                             <span class="fw-bolder">{{i}}</span>
@@ -448,7 +480,8 @@
 // import api from './api'
 import moment from 'moment';
 import { marked } from 'marked';
-
+import { Web3Storage } from "web3.storage";
+import pinataSDK from '@pinata/sdk';
 
 export default {
     name: "ProposalDetail",
@@ -456,7 +489,7 @@ export default {
         return {
             idx: this.$route.params['id'],
 
-            round: 1,
+            round: 2,
 
             voters: [],
             totalVoters: [],
@@ -473,7 +506,7 @@ export default {
             proposal: {
                 creator: {},
                 cid:'',
-                votedCid: '',
+                resultCID: '',
                 f_start_at: '',
                 f_end_at: '',
                 timezone: {},
@@ -512,9 +545,63 @@ export default {
             this.getProposalData()
     },
     mounted() {
+        // console.log('fefheufheu')
         
     },
     methods: {
+        checkResultCID(){
+            console.log(this.proposal.status)
+            if (!this.proposal.resultCID && this.proposal.status == 2){
+            console.log('hello')
+
+                let result = {}
+                if (this.proposal.type == 2){
+                    if (this.proposal.s_result.length > 0){
+                        result.first_voters = this.proposal.voters
+                        result.first_result = this.proposal.result
+                        result.second_voters = this.proposal.s_voters
+                        result.second_result = this.proposal.s_result
+                        
+                    }
+                } else {
+                    if(this.proposal.result.length > 0){
+                        result.first_voters = this.proposal.voters
+                        result.first_result = this.proposal.result
+                    }
+                }
+                api.getTownhallData({slug: this.proposal.slug}, (async (res) => {
+                    let webThrKey = res.data.townhall.details.webThrKey
+                    let pinataKey = res.data.townhall.details.pinataKey
+                    let pinataSecret = res.data.townhall.details.pinataSecret
+                    var client = new Web3Storage({ token: webThrKey});
+                    const blob = new Blob([JSON.stringify(result)], { type: 'application/json' })
+                    const ee = [new File([blob], 'result.json')];
+                    const rootCid = await client.put(ee, {maxRetries: 3});
+                    if (rootCid){
+                        this.proposal.resultCID = rootCid
+                        console.log(this.proposal.resultCID)
+                        if (pinataKey != '' && pinataSecret != ''){
+                            const pinata = pinataSDK(pinataKey, pinataSecret);
+                            const options = {
+                                pinataMetadata: {
+                                    name: 'superwardenResult',
+                                },
+                            };
+                            pinata.pinByHash(rootCid, options).then((result) => {
+                            }).catch((err) => {
+                            })
+                        } else {
+                            this.$toast.error(`please reset your pinata settings`);
+                        }
+                        api.saveResultCID({_id: this.proposal._id, cid: rootCid}, (res =>{
+                            console.log('result cid is saved.')
+                        }), err => {
+                            console.log(err)
+                        })
+                    }
+                }))
+            }
+        },
         getTimeDifference(s, e){
             let start = new Date(s)
             let end = new Date(e)
@@ -537,7 +624,7 @@ export default {
                 if (a > 10)
                     hour = a.toString()
                 else
-                    hour = "0" + a.string
+                    hour = "0" + a.toString()
                 tag = "PM"
             }
             let minute = string.slice(14, 16)
@@ -609,16 +696,23 @@ export default {
         },
         getProgressWidth(r){
             let total = 0
-            if (this.round =1){
+            if (this.proposal.result.length > 0){
                 this.proposal.result.map(i => {
                     total += i.amount
                 })
-            } else {
+            } 
+            return parseInt((r.amount / total)* 100) + '%'
+        },
+        getSecondProgressWidth(r){
+            let total = 0
+
+            if (this.proposal.s_result.length > 0){
                 this.proposal.s_result.map(i => {
                     total += i.amount
                 })
             }
             return parseInt((r.amount / total)* 100) + '%'
+
         },
 
         closeDeleteModal(){ this.deleteModal = false
@@ -736,11 +830,11 @@ export default {
                 obj.symbol = this.proposal.tk_symbol
                 obj.option = v
                 obj._addr = this.$store.getters._addr
-                obj.balance = parseInt(this.balance * this.multiplier) / this.voteOptions.length
+                obj.balance = parseInt(this.balance * this.proposal.multiplier) / this.voteOptions.length
                 data.push(obj)
             })
-            
-            api.sendVote({_id:this.proposal._id,  data: data}, ( async (res) => {
+            console.log(data)
+            api.sendVote({_id:this.proposal._id, round: this.round, data: data}, ( async (res) => {
                 if (res.data.updated){
                     this.voted = true
                     this.$toast.success('You successfully voted.')
@@ -752,47 +846,76 @@ export default {
             })
         },
         myFunction(){
+            console.log('hhee')
             var copyText = this.proposal.cid;
             //   copyText.select();
             //   copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText);
             var tooltip = document.getElementById("myTooltip");
+            navigator.clipboard.writeText(copyText);
             tooltip.innerHTML = "Copied";
         },
-        copyAddress(_addr){
-            var copyText = _addr;
-            //   copyText.select();
-            //   copyText.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(copyText);
-            var tooltip = document.getElementById("myTooltip");
+        copyAddress(_addr, id){
+            navigator.clipboard.writeText(_addr);
+            var tooltip = document.getElementById(id);
             tooltip.innerHTML = "Copied";
-
         },
         getProposalData(){
             api.getProposalData({_id: this.idx}, (res => {
                 this.proposal = res.data.proposal
-                console.log(this.proposal)
-                if (this.proposal.s_result)
+                
+                if (this.proposal.s_options.length > 0)
                     this.round = 2
                 else
                     this.round = 1
                 if (this.round == 1){
                     this.totalVoters = res.data.proposal.voters
                     this.proposal.voters.map((v) => {
-                        if (v._addr == this.$store.getters._addr){
+                        if (v._addr == this.$store.getters._addr)
                             this.voted = true
-                        }
+                        else
+                            this.voted = false
+                        
                     })
                 } else {
-                    this.totalVoters = res.data.proposal.s_voters
                     this.proposal.s_voters.map((v) => {
-                        if (v._addr == this.$store.getters._addr){
+                        v.round = 2
+                        if (v._addr == this.$store.getters._addr)
                             this.voted = true
-                        }
+                        else
+                            this.voted = false
+                        
                     })
+                    this.totalVoters = res.data.proposal.s_voters
+                    res.data.proposal.voters.map((i)=>{
+                        this.totalVoters.push(i)
+                    })
+                    console.log(this.totalVoters)
+
                 }
                 this.viewVoterMore = false
                 this.voters = this.totalVoters.slice(0, 7)
+                this.checkResultCID()
+                if (this.proposal.type == 2 && this.proposal.status != 2){
+                    console.log('asffffffffff')
+                    let now = new Date()
+                    let localTimeOffset = now.getTimezoneOffset() * 60 * 1000;
+                    let localTimeValue = now.getTime() + localTimeOffset;
+                    let serverTimeOffset = moment().utcOffset(this.proposal.timezone.offset).utcOffset() * 60 * 1000
+                    let start_at_f = new Date(this.proposal.s_start_at);
+                    let startTimeValue = start_at_f.getTime() - serverTimeOffset + localTimeOffset
+                    let toStart = startTimeValue - localTimeValue
+                    console.log('Second Round Counting: ' + toStart)
+                    if (toStart > 0){
+                        setTimeout(() => {
+                            console.log('Request for second round.')
+                            this.getProposalData();
+                        }, toStart + 1000);
+                    }
+                    //     console.log('jjjjjjjjjjjjjjjjjjjjjjj')
+                    // }, 1000);
+
+                }
+
             }), err =>{
                 console.log(err)
             })

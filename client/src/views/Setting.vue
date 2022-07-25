@@ -1,6 +1,18 @@
 <template>
-<div
-      style="position: fixed; border-right: 1px solid #d5d5d5; height: 100%; z-index: 50;"
+<div v-if="loading"
+      style="position: fixed; display: flex; justify-content: center; vertical-align: middle; align-items: center; text-align: center; border-right: 1px solid #d5d5d5; height: 100%; z-index: 50; background-color: #ffffff;"
+      class="lg:w-1/4 float-left hidden lg:block p-0 m-0 overflow-hidden"
+      id="sidebar-left"
+    >
+  <!-- <fade-loader class="" :loading="loading" color="#000" height="10px" width="10px"></fade-loader> -->
+  <pulse-loader :loading="loading" color="#595959" size="12px" class="mb-5"></pulse-loader>
+
+    </div>
+
+
+
+<div v-else
+      style="position: fixed; border-right: 1px solid #d5d5d5; height: 100%; z-index: 50; background-color: #fff;"
       class="lg:w-1/4 float-left hidden lg:block p-0 m-0 overflow-hidden"
       id="sidebar-left">
 	<ul class="nav flex-column px-2">
@@ -28,22 +40,19 @@
 		</li>
 	</ul>
 </div>
-    <div class="navBar" >
+<div v-if = "loading"  style="width: 100%; height: 85%; display: flex; justify-content: center; vertical-align: middle; position: fixed; align-items: center; text-align: center;">
+
+  <div>
+    <img src="../assets/loader.gif" alt="this slowpoke moves"  width="150" class="ms-5"/>
+  </div>
+</div>
+    <div v-else class="navBar" >
         <div class = "row" style="width: 100%;">
             <div class="col-lg-3 col-md-12 ">
             </div>
             <div class="col-lg-7 px-5 mx-5">
                 <button type=" " class="btn btn-default  p-0 my-5" @click="backToProposalList"><b>&#8592; Back</b></button>
-
-
-
-
-
-
-
 				<form v-if = "steps == 1"            v-on:submit.prevent="validateFirstStep" autocomplete="off"          >
-
-
 					<p class="fw-bolder fs-4">Basic Info</p>
 					<div class="mb-3 mt-3">
 						<label for="name" class="form-label fw-bolder fs-6">Name of the townhall</label>
@@ -441,10 +450,11 @@ TSF2rqLdrrZG7PZkDxtvu6B2PTpofidMAX mary"
 <script>
 import Multiselect from '@vueform/multiselect'
 import axios from 'axios';
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
     name: "Setting",
-	components: { Multiselect},
+	components: { Multiselect, PulseLoader},
     data() {
         return {
           slug : this.$route.params['slug'],
@@ -509,6 +519,7 @@ export default {
 						validation: { 
                 invalid: {},
                 valid: {},},
+			loading: true
             // active: {status : false}
 
         }
@@ -892,6 +903,7 @@ export default {
 
 
 		getTownhallData(){
+			this.loading = true
 			api.getTownhallData({slug: this.slug}, (res => {
 				
 				if (res.data.townhall){
@@ -950,6 +962,7 @@ export default {
 					this.stepSix.tcr = res.data.townhall.details.tcr
 					this.stepSix.mtr_status = res.data.townhall.details.mtr_status
 					this.stepSix.threshold = res.data.townhall.details.threshold
+					this.loading = false
 				} else {
 
 				}

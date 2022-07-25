@@ -1,33 +1,34 @@
 <template>
-<nav class="navbar navbar-expand-sm h-[65px]" style="border-bottom: 1px solid #d5d5d5">
-  <div class="container-fluid">
-    <label class="navbar-brand ps-5 pe-4 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Details</label>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="mynavbar">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <label class="nav-link"  style="background-color: #fff; width: 100%;!important" >{{details.name}}</label>
-        </li>
-      </ul>
+<div v-if = "loading"  style="width: 70%; height: 85%; display: flex; justify-content: center; vertical-align: middle; position: fixed; align-items: center; text-align: center;">
 
-    </div>
+  <div>
+    <img src="../../assets/loader.gif" alt="this slowpoke moves"  width="150" />
   </div>
-</nav>
- <!-- <div class="head p-2 h-[65px]" style="width: 100%;">
-      <span class="px-5  py-1 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Details </span>
-      <div class="options">
-          <span>{{details.name}}</span>
+</div>
+<div v-else>
+
+  <nav class="navbar navbar-expand-sm h-[65px]" style="border-bottom: 1px solid #d5d5d5">
+    <div class="container-fluid">
+      <label class="navbar-brand ps-5 pe-4 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Details</label>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mynavbar">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <label class="nav-link"  style="background-color: #fff; width: 100%;!important" >{{details.name}}</label>
+          </li>
+        </ul>
+  
       </div>
-  </div> -->
-
-  <!-- <div class="right-section-content" style="height: 73.8vh; overflow-y: scroll;"> -->
-  <div class="right-section-content">
-
-    <img :src="details.bannerPhoto" style="height: 220px; border-radius: 7px;"/>
-    <div v-html="markdownToHtml" class="markdown-body"></div>
-  </div>
+    </div>
+  </nav>
+    <div class="right-section-content">
+  
+      <img :src="details.bannerPhoto" style="height: 220px; border-radius: 7px;"/>
+      <div v-html="markdownToHtml" class="markdown-body"></div>
+    </div>
+</div>
   
            
             
@@ -45,7 +46,8 @@ export default {
     data() {
         return {
           slug : this.$route.params['slug'],
-          details: {}
+          details: {},
+          loading: true,
         }
     },
     computed: {
@@ -63,6 +65,7 @@ export default {
     // mounted() {},
     methods: {
       getTownhallData(){
+        this.loading = true
         api.getTownhallData({slug: this.slug}, (res => {
           if (res.data.townhall){
             console.log(this.$store.getters.name)
@@ -74,6 +77,7 @@ export default {
             // } else if (this.townhall.details.master.includes(this.$store.getters.name) || this.townhall.details.master.includes(this.$store.getters._addr)){
             //   this.role = 2
             // }
+            this.loading = false
           } else {
 
           }

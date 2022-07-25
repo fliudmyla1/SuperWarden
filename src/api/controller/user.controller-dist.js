@@ -1,0 +1,1 @@
+const User=require("../model/user.model");async function sample(e,o,s){try{await user.save(),User.find({}).then((e=>{console.log(e)}));o.json({list:"okay"})}catch(e){console.log("api/controller/user.controller"+e)}}module.exports={sample:sample};

@@ -1,0 +1,1 @@
+const mongoose=require("mongoose"),user=new mongoose.Schema({address:{type:String,required:!0},role:{type:Number,default:2}}),User=mongoose.model("User",user);module.exports=User;

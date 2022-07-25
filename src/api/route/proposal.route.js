@@ -9,6 +9,7 @@ router.route('/deleteProposal').post(ProposalCtrl.deleteProposal)
 
 
 router.route('/sendVote').post(ProposalCtrl.sendVote)
+router.route('/saveResultCID').post(ProposalCtrl.saveResultCID)
 
 
 

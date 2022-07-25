@@ -19,6 +19,9 @@ const proposal = new mongoose.Schema({
   voters : { type : Array},
   result : { type : Array},
   status : {type: Number, default: 0}, // -1: not set, 0: expecting 1: on process 2: ended
+  s_voters : { type : Array},
+  s_result : { type : Array},
+  s_options:{type: Array},
   importance: {type : Boolean, default: false},
   created_at: {type: Date, default: Date.now}
 

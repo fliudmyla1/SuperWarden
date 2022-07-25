@@ -1,7 +1,9 @@
 <template>
 <div v-if = "loading"  style="width: 70%; height: 85%; display: flex; justify-content: center; vertical-align: middle; position: fixed; align-items: center; text-align: center;">
 
-  <fade-loader class="ms-5" :loading="loading" color="#000" height="10px" width="10px"></fade-loader>
+  <div>
+    <img src="../../assets/loader.gif" alt="this slowpoke moves"  width="150" />
+  </div>
 </div>
 <div v-else>
   <nav class="navbar navbar-expand-sm h-[65px]" style="border-bottom: 1px solid #d5d5d5">
@@ -134,16 +136,6 @@ export default {
       goProposalDetail(_id){this.$router.push(`/proposal/detail/${_id}`)},
 
 
-
-
-
-
-
-
-
-
-
-
       goCreateProposal(){this.$router.push(`/proposal/create/${this.slug}`)},
         getProposalList(index){
           this.loading = true
@@ -158,7 +150,11 @@ export default {
               let serverTimeOffset = moment().utcOffset(p.timezone.offset).utcOffset() * 60 * 1000
               let start_at_f = new Date(p.f_start_at);
               let startTimeValue = start_at_f.getTime() - serverTimeOffset + localTimeOffset
-              let end_at_f = new Date(p.f_end_at);
+              let end_at_f = ''
+              if (p.s_start_at)
+                end_at_f = new Date(p.s_end_at);
+              else
+                end_at_f = new Date(p.f_end_at);
               let endTimeValue = end_at_f.getTime() - serverTimeOffset + localTimeOffset
               let toStart = startTimeValue - localTimeValue
               let toEnd = endTimeValue - localTimeValue
@@ -168,9 +164,6 @@ export default {
               
               if (toStart > 0){
                 p.passed = 0
-                // let day = parseInt(toStart/(1000 * 3600 * 24))
-                // let hour = parseInt((toStart - day * 1000 * 3600 * 24)/(1000 * 3600))
-                // let minute = parseInt((toStart - day * 1000 * 3600 * 24 - hour * 1000 * 3600)/(1000 * 60)) 
                 p.leftTime = `Comming soon`
               } else if (localTimeValue > endTimeValue){
                 p.passed = 2
@@ -186,9 +179,10 @@ export default {
 
                 p.leftTime = `${day} days ${hour} hours ${minute} minutes`
               }
-              this.loading = false
 
             })
+            this.loading = false
+
           }), err =>{
               console.log(err)
           })

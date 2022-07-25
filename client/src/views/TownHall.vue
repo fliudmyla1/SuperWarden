@@ -1,16 +1,16 @@
 <template>
-  <!-- <div class="flex font-sans text-base antialiased bg-skin-bg text-skin-text min-h-screen">
-    <div id="sidebar" class="flex flex-col">
-      <div style="position: fixed; border-right: 1px solid #d5d5d5; min-width: 500px" >
-      dsafjeiofjeio
-      </div>
+<div v-if="loading"
+      style="position: fixed; display: flex; justify-content: center; vertical-align: middle; align-items: center; text-align: center; border-right: 1px solid #d5d5d5; height: 100%; z-index: 50; background-color: #ffffff;"
+      class="lg:w-1/4 float-left hidden lg:block p-0 m-0 overflow-hidden"
+      id="sidebar-left"
+    >
+  <!-- <fade-loader class="" :loading="loading" color="#000" height="10px" width="10px"></fade-loader> -->
+  <pulse-loader :loading="loading" color="#595959" size="12px" class="mb-5"></pulse-loader>
+
     </div>
-    <div>
-      afeiofje
-    </div>
-  </div> -->
-<div
-      style="position: fixed; border-right: 1px solid #d5d5d5; height: 100%; z-index: 50;"
+
+<div v-else
+      style="position: fixed; border-right: 1px solid #d5d5d5; height: 100%; z-index: 50; background-color: #ffffff;"
       class="lg:w-1/4 float-left hidden lg:block p-0 m-0 overflow-hidden"
       id="sidebar-left"
     >
@@ -59,10 +59,12 @@
 </template>
 <script>
 import BaseContainer from '../components/BaseContainer.vue'
+import FadeLoader from 'vue-spinner/src/FadeLoader.vue';
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
     name: "TownHall",
-    components: {BaseContainer},
+    components: {BaseContainer, FadeLoader, PulseLoader},
 
     data() {
         return {
@@ -74,6 +76,7 @@ export default {
           },
           tag: 'p',
           height: 300,
+          loading: true,
           // width: innerWidth - 200
         }
     },
@@ -93,7 +96,7 @@ export default {
     methods: {
       
       getTownhallData(){
-        console.log(this.slug)
+        this.loading = true
         api.getTownhallData({slug: this.slug}, (async (res) => {
           this.height = window.innerHeight - 80
           if (res.data.townhall){
@@ -137,6 +140,7 @@ export default {
               this.role = 5
 
             this.$store.dispatch('account/setRole', this.role)
+            this.loading = false
                 // this.$store.dispatch('account/setAccount')
             // console.log(this.$store)
 

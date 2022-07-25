@@ -28,6 +28,7 @@ export default {
     getProposalData(data, cb, error){apiCall('/api/v1/proposal/getProposalData', 'POST', data, cb, error)},
     deleteProposal(data, cb, error){apiCall('/api/v1/proposal/deleteProposal', 'POST', data, cb, error)},
     sendVote(data, cb, error){apiCall('/api/v1/proposal/sendVote', 'POST', data, cb, error)},
+    saveResultCID(data, cb, error){apiCall('/api/v1/proposal/saveResultCID', 'POST', data, cb, error)},
 
 
     

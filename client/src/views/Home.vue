@@ -1,5 +1,8 @@
 <template>
-  <div style="padding-top: 32px;
+  <div v-if = "loading" style="width: 100%; height: 100%; display: flex; justify-content: center; vertical-align: middle; position: fixed; align-items: center; text-align: center;">
+    <img src="../assets/loader.gif" alt="this slowpoke moves"  width="150" class="mb-5 me-5" />
+  </div>
+  <div v-else style="padding-top: 32px;
     padding-left: 75px;
     padding-right: 73px; ">
     <div class="text-center">
@@ -134,7 +137,8 @@ export default {
           },
           townhalls: [],
 					categories : [ 'Media', 'Social', 'Entertainment', 'Protocol', 'Investment', 'Collectors', 'Grant', 'Art and Culture','Education', 'Research', 'Creator', 'Service'],
-          loader: ''
+          loader: '',
+          loading: true,
         }
     },
     computed: {},
@@ -184,6 +188,7 @@ export default {
         },
         getTownhallList(){
           // let loader = this.$loading.show()
+          this.loading = true
           api.getTownhallList({search: this.searchPattern}, (res => {
               this.townhalls = res.data.data
               this.townhalls.map((i) =>{
@@ -194,7 +199,7 @@ export default {
                   }
               })
               // loader.hide()
-              
+              this.loading = false
           }), err =>{
               console.log(err)
           })

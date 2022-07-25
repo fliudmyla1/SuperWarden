@@ -16,8 +16,8 @@ async function createProposal (req, res, next){
             obj.f_end_at = await makeDate(req.body.data.f_end_date_at, req.body.data.f_end_time_at)
         }
         if (req.body.data.s_start_date_at && req.body.data.s_start_time_at && req.body.data.s_end_date_at && req.body.data.s_end_time_at){ // if there is second round, set for the second round
-            obj.s_start_at = await makeDate(req.body.s_start_date_at, req.body.s_start_time_at)
-            obj.s_end_at = await makeDate(req.body.s_end_date_at, req.body.s_end_time_at)
+            obj.s_start_at = await makeDate(req.body.data.s_start_date_at, req.body.data.s_start_time_at)
+            obj.s_end_at = await makeDate(req.body.data.s_end_date_at, req.body.data.s_end_time_at)
         }
         let proposal = new Proposal(Object.assign(obj, req.body.data, {created_at: new Date()}))
         proposal.save().then(async (p) => {
@@ -59,26 +59,27 @@ async function refreshProposalStatus(proposal){
         let localTimeOffset = now.getTimezoneOffset() * 60 * 1000;
         let localTimeValue = now.getTime() + localTimeOffset
         let serverTimeOffset = moment().utcOffset(proposal.timezone.offset).utcOffset() * 60 * 1000
-        if (!proposal.s_result){ // still not set the second round or no second round
+        if (proposal.s_options.length < 1){ // still not set the second round or no second round
             let start_at_f = new Date(proposal.f_start_at);
             let startTimeValue = start_at_f.getTime() - serverTimeOffset + localTimeOffset
             let end_at_f = new Date(proposal.f_end_at);
             let endTimeValue = end_at_f.getTime() - serverTimeOffset + localTimeOffset
             let toStart = startTimeValue - localTimeValue
-            console.log(start_at_f)
-            console.log(serverTimeOffset)
+            // console.log(serverTimeOffset)
             if (toStart > 0){ // expecting
                 proposal.status = 0
-            } else { 
+            } else {
+            // console.log(toStart)
+
                 if (proposal.voters.length > 0){ // if there is voting data, save the voting result
                     let array = await  groupByVoteOption(proposal.options, proposal.voters)
-                    console.log(array)
                     proposal.result = array
                 }
                 if (localTimeValue > endTimeValue) {// first round is ended
                     if (proposal.s_end_at){ // if there is second round, set for the second round
                         proposal.s_voters = []
                         proposal.s_result = []
+                        proposal.s_options = []
                         let options = []
                         for (var j = 0 ; j < 2; j++){
                             options.push(proposal.result[j].option)
@@ -86,7 +87,6 @@ async function refreshProposalStatus(proposal){
                         proposal.s_options = options
                         proposal.status = 0
                     }else{ // voting is ended.
-                        // should implement for pinata and web3.storage
                         proposal.status = 2
                     }
                 } else {
@@ -95,9 +95,9 @@ async function refreshProposalStatus(proposal){
             }
         } else { // the second round
             let start_at_f = new Date(proposal.s_start_at);
-            let startTimeValue = start_at_f.getTime() - serverTimeOffset
+            let startTimeValue = start_at_f.getTime() - serverTimeOffset + localTimeOffset
             let end_at_f = new Date(proposal.s_end_at);
-            let endTimeValue = end_at_f.getTime() - serverTimeOffset
+            let endTimeValue = end_at_f.getTime() - serverTimeOffset + localTimeOffset
             let toStart = startTimeValue - localTimeValue
             if (toStart > 0){ // expecting
                 proposal.status = 0
@@ -106,13 +106,18 @@ async function refreshProposalStatus(proposal){
                     let array = await  groupByVoteOption(proposal.s_options, proposal.s_voters)
                     proposal.s_result = array
                 }
+                // console.log(end_at_f)
+                console.log(now)
+
                 if (localTimeValue > endTimeValue ){
+
                     proposal.status = 2
                 } else {
-                proposal.status = 1}
+                proposal.status = 1
+                }
             }
         }
-        await proposal.save()
+        await proposal.save({new: true})
 
     } catch (error) {
         console.log('api/controller/announce.controller/refreshProposalStatus' + error)
@@ -156,27 +161,46 @@ async function getProposalData (req, res, next){
         console.log('api/controller/proposal.controller/getProposalData' + error)
     }
 }
-async function sendVote (req, res, next){
-    try {
-        Proposal.findByIdAndUpdate(req.body._id, { $push: {voters : {$each: req.body.data}}}).exec()
-        .then(async p =>{
-            console.log(p)
-            // await refreshProposalStatus();
-            res.json({updated: true})
 
-        })
-        // Proposal.findById(req.body._id).exec()
-        // .then((p) =>{
-        // })
-    } catch (error) {
-        console.log('api/controller/proposal.controller/sendVote' + error)
-    }
-}
 async function deleteProposal (req, res, next){
     try {
         Proposal.deleteOne({_id: req.body._id}).exec()
         .then(()=>{
             res.json({})
+        })
+    } catch (error) {
+        console.log('api/controller/proposal.controller/' + error)
+    }
+}
+async function sendVote (req, res, next){
+    try {
+        console.log(req.body)
+        if (req.body.round == 1){
+            Proposal.findByIdAndUpdate(req.body._id, { $push: {voters : {$each: req.body.data}}}).exec()
+            .then(async p =>{
+                // console.log(p)
+                // await refreshProposalStatus();
+                res.json({updated: true})
+            })
+        } else {
+            Proposal.findByIdAndUpdate(req.body._id, { $push: {s_voters : {$each: req.body.data}}}).exec()
+            .then(async p =>{
+                // console.log(p)
+                // await refreshProposalStatus();
+                res.json({updated: true})
+            })
+        }
+
+    } catch (error) {
+        console.log('api/controller/proposal.controller/sendVote' + error)
+    }
+}
+async function saveResultCID (req, res, next){
+    try {
+        Proposal.findByIdAndUpdate(req.body._id, { resultCID: req.body.cid}).exec()
+        .then(async p =>{
+            res.json({updated: true})
+
         })
     } catch (error) {
         console.log('api/controller/proposal.controller/' + error)
@@ -204,5 +228,6 @@ module.exports = {
     getProposalList,
     getProposalData,
     deleteProposal,
-    sendVote
+    sendVote,
+    saveResultCID
 }

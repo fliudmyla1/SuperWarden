@@ -1,54 +1,63 @@
 <template>
-<nav class="navbar navbar-expand-sm h-[65px]" style="border-bottom: 1px solid #d5d5d5">
-  <div class="container-fluid">
-    <label class="navbar-brand ps-5 pe-4 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Announcement</label>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="mynavbar">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <label @click = "getAnnouncementList('all')" :class="index === 'all'?  'selected': ''" class="nav-link superwarden-nav" style="background-color: #fff">All</label>
-        </li>
-        <li class="nav-item">
-          <label @click = "getAnnouncementList('open')" :class="index === 'open'?  'selected': ''" class="nav-link superwarden-nav"  style="background-color: #fff">Open</label>
-        </li>
-        <li class="nav-item">
-          <label @click = "getAnnouncementList('important')" :class="index === 'important'?  'selected': ''" class="nav-link superwarden-nav" style="background-color: #fff">Important</label>
-        </li>
-        <li class="nav-item">
-          <label @click = "getAnnouncementList('closed')" :class="index === 'closed'?  'selected': ''" class="nav-link superwarden-nav" style="background-color: #fff">Closed</label>
-        </li>
-      </ul>
-      <form class="d-flex me-4" v-if = "$store.getters.role < 2">
-        <button @click="goCreateAnnouncement" class="right-button px-3"  type="button">+Announcement</button>
-      </form>
-    </div>
-  </div>
-</nav>
+<div v-if = "loading"  style="width: 70%; height: 85%; display: flex; justify-content: center; vertical-align: middle; position: fixed; align-items: center; text-align: center;">
 
-  <div v-if = "announcements.length > 0" class="right-section-content">
-    <div @click="goAnnounceDetail(i._id)"  class="block-container-announcement" v-for = "(i) in announcements">
-      <div class="my-2" style="display: flex;   justify-content: space-between;">
-        <div style="display: flex; ">
-          <p class="fw-bolder text-dark px-0 m-0 py-2" style="font-size: 22px;">{{trimmedAnnounceTitle(i.title)}}</p>
-          <img v-if = "i.importance"   style="height: 35px;"   class="ms-2"    src="../../assets/staricon.png" />
-        </div>
-        <div class="my-2 " style="float: right;">
-          <p v-if = "!i.passed" class="status active px-3">open</p>
-          <p v-else class="status complete px-3">closed</p>
-        </div>
+  <div>
+    <img src="../../assets/loader.gif" alt="this slowpoke moves"  width="150" />
+  </div>
+</div>
+<div v-else>
+  <nav class="navbar navbar-expand-sm h-[65px]" style="border-bottom: 1px solid #d5d5d5">
+    <div class="container-fluid">
+      <label class="navbar-brand ps-5 pe-4 fs-5 fw-bolder" style="border-right: 2px solid #959595;">Announcement</label>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="mynavbar">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <label @click = "getAnnouncementList('all')" :class="index === 'all'?  'selected': ''" class="nav-link superwarden-nav" style="background-color: #fff">All</label>
+          </li>
+          <li class="nav-item">
+            <label @click = "getAnnouncementList('open')" :class="index === 'open'?  'selected': ''" class="nav-link superwarden-nav"  style="background-color: #fff">Open</label>
+          </li>
+          <li class="nav-item">
+            <label @click = "getAnnouncementList('important')" :class="index === 'important'?  'selected': ''" class="nav-link superwarden-nav" style="background-color: #fff">Important</label>
+          </li>
+          <li class="nav-item">
+            <label @click = "getAnnouncementList('closed')" :class="index === 'closed'?  'selected': ''" class="nav-link superwarden-nav" style="background-color: #fff">Closed</label>
+          </li>
+        </ul>
+        <form class="d-flex me-4" v-if = "$store.getters.role < 2">
+          <button @click="goCreateAnnouncement" class="right-button px-3"  type="button">+Announcement</button>
+        </form>
       </div>
-          <span class="fw-bolder">Broadcast by {{i.creator.name ? trimmedAccountNameAndLowercase(i.creator.name) +"." + i.slug: trimmedAccountAddress(i.creator.address) }}</span>
-          <span class="text-dark" style="height: 100px">{{trimmedAnnounceSummary(i.summary)}}</span>
-          <span class="valid-till"><img src="../../assets/clock-icon.png"/>Valid Till &nbsp;<img src="../../assets/line1.png" style="height: 20px;"/> {{getDateString(i.expire_at)}} ({{'UTC ' + i.timezone.offset}})</span>
     </div>
-  </div>
-  <div v-else class="right-section-no-content" :style="`min-height: ${height}px`">
-    <img src="../../assets/townhall-quiet.png" />
-    <span>There are no announcements currently. Let’s wait for someone to broadcast. </span>
-  </div>
-        
+  </nav>
+  
+    <div v-if = "announcements.length > 0" class="right-section-content">
+      <div @click="goAnnounceDetail(i._id)"  class="block-container-announcement" v-for = "(i) in announcements">
+        <div class="my-2" style="display: flex;   justify-content: space-between;">
+          <div style="display: flex; ">
+            <p class="fw-bolder text-dark px-0 m-0 py-2" style="font-size: 22px;">{{trimmedAnnounceTitle(i.title)}}</p>
+            <img v-if = "i.importance"   style="height: 35px;"   class="ms-2"    src="../../assets/staricon.png" />
+          </div>
+          <div class="my-2 " style="float: right;">
+            <p v-if = "!i.passed" class="status active px-3">open</p>
+            <p v-else class="status complete px-3">closed</p>
+          </div>
+        </div>
+            <span class="fw-bolder">Broadcast by {{i.creator.name ? trimmedAccountNameAndLowercase(i.creator.name) +"." + i.slug: trimmedAccountAddress(i.creator.address) }}</span>
+            <span class="text-dark" style="height: 100px">{{trimmedAnnounceSummary(i.summary)}}</span>
+            <span class="valid-till"><img src="../../assets/clock-icon.png"/>Valid Till &nbsp;<img src="../../assets/line1.png" style="height: 20px;"/> {{getDateString(i.expire_at)}} ({{'UTC ' + i.timezone.offset}})</span>
+      </div>
+    </div>
+    <div v-else class="right-section-no-content" :style="`min-height: ${height}px`">
+      <img src="../../assets/townhall-quiet.png" />
+      <span>There are no announcements currently. Let’s wait for someone to broadcast. </span>
+    </div>
+          
+
+</div>
            
 
     
@@ -64,7 +73,8 @@ export default {
           index: '',
           date: '',
           announcements: [],
-          height: innerHeight - 210
+          height: innerHeight - 210,
+          loading : true,
 
 
         }
@@ -125,6 +135,7 @@ export default {
       goCreateAnnouncement(){this.$router.push(`/announcement/create/${this.slug}`)},
       getAnnouncementList(index){
         this.index = index;
+        this.loading = true
         api.getAnnouncementList({slug: this.slug, index: this.index}, (res => {
           this.announcements = res.data.list
           this.announcements.map((i, index) => {
@@ -140,6 +151,7 @@ export default {
                 else{
                     i.passed = true
                 }
+                this.loading = false
             })
           console.log(this.announcements)
             }), err =>{

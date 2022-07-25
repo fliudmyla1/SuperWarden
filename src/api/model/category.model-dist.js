@@ -1,0 +1,1 @@
+const mongoose=require("mongoose"),category=new mongoose.Schema({name:{type:String,required:!0}}),Category=mongoose.model("Category",category);module.exports=Category;

@@ -1,0 +1,46 @@
+The new "modules or functions" to integrate in our current current system must be integrated without losing any current function.
+There should be no performance degradation or performance drop greater than 15% or 20% when turning on these new features.
+
+The system is dynamic, and when adding the new functions it should not become static since that is the essence of the system.
+
+the functions to perform:
+
+1 - *creation of a panel and object repository (to enter and save Dae and OBJ objects, eg tables, chairs, tv, or complete environments) to the server
+- when adding an object you must include its original textures and allow editing textures and sizes, show size in mm
+- it must allow to introduce them inside the open project and place it in mm in the X Y Z axes and rotate them IN ° X Y Z
+When adding an Object to the project, it must include textures and we need to be able to select the object from the 3d and from a panel that shows us the names of the objects on the scene, in order to be able to move them, rotate them, hide them, or delete them, independently.
+
+Projects must save information about Objects, location, size etc. when opening the project load as it was when saving it
+
+- from the panel/modal/view to create, we must be able to store them on the server, and be able to open them from a list that will show all the saved models. ,
+
+The list of objects should be global for all users
+
+2 - Creation of a room or house plan in 2d, this room or house must be seen in the current 3d
+
+Create a module with a tool that allows you to create 100% customizable 2D plan rooms, it must allow you to enter wall thickness, angle and measurements in mm, it must also be possible to locate columns, partition walls, doors and windows (they must be editable in color / texture and size and models, at least 3 or 4 models of doors and windows), the rooms must be able to move in the world (with the axes, X Y Z and rotation of X Y Z) must allow several rooms within the same project
+- save room separately to use in another project,
+-when saving and loading a project, all the room config and its parameters must be saved and then loaded
+
+The plan creation tool should allow us to draw "plan" and "View" of each of the walls of the house that is drawn,
+first the plant will be drawn and then selecting in the views of the walls to be able to place geometric figures such as squares, rectangles, lines, circles, which will represent plugs, pipes, water intakes, drains, etc. That is why they must be able to be edited in size according to the measurement in mm (we need it to be able to take a value sent by bluetooth).
+the textures of the walls, floor and ceiling must be able to be edited by group or independently.
+the floors, ceilings and walls, in addition to including levels, or slopes, in addition to that, they must be able to save up to 6 extra values ​​with Name and value together with their properties. touching the wall should show those properties in addition to its measurements. and the view plan drawn.
+
+eg Magic plan app (without the lidar part, only the manual part)
+
+3 - Add a lighting panel, to be able to control the lighting of the scene, general ambient lighting, or spot type in specific places with its control of independent parameters (such as the lights that already come with the library).
+each light owes its independent parameters
+projects must save/load light parameters
+
+An On OFF key is needed to turn the 3 functions on or off independently.
+
+When presenting each point after testing in staging, % is released according to stage,
+30% for the first point, 30% for 2 and 40% for 3.
+
+we work with gitlab
+
+one more explanation:
+https://www.loom.com/share/db0f5e9f1029402c9995fee8d5d24c95
+
+The functions that are added must not break any function of what is currently done.

@@ -1,0 +1,1 @@
+const express=require("express"),router=express.Router(),UserCtrl=require("../controller/user.controller");router.route("").post(UserCtrl.sample),module.exports=router;
